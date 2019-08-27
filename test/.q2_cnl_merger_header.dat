@@ -1,0 +1,9 @@
+# -*- mode: org; -*-
+#+STARTUP: overview
+# Hi-lock: (("GND"  (0 '(:background "gray90") prepend)))
+# Hi-lock: (("3V3"  (0 '(:background "green") prepend)))
+# Hi-lock: (("3.3V" (0 '(:background "tan") prepend)))
+# Hi-lock: (("2V5"  (0 '(:background "yellow") prepend)))
+# Hi-lock: (("2.5V" (0 '(:background "salmon") prepend)))
+# Hi-lock: (("1V2"  (0 '(:background "PowderBlue") prepend)))
+# Hi-lock: (("1.2V" (0 '(:background "aquamarine") prepend)))

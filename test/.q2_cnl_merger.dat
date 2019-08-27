@@ -1,0 +1,16 @@
+[Configuration]
+format_signal = 1
+full_merged = 1
+netlist_file = ./pstxnet.dat
+noconnect = 1
+nosignal = 1
+power = 1
+quartus_pin_file = ./main_ctrl.pin
+refdes = DD2
+refdes_pin_name = 0
+signal = 1
+net_name = 1
+
+[Info]
+Description = Configuration file to Quartus pin and Cadence Allegro net-list merger
+

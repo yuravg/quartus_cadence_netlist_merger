@@ -1,0 +1,6 @@
+[MESSAGES CONTROL]
+# C0325: Unnecessary parens after %r keyword
+# C0103: Invalid %s name "%s"
+# C0111: Missing %s docstring
+# W0621: Redefining name %r from outer scope (line %s)
+disable = C0325, C0103, C0111, W0621
