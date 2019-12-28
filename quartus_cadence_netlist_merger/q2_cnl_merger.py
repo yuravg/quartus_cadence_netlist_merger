@@ -58,31 +58,31 @@ class QuartusCadenceMerger(Frame):
                                'net_name'         : '1'},
              'Info': {'Description': 'Configuration file to Quartus pin and Cadence Allegro net-list merger'}
              }
-        self.cfg           = ConfigFile(self.fname_config, k)
-        self.cnl_fname     = self.cfg.get_key('Configuration', 'netlist_file')
-        self.q2_fname      = self.cfg.get_key('Configuration', 'quartus_pin_file')
-        self.refdes        = self.cfg.get_key('Configuration', 'refdes')
-        self.full_merged   = self.cfg.get_key('Configuration', 'full_merged')
-        self.signal        = self.cfg.get_key('Configuration', 'signal')
-        self.nosignal      = self.cfg.get_key('Configuration', 'nosignal')
-        self.format_signal = self.cfg.get_key('Configuration', 'format_signal')
-        self.power         = self.cfg.get_key('Configuration', 'power')
-        self.noconnect     = self.cfg.get_key('Configuration', 'noconnect')
+        self.cfg             = ConfigFile(self.fname_config, k)
+        self.cnl_fname       = self.cfg.get_key('Configuration', 'netlist_file')
+        self.q2_fname        = self.cfg.get_key('Configuration', 'quartus_pin_file')
+        self.refdes          = self.cfg.get_key('Configuration', 'refdes')
+        self.full_merged     = self.cfg.get_key('Configuration', 'full_merged')
+        self.signal          = self.cfg.get_key('Configuration', 'signal')
+        self.nosignal        = self.cfg.get_key('Configuration', 'nosignal')
+        self.format_signal   = self.cfg.get_key('Configuration', 'format_signal')
+        self.power           = self.cfg.get_key('Configuration', 'power')
+        self.noconnect       = self.cfg.get_key('Configuration', 'noconnect')
         self.refdes_pin_name = self.cfg.get_key('Configuration', 'refdes_pin_name')
-        self.net_name      = self.cfg.get_key('Configuration', 'net_name')
+        self.net_name        = self.cfg.get_key('Configuration', 'net_name')
 
     def save_config(self):
-        self.cfg.edit_key('Configuration', 'netlist_file', self.cnl_fname)
+        self.cfg.edit_key('Configuration', 'netlist_file',     self.cnl_fname)
         self.cfg.edit_key('Configuration', 'quartus_pin_file', self.q2_fname)
-        self.cfg.edit_key('Configuration', 'refdes', self.refdes)
-        self.cfg.edit_key('Configuration', 'full_merged',   str(self.full_merged))
-        self.cfg.edit_key('Configuration', 'signal',        str(self.signal))
-        self.cfg.edit_key('Configuration', 'nosignal',      str(self.nosignal))
-        self.cfg.edit_key('Configuration', 'format_signal', str(self.format_signal))
-        self.cfg.edit_key('Configuration', 'power',         str(self.power))
-        self.cfg.edit_key('Configuration', 'noconnect',     str(self.noconnect))
-        self.cfg.edit_key('Configuration', 'refdes_pin_name', str(self.refdes_pin_name))
-        self.cfg.edit_key('Configuration', 'net_name',     str(self.net_name))
+        self.cfg.edit_key('Configuration', 'refdes',           self.refdes)
+        self.cfg.edit_key('Configuration', 'full_merged',      str(self.full_merged))
+        self.cfg.edit_key('Configuration', 'signal',           str(self.signal))
+        self.cfg.edit_key('Configuration', 'nosignal',         str(self.nosignal))
+        self.cfg.edit_key('Configuration', 'format_signal',    str(self.format_signal))
+        self.cfg.edit_key('Configuration', 'power',            str(self.power))
+        self.cfg.edit_key('Configuration', 'noconnect',        str(self.noconnect))
+        self.cfg.edit_key('Configuration', 'refdes_pin_name',  str(self.refdes_pin_name))
+        self.cfg.edit_key('Configuration', 'net_name',         str(self.net_name))
         self.cfg.write2file()
 
     def make_widgets(self):
@@ -180,12 +180,6 @@ class QuartusCadenceMerger(Frame):
         if not os.path.exists(self.fname_header):
             self.write2file(self.fname_header, '')
 
-    # def check_bar(self, parent, d, text):
-    #     var = IntVar()
-    #     var.set(d)
-    #     Checkbutton(parent, text=text, variable=var).pack(anchor=W, expand=YES)
-    #     self.d = var
-
     def update_gui2self(self):
         self.cnl_fname = self.gui_cnl_fname.get()
         self.q2_fname = self.gui_q2_fname.get()
@@ -202,6 +196,7 @@ class QuartusCadenceMerger(Frame):
 
     merged_data = ''
 
+    # List of groups:
     # full_merged
     # signal
     # nosignal
@@ -211,7 +206,6 @@ class QuartusCadenceMerger(Frame):
     # refdes_pin_name
     # net_name
     def build(self):
-        # print('Run build')
         self.update_and_save_config()
         self.gui_state.set('Runnig...')
         fname = 'MergedQC.rpt'
