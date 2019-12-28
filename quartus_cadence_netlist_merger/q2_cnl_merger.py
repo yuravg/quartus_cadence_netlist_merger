@@ -296,6 +296,16 @@ class QuartusCadenceMerger(Frame):
 
     nosignal_name = 'NC'
 
+    def table_header2string(self, pin):
+        s = '\n'
+        if self.refdes_pin_name:
+            s = s + 'Pin Name(capture) :  '
+        if self.net_name:
+            s = s + 'Net Name(capture) :  '
+        s = s + pin.table_header
+        s = s + '\n' + pin.table_line + '\n'
+        return s
+
     def noconnect2string(self):
         pin = QuartusPin(self.q2_fname)
         s = '\n'*3
@@ -303,11 +313,7 @@ class QuartusCadenceMerger(Frame):
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + '| No Connect (repeating part of pin list):                                       |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '\n'
-        s = s + 'Pin Name(capture) :  '
-        s = s + 'Net Name(capture) :  '
-        s = s + pin.table_header
-        s = s + '\n' + pin.table_line + '\n'
+        s = s + self.table_header2string(pin)
         s = s + self.find_in_merged_data(self.nosignal_name)
         return s
 
@@ -325,10 +331,7 @@ class QuartusCadenceMerger(Frame):
             result = self.find_in_merged_data(i)
             if result != '':
                 s = s + '\n** Power: %s\n' % i
-                s = s + 'Pin Name(capture) :  '
-                s = s + 'Net Name(capture) :  '
-                s = s + pin.table_header
-                s = s + '\n' + pin.table_line + '\n'
+                s = s + self.table_header2string(pin)
                 s = s + result
         return s
 
@@ -340,11 +343,7 @@ class QuartusCadenceMerger(Frame):
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + '| SIGNAL pins only (repeating part of pin list):                                 |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '\n'
-        s = s + 'Pin Name(capture) :  '
-        s = s + 'Net Name(capture) :  '
-        s = s + pin.table_header
-        s = s + '\n' + pin.table_line + '\n'
+        s = s + self.table_header2string(pin)
         cut_name = self.pwr_name + [self.nosignal_name]
         data = self.merged_data.split('\n')
         for i in data:
@@ -367,11 +366,7 @@ class QuartusCadenceMerger(Frame):
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + '| FORMATED SIGNAL pins only (repeating part of pin list):                        |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '\n'
-        s = s + 'Pin Name(capture) :  '
-        s = s + 'Net Name(capture) :  '
-        s = s + pin.table_header
-        s = s + '\n' + pin.table_line + '\n'
+        s = s + self.table_header2string(pin)
         cut_name = self.pwr_name + [self.nosignal_name]
         data = self.merged_data.split('\n')
         self.read_rename_mask_file(self.fname_rename)
@@ -424,11 +419,7 @@ class QuartusCadenceMerger(Frame):
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + '| No Signal pins(repeating part of pin list):                                    |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '\n'
-        s = s + 'Pin Name(capture) :  '
-        s = s + 'Net Name(capture) :  '
-        s = s + pin.table_header
-        s = s + '\n' + pin.table_line + '\n'
+        s = s + self.table_header2string(pin)
         s = s + self.nosignal_strings
         return s
 
