@@ -32,7 +32,7 @@ install release or install from source
 
 - download latest [release](https://github.com/yuravg/quartus_cadence_netlist_merger/releases)
 
-- install `pip install quartus_cadence_netlist_merger-<version>.tar.gz`
+- install `pip install quartus_cadence_netlist_merger-<version>.whl`
 
 ## Build and install from source
 
@@ -52,7 +52,7 @@ to install python package:
 
 or
 
-`pip install quartus_cadence_netlist_merger-<version>.tar.gz`
+`pip install quartus_cadence_netlist_merger-<version>.whl`
 
 # Usage
 
