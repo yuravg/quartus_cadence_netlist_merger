@@ -122,8 +122,8 @@ class QuartusCadenceMerger(Frame):
     def run_config_dialog(self):
         self.update_and_save_config()
         win = Toplevel()
-        win.title('Summary report parameters')
-        win.geometry("300x450")
+        win.title('Output file settings')
+        win.geometry("300x470")
         full_merged     = IntVar()
         signal          = IntVar()
         nosignal        = IntVar()
@@ -140,26 +140,28 @@ class QuartusCadenceMerger(Frame):
         noconnect.set(self.noconnect)
         refdes_pin_name.set(self.refdes_pin_name)
         net_name.set(self.net_name)
-        lebel_text = 'Select required section of report 2 files:'
-        lebel_text = lebel_text + '\n1. MergedQC.rpt (Mf)'
-        lebel_text = lebel_text + '\n2. MergedQC.summary.rpt (ADf)'
+        lebel_text = 'Output files: MergedQC.rpt, MergedQC.summary.rpt'
         Label(win, text=lebel_text).pack()
-        Checkbutton(win, text='Summary file(ADf)',                       variable=full_merged     ).pack(anchor=W)
-        Checkbutton(win, text='group: Signal(ADf)',                      variable=signal          ).pack(anchor=W)
-        Checkbutton(win, text='group: Not Signal(ADf)',                  variable=nosignal        ).pack(anchor=W)
-        Checkbutton(win, text='group: Formated Signal(ADf)',             variable=format_signal   ).pack(anchor=W)
-        Checkbutton(win, text='group: Power pins(ADf)',                  variable=power           ).pack(anchor=W)
-        Checkbutton(win, text='group: Unconnected pins(ADf)',            variable=noconnect       ).pack(anchor=W)
-        Checkbutton(win, text='column: Cadence Refdes pin name(Mf,ADf)', variable=refdes_pin_name ).pack(anchor=W)
-        Checkbutton(win, text='column: Cadence Net name(Mf,ADf)',        variable=net_name        ).pack(anchor=W)
-        s = 'Note:'
+        Label(win, text='').pack()
+        Label(win, text='Columns(all files):').pack()
+        Checkbutton(win, text='Cadence Net name',        variable=net_name        ).pack(anchor=W)
+        Checkbutton(win, text='Cadence Refdes pin name', variable=refdes_pin_name ).pack(anchor=W)
+        Label(win, text='').pack()
+        Label(win, text='Groups of summary file:').pack()
+        Checkbutton(win, text='Summary',          variable=full_merged   ).pack(anchor=W)
+        Checkbutton(win, text='Signal',           variable=signal        ).pack(anchor=W)
+        Checkbutton(win, text='Not Signal',       variable=nosignal      ).pack(anchor=W)
+        Checkbutton(win, text='Formatted Signal', variable=format_signal ).pack(anchor=W)
+        Checkbutton(win, text='Power pins',       variable=power         ).pack(anchor=W)
+        Checkbutton(win, text='Unconnected pins', variable=noconnect     ).pack(anchor=W)
+        Label(win, text='').pack()
+        Button(win, text='Set', command=win.destroy, height=1, width=10).pack()
+        Label(win, text='').pack()
+        s = 'Create templates:'
         s = s + '\n%s - header for summary file' % self.fname_header
         s = s + '\n%s - rename mask file' % self.fname_rename
         Label(win, text=s, justify=LEFT).pack()
-        Label(win, text='Write template file config file').pack()
-        Button(win, text='WRITE', command=self.write_template_file, height=1, width=8).pack()
-        Label(win, text='').pack()
-        Button(win, text='Ok', command=win.destroy, height=1, width=10).pack()
+        Button(win, text='templates', command=self.write_template_file, height=1, width=9).pack()
         win.grab_set()
         win.focus_set()
         win.wait_window()
