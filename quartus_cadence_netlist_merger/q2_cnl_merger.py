@@ -24,8 +24,6 @@ from .allegronetlist import AllegroNetList
 
 # TODO: make several output files
 # FIXME: refdes field is cleared after selecting a file(after the first launch)
-# FIXME: flag 'refdes_pin_name'
-# if run 'build' without 'run_config_dialog' the output log file will always have column 'refdes_pin_name'
 
 
 class QuartusCadenceMerger(Frame):
@@ -62,14 +60,14 @@ class QuartusCadenceMerger(Frame):
         self.cnl_fname       = self.cfg.get_key('Configuration', 'netlist_file')
         self.q2_fname        = self.cfg.get_key('Configuration', 'quartus_pin_file')
         self.refdes          = self.cfg.get_key('Configuration', 'refdes')
-        self.full_merged     = self.cfg.get_key('Configuration', 'full_merged')
-        self.signal          = self.cfg.get_key('Configuration', 'signal')
-        self.nosignal        = self.cfg.get_key('Configuration', 'nosignal')
-        self.format_signal   = self.cfg.get_key('Configuration', 'format_signal')
-        self.power           = self.cfg.get_key('Configuration', 'power')
-        self.noconnect       = self.cfg.get_key('Configuration', 'noconnect')
-        self.refdes_pin_name = self.cfg.get_key('Configuration', 'refdes_pin_name')
-        self.net_name        = self.cfg.get_key('Configuration', 'net_name')
+        self.full_merged     = int(self.cfg.get_key('Configuration', 'full_merged'))
+        self.signal          = int(self.cfg.get_key('Configuration', 'signal'))
+        self.nosignal        = int(self.cfg.get_key('Configuration', 'nosignal'))
+        self.format_signal   = int(self.cfg.get_key('Configuration', 'format_signal'))
+        self.power           = int(self.cfg.get_key('Configuration', 'power'))
+        self.noconnect       = int(self.cfg.get_key('Configuration', 'noconnect'))
+        self.refdes_pin_name = int(self.cfg.get_key('Configuration', 'refdes_pin_name'))
+        self.net_name        = int(self.cfg.get_key('Configuration', 'net_name'))
 
     def save_config(self):
         self.cfg.edit_key('Configuration', 'netlist_file',     self.cnl_fname)
