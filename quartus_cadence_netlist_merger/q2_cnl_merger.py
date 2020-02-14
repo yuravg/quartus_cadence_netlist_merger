@@ -224,7 +224,7 @@ class QuartusCadenceMerger(Frame):
         if self.nosignal:
             s = s + self.nosignal2string()
         if self.format_signal:
-            s = s + self.only_formaged_signal2string()
+            s = s + self.only_formatted_signal2string()
         if self.power:
             s = s + self.power_pins2string()
         if self.noconnect:
@@ -361,7 +361,7 @@ class QuartusCadenceMerger(Frame):
                 self.nosignal_strings = self.nosignal_strings + i + '\n'
         return s
 
-    def only_formaged_signal2string(self):
+    def only_formatted_signal2string(self):
         pin = QuartusPin(self.q2_fname)
         s = '\n'*3
         s = s + '* FORMATED SIGNAL pins\n'
