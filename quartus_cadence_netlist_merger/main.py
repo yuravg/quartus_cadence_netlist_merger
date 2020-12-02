@@ -1,6 +1,6 @@
 """Run point"""
 
-from .q2_cnl_merger import QuartusCadenceMerger
+from .qp_cnl_merger import QuartusCadenceMerger
 from .commandlinearg import get_args
 
 

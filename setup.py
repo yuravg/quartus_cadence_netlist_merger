@@ -25,7 +25,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'q2_cnl_merger = quartus_cadence_netlist_merger.main:main'
+            'qp_cnl_merger = quartus_cadence_netlist_merger.main:main'
         ]
     },
     long_description=open('README.md').read(),

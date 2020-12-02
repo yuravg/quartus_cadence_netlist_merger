@@ -8,7 +8,7 @@ except ImportError:  # for version < 3.0
 
 from .__init__ import __version__
 
-__prog__ = "q2_cnl_merger"
+__prog__ = "qp_cnl_merger"
 __description__ = "Quartus pin and Cadence Allegro Net-List merger (cnl - Cadence Net-List)"
 __version_string__ = '%s version %s' % (__prog__, __version__)
 

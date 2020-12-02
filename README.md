@@ -56,9 +56,9 @@ or
 
 # Usage
 
-run (Quartus II, Cadence Net-List merger) at the command prompt:
+run (Quartus Prime, Cadence Net-List merger) at the command prompt:
 
-`q2_cnl_merger`
+`qp_cnl_merger`
 
 Screenshot:
 

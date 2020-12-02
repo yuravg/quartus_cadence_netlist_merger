@@ -38,9 +38,9 @@ class QuartusCadenceMerger(Frame):
         self.pack()
         self.make_widgets()
 
-    fname_config = '.q2_cnl_merger.dat'
-    fname_rename = '.q2_cnl_merger_rename.dat'
-    fname_header = '.q2_cnl_merger_header.dat'
+    fname_config = '.qp_cnl_merger.dat'
+    fname_rename = '.qp_cnl_merger_rename.dat'
+    fname_header = '.qp_cnl_merger_header.dat'
 
     def read_config_file(self):
         k = {'Configuration': {'netlist_file'     : '',
@@ -58,7 +58,7 @@ class QuartusCadenceMerger(Frame):
              }
         self.cfg             = ConfigFile(self.fname_config, k)
         self.cnl_fname       = self.cfg.get_key('Configuration', 'netlist_file')
-        self.q2_fname        = self.cfg.get_key('Configuration', 'quartus_pin_file')
+        self.qp_fname        = self.cfg.get_key('Configuration', 'quartus_pin_file')
         self.refdes          = self.cfg.get_key('Configuration', 'refdes')
         self.full_merged     = int(self.cfg.get_key('Configuration', 'full_merged'))
         self.signal          = int(self.cfg.get_key('Configuration', 'signal'))
@@ -71,7 +71,7 @@ class QuartusCadenceMerger(Frame):
 
     def save_config(self):
         self.cfg.edit_key('Configuration', 'netlist_file',     self.cnl_fname)
-        self.cfg.edit_key('Configuration', 'quartus_pin_file', self.q2_fname)
+        self.cfg.edit_key('Configuration', 'quartus_pin_file', self.qp_fname)
         self.cfg.edit_key('Configuration', 'refdes',           self.refdes)
         self.cfg.edit_key('Configuration', 'full_merged',      str(self.full_merged))
         self.cfg.edit_key('Configuration', 'signal',           str(self.signal))
@@ -93,11 +93,11 @@ class QuartusCadenceMerger(Frame):
 
         Label(self, text='').pack()
         Label(self, text='Quartus pin file:').pack()
-        q2_fname = self.q2_fname
-        self.gui_q2_fname = StringVar()
-        self.gui_q2_fname.set(q2_fname)
-        Label(self, textvariable=self.gui_q2_fname).pack()
-        Button(self, text='Browse', command=self.select_q2_file, height=1, width=10).pack()
+        qp_fname = self.qp_fname
+        self.gui_qp_fname = StringVar()
+        self.gui_qp_fname.set(qp_fname)
+        Label(self, textvariable=self.gui_qp_fname).pack()
+        Button(self, text='Browse', command=self.select_qp_file, height=1, width=10).pack()
 
         Label(self, text='').pack()
         Label(self, text='Capture Refdes:').pack()
@@ -182,12 +182,12 @@ class QuartusCadenceMerger(Frame):
 
     def update_gui2self(self):
         self.cnl_fname = self.gui_cnl_fname.get()
-        self.q2_fname = self.gui_q2_fname.get()
+        self.qp_fname = self.gui_qp_fname.get()
         self.refdes = self.gui_refdes.get()
 
     def update_self2gui(self):
         self.gui_cnl_fname.set(self.cnl_fname)
-        self.gui_q2_fname.set(self.q2_fname)
+        self.gui_qp_fname.set(self.qp_fname)
         self.gui_refdes.set(self.refdes)
 
     def update_and_save_config(self):
@@ -213,7 +213,7 @@ class QuartusCadenceMerger(Frame):
         date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         self.build_merged_data(self.refdes_pin_name, self.net_name)
         s = self.header2string(date)
-        s = s + self.q2_pin_header2string(self.refdes_pin_name, self.net_name)
+        s = s + self.qp_pin_header2string(self.refdes_pin_name, self.net_name)
         s = s + self.merged_data
         self.write2newfile(fname, s)
         if not self.full_merged:
@@ -236,7 +236,7 @@ class QuartusCadenceMerger(Frame):
 
     def header2string(self, date):
         time_cnl_fname = self.get_file_mtime(self.cnl_fname)
-        time_q2_fname = self.get_file_mtime(self.q2_fname)
+        time_qp_fname = self.get_file_mtime(self.qp_fname)
         rpt = ''
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
         rpt = rpt + '| File contains merged Quartus pin and Cadence PCB Editor (Allegro) net-list     |\n'
@@ -245,13 +245,13 @@ class QuartusCadenceMerger(Frame):
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
         rpt = rpt + '| Quartus, Cadence files and refdes info:                                        |\n'
         rpt = rpt + '|  %s - %s \n' % (time_cnl_fname, self.cnl_fname)
-        rpt = rpt + '|  %s - %s \n' % (time_q2_fname, self.q2_fname)
+        rpt = rpt + '|  %s - %s \n' % (time_qp_fname, self.qp_fname)
         rpt = rpt + '|  refdes = %s\n' % self.refdes
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
         return rpt
 
-    def q2_pin_header2string(self, require_pin_name, req_net_name):
-        pin = QuartusPin(self.q2_fname)
+    def qp_pin_header2string(self, require_pin_name, req_net_name):
+        pin = QuartusPin(self.qp_fname)
         rpt = ''
         rpt = rpt + '* MERGED Quartus pin file'
         rpt = rpt + pin.header
@@ -266,7 +266,7 @@ class QuartusCadenceMerger(Frame):
     def build_merged_data(self, require_pin_name, req_net_name):
         net = AllegroNetList(self.cnl_fname)
         net.build_refdes_list(self.refdes)
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         max_length = 20
         rpt = ''
         for i in range(len(pin.data)):
@@ -309,7 +309,7 @@ class QuartusCadenceMerger(Frame):
         return s
 
     def noconnect2string(self):
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         s = '\n'*3
         s = s + '* NO connected pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
@@ -323,7 +323,7 @@ class QuartusCadenceMerger(Frame):
                 '1.1V', '1.0V', '0.9V', '0.8V', '0.75V', '0.675V', 'GND', 'GNDA']
 
     def power_pins2string(self):
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         s = '\n'*3
         s = s + '* POWERS pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
@@ -339,7 +339,7 @@ class QuartusCadenceMerger(Frame):
 
     nosignal_strings = ''
     def only_signal2string(self):
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         s = '\n'*3
         s = s + '* SIGNAL pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
@@ -362,7 +362,7 @@ class QuartusCadenceMerger(Frame):
         return s
 
     def only_formatted_signal2string(self):
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         s = '\n'*3
         s = s + '* FORMATED SIGNAL pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
@@ -415,7 +415,7 @@ class QuartusCadenceMerger(Frame):
     def nosignal2string(self):
         if self.nosignal_strings == '':
             self.only_signal2string()
-        pin = QuartusPin(self.q2_fname)
+        pin = QuartusPin(self.qp_fname)
         s = '\n'*3
         s = s + '* No singal pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
@@ -453,11 +453,11 @@ class QuartusCadenceMerger(Frame):
             self.cnl_fname = fname
             self.update_self2gui()
 
-    def select_q2_file(self):
+    def select_qp_file(self):
         self.update_and_save_config()
         fname = askopenfilename(filetypes=(("Quartus pin file", "*.pin"), ("All files", "*.*")))
         if fname != '':
-            self.q2_fname = fname
+            self.qp_fname = fname
             self.update_self2gui()
 
     def save_and_exit(self):
