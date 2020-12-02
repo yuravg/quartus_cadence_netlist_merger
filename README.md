@@ -61,3 +61,7 @@ run at the command prompt:
 `q2_cnl_merger`
 
 (Quartus II, Cadence Net-List merger)
+
+Screenshot:
+
+![Screenshot](./doc/gui.png)
