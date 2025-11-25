@@ -64,7 +64,7 @@
  ---------------------------------------------------------------------------------
 
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
-CHIP  "main_ctrl"  ASSIGNED TO AN: EP4CE30F23C7
+CHIP  "quartus"  ASSIGNED TO AN: EP4CE30F23C7
 
 Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
@@ -94,44 +94,44 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AA1       :        :                   :      
 GND                          : AA2       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA3       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA4       :        :                   :         : 3         :                
-e2bus_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y              
+data3_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y              
 VCCIO3                       : AA6       : power  :                   : 2.5V    : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA7       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA8       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA9       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA10      :        :                   :         : 3         :                
 GND+                         : AA11      :        :                   :         : 3         :                
-f125                         : AA12      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y              
-e1bus_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y              
+f333                         : AA12      : input  : LVDS              :         : 4         : Y              
+data1_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y              
+data1_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y              
+data1_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y              
+data1_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y              
+data2_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA18      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA19      :        :                   :         : 4         :                
-e1bus_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y              
+data2_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA21      :        :                   :         : 5         :                
 GND                          : AA22      : gnd    :                   :         :           :                
 GND                          : AB1       : gnd    :                   :         :           :                
 VCCIO3                       : AB2       : power  :                   : 2.5V    : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB3       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB4       :        :                   :         : 3         :                
-e2bus_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y              
+data3_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y              
 GND                          : AB6       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB7       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB8       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB9       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB10      :        :                   :         : 3         :                
 GND+                         : AB11      :        :                   :         : 3         :                
-f125(n)                      : AB12      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y              
-e0bus_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y              
-e1bus_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y              
+f333(n)                      : AB12      : input  : LVDS              :         : 4         : Y              
+data1_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y              
+data1_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y              
+data1_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y              
+data1_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y              
+data2_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB18      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB19      :        :                   :         : 4         :                
-e1bus_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y              
+data2_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y              
 VCCIO4                       : AB21      : power  :                   : 2.5V    : 4         :                
 GND                          : AB22      : gnd    :                   :         :           :                
 cmos_rx                      : B1        : input  : 3.3-V LVCMOS      :         : 1         : Y              
@@ -412,8 +412,8 @@ VCCINT                       : P11       : power  :                   : 1.2V    
 VCCINT                       : P12       : power  :                   : 1.2V    :           :                
 VCCINT                       : P13       : power  :                   : 1.2V    :           :                
 VCCINT                       : P14       : power  :                   : 1.2V    :           :                
-e1bus_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y              
-e1bus_tx[7]                  : P16       : output : LVDS              :         : 5         : Y              
+data2_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y              
+data2_tx[7]                  : P16       : output : LVDS              :         : 5         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : P17       :        :                   :         : 5         :                
 VCCIO5                       : P18       : power  :                   : 2.5V    : 5         :                
 GND                          : P19       : gnd    :                   :         :           :                
@@ -449,14 +449,14 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : T4        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : T5        :        :                   :         : 2         :                
 VCCA1                        : T6        : power  :                   : 2.5V    :           :                
 adc_da[2](n)                 : T7        : output : LVDS              :         : 2         : Y              
-e2bus_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y              
-e2bus_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y              
+data3_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y              
+data3_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : T10       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : T11       :        :                   :         : 3         :                
-e0bus_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y              
-e0bus_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y              
-e1bus_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y              
-e1bus_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y              
+data1_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y              
+data1_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y              
+data2_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y              
+data2_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : T16       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : T17       :        :                   :         : 5         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : T18       :        :                   :         : 5         :                
@@ -470,85 +470,85 @@ GND                          : U3        : gnd    :                   :         
 VCCIO2                       : U4        : power  :                   : 2.5V    : 2         :                
 GNDA1                        : U5        : gnd    :                   :         :           :                
 VCCD_PLL1                    : U6        : power  :                   : 1.2V    :           :                
-e2bus_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y              
-e2bus_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y              
+data3_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y              
+data3_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : U9        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U10       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U11       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U12       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U13       :        :                   :         : 4         :                
-e1bus_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y              
-e1bus_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y              
+data2_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y              
+data2_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : U16       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U17       :        :                   :         : 4         :                
 VCCA4                        : U18       : power  :                   : 2.5V    :           :                
-e0bus_tx[7]                  : U19       : output : LVDS              :         : 5         : Y              
-e0bus_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y              
-e2bus_tx[7]                  : U21       : output : LVDS              :         : 5         : Y              
-e2bus_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y              
+data1_tx[7]                  : U19       : output : LVDS              :         : 5         : Y              
+data1_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y              
+data3_tx[7]                  : U21       : output : LVDS              :         : 5         : Y              
+data3_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y              
 adc_dclk_tx[8](n)            : V1        : output : LVDS              :         : 2         : Y              
 adc_dclk_tx[8]               : V2        : output : LVDS              :         : 2         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : V3        :        :                   :         : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V4        :        :                   :         : 2         :                
-e2bus_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y              
-e2bus_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y              
-e2bus_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y              
+data3_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y              
+data3_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y              
+data3_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : V8        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V9        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V10       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V11       :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V12       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V13       :        :                   :         : 4         :                
-e1bus_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y              
-e1bus_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y              
+data2_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y              
+data2_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : V16       :        :                   :         : 4         :                
 VCCD_PLL4                    : V17       : power  :                   : 1.2V    :           :                
 GNDA4                        : V18       : gnd    :                   :         :           :                
 VCCIO5                       : V19       : power  :                   : 2.5V    : 5         :                
 GND                          : V20       : gnd    :                   :         :           :                
-e2bus_tx[6]                  : V21       : output : LVDS              :         : 5         : Y              
-e2bus_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y              
+data3_tx[6]                  : V21       : output : LVDS              :         : 5         : Y              
+data3_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y              
 adc_dclk_tx[11](n)           : W1        : output : LVDS              :         : 2         : Y              
 adc_dclk_tx[11]              : W2        : output : LVDS              :         : 2         : Y              
 GND                          : W3        : gnd    :                   :         :           :                
 VCCIO2                       : W4        : power  :                   : 2.5V    : 2         :                
 VCCIO3                       : W5        : power  :                   : 2.5V    : 3         :                
-e2bus_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y              
-e2bus_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y              
+data3_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y              
+data3_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : W8        :        :                   :         : 3         :                
 VCCIO3                       : W9        : power  :                   : 2.5V    : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W10       :        :                   :         : 3         :                
 VCCIO3                       : W11       : power  :                   : 2.5V    : 3         :                
 VCCIO4                       : W12       : power  :                   : 2.5V    : 4         :                
-e0bus_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y              
+data1_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : W14       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W15       :        :                   :         : 4         :                
 VCCIO4                       : W16       : power  :                   : 2.5V    : 4         :                
-e1bus_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y              
+data2_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y              
 VCCIO4                       : W18       : power  :                   : 2.5V    : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W19       :        :                   :         : 5         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W20       :        :                   :         : 5         :                
-e1bus_tx[6]                  : W21       : output : LVDS              :         : 5         : Y              
-e1bus_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y              
+data2_tx[6]                  : W21       : output : LVDS              :         : 5         : Y              
+data2_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y              
 adc_da[0](n)                 : Y1        : output : LVDS              :         : 2         : Y              
 adc_da[0]                    : Y2        : output : LVDS              :         : 2         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y3        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y4        :        :                   :         : 3         :                
 GND                          : Y5        : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y6        :        :                   :         : 3         :                
-e2bus_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y              
+data3_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y8        :        :                   :         : 3         :                
 GND                          : Y9        : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y10       :        :                   :         : 3         :                
 GND                          : Y11       : gnd    :                   :         :           :                
 GND                          : Y12       : gnd    :                   :         :           :                
-e0bus_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y              
+data1_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y              
 VCCIO4                       : Y14       : power  :                   : 2.5V    : 4         :                
 GND                          : Y15       : gnd    :                   :         :           :                
 GND                          : Y16       : gnd    :                   :         :           :                
-e1bus_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y              
+data2_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y              
 GND                          : Y18       : gnd    :                   :         :           :                
 VCCIO5                       : Y19       : power  :                   : 2.5V    : 5         :                
 GND                          : Y20       : gnd    :                   :         :           :                
-e0bus_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y              
-e0bus_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y              
+data1_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y              
+data1_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y              

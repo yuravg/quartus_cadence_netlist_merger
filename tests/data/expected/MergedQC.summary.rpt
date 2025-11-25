@@ -13,8 +13,8 @@
 | report creation date: 2019-08-26 15:46:48                                      |
 |--------------------------------------------------------------------------------|
 | Quartus, Cadence files and refdes info:                                        |
-|  2019-08-26 15:10:45 - ./pstxnet.dat 
-|  2018-01-26 12:54:30 - ./main_ctrl.pin 
+|  2025-12-02 18:44:42 - ../tests/data/inputs/pstxnet.dat 
+|  2025-12-02 19:04:21 - ../tests/data/inputs/quartus.pin 
 |  refdes = DD2
 |--------------------------------------------------------------------------------|
 * MERGED Quartus pin file
@@ -84,7 +84,7 @@
  ---------------------------------------------------------------------------------
 
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
-CHIP  "main_ctrl"  ASSIGNED TO AN: EP4CE30F23C7
+CHIP  "quartus"  ASSIGNED TO AN: EP4CE30F23C7
 Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GND                  GND                          : A1        : gnd    :                   :         :           :
@@ -113,44 +113,44 @@ NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA1       :        :        
 GND                  GND                          : AA2       : gnd    :                   :         :           :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA3       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA4       :        :                   :         : 3         :
-E2BUSP1              e2bus_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y
+DATA3P1              data3_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y
 VCCIO_2V5            VCCIO3                       : AA6       : power  :                   : 2.5V    : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA7       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA8       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA9       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA10      :        :                   :         : 3         :
 GND                  GND+                         : AA11      :        :                   :         : 3         :
-F125P                f125                         : AA12      : input  : LVDS              :         : 4         : Y
-E0BUSP4              e0bus_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y
-E0BUSP0              e0bus_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y
-E0BUSP1              e0bus_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y
-E0BUSP3              e0bus_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y
-E1BUSP1              e1bus_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y
+F333P                f333                         : AA12      : input  : LVDS              :         : 4         : Y
+DATA1P4              data1_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y
+DATA1P0              data1_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y
+DATA1P1              data1_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y
+DATA1P3              data1_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y
+DATA2P1              data2_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA18      :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA19      :        :                   :         : 4         :
-E1BUSP5              e1bus_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y
+DATA2P5              data2_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AA21      :        :                   :         : 5         :
 GND                  GND                          : AA22      : gnd    :                   :         :           :
 GND                  GND                          : AB1       : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO3                       : AB2       : power  :                   : 2.5V    : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB3       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB4       :        :                   :         : 3         :
-E2BUSN1              e2bus_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y
+DATA3N1              data3_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y
 GND                  GND                          : AB6       : gnd    :                   :         :           :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB7       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB8       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB9       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB10      :        :                   :         : 3         :
 GND                  GND+                         : AB11      :        :                   :         : 3         :
-F125N                f125(n)                      : AB12      : input  : LVDS              :         : 4         : Y
-E0BUSN4              e0bus_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y
-E0BUSN0              e0bus_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y
-E0BUSN1              e0bus_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y
-E0BUSN3              e0bus_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y
-E1BUSN1              e1bus_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y
+F333N                f333(n)                      : AB12      : input  : LVDS              :         : 4         : Y
+DATA1N4              data1_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y
+DATA1N0              data1_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y
+DATA1N1              data1_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y
+DATA1N3              data1_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y
+DATA2N1              data2_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB18      :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : AB19      :        :                   :         : 4         :
-E1BUSN5              e1bus_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y
+DATA2N5              data2_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y
 VCCIO_2V5            VCCIO4                       : AB21      : power  :                   : 2.5V    : 4         :
 GND                  GND                          : AB22      : gnd    :                   :         :           :
 CMOS_RX              cmos_rx                      : B1        : input  : 3.3-V LVCMOS      :         : 1         : Y
@@ -431,8 +431,8 @@ VCCINT_1V2           VCCINT                       : P11       : power  :        
 VCCINT_1V2           VCCINT                       : P12       : power  :                   : 1.2V    :           :
 VCCINT_1V2           VCCINT                       : P13       : power  :                   : 1.2V    :           :
 VCCINT_1V2           VCCINT                       : P14       : power  :                   : 1.2V    :           :
-E1BUSN7              e1bus_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y
-E1BUSP7              e1bus_tx[7]                  : P16       : output : LVDS              :         : 5         : Y
+DATA2N7              data2_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y
+DATA2P7              data2_tx[7]                  : P16       : output : LVDS              :         : 5         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : P17       :        :                   :         : 5         :
 VCCIO_2V5            VCCIO5                       : P18       : power  :                   : 2.5V    : 5         :
 GND                  GND                          : P19       : gnd    :                   :         :           :
@@ -468,14 +468,14 @@ NC                   RESERVED_INPUT_WITH_WEAK_PUL : T4        :        :        
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T5        :        :                   :         : 2         :
 VCCA_2V5             VCCA1                        : T6        : power  :                   : 2.5V    :           :
 DOUTAL2              adc_da[2](n)                 : T7        : output : LVDS              :         : 2         : Y
-E2BUSP3              e2bus_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y
-E2BUSN3              e2bus_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y
+DATA3P3              data3_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y
+DATA3N3              data3_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T10       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T11       :        :                   :         : 3         :
-E0BUSP5              e0bus_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y
-E0BUSN5              e0bus_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y
-E1BUSP2              e1bus_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y
-E1BUSN2              e1bus_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y
+DATA1P5              data1_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y
+DATA1N5              data1_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y
+DATA2P2              data2_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y
+DATA2N2              data2_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T16       :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T17       :        :                   :         : 5         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : T18       :        :                   :         : 5         :
@@ -489,88 +489,88 @@ GND                  GND                          : U3        : gnd    :        
 VCCIO_2V5            VCCIO2                       : U4        : power  :                   : 2.5V    : 2         :
 GNDA                 GNDA1                        : U5        : gnd    :                   :         :           :
 VCCD_PLL_1V2         VCCD_PLL1                    : U6        : power  :                   : 1.2V    :           :
-E2BUSP0              e2bus_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y
-E2BUSN0              e2bus_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y
+DATA3P0              data3_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y
+DATA3N0              data3_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U9        :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U10       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U11       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U12       :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U13       :        :                   :         : 4         :
-E1BUSN4              e1bus_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y
-E1BUSP0              e1bus_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y
+DATA2N4              data2_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y
+DATA2P0              data2_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U16       :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : U17       :        :                   :         : 4         :
 VCCA_2V5             VCCA4                        : U18       : power  :                   : 2.5V    :           :
-E0BUSP7              e0bus_tx[7]                  : U19       : output : LVDS              :         : 5         : Y
-E0BUSN7              e0bus_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y
-E2BUSP7              e2bus_tx[7]                  : U21       : output : LVDS              :         : 5         : Y
-E2BUSN7              e2bus_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y
+DATA1P7              data1_tx[7]                  : U19       : output : LVDS              :         : 5         : Y
+DATA1N7              data1_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y
+DATA3P7              data3_tx[7]                  : U21       : output : LVDS              :         : 5         : Y
+DATA3N7              data3_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y
 DCLKOL8              adc_dclk_tx[8](n)            : V1        : output : LVDS              :         : 2         : Y
 DCLKOH8              adc_dclk_tx[8]               : V2        : output : LVDS              :         : 2         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V3        :        :                   :         : 2         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V4        :        :                   :         : 2         :
-E2BUSN4              e2bus_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y
-E2BUSP4              e2bus_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y
-E2BUSN2              e2bus_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y
+DATA3N4              data3_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y
+DATA3P4              data3_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y
+DATA3N2              data3_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V8        :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V9        :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V10       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V11       :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V12       :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V13       :        :                   :         : 4         :
-E1BUSP4              e1bus_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y
-E1BUSN0              e1bus_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y
+DATA2P4              data2_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y
+DATA2N0              data2_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : V16       :        :                   :         : 4         :
 VCCD_PLL_1V2         VCCD_PLL4                    : V17       : power  :                   : 1.2V    :           :
 GNDA                 GNDA4                        : V18       : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO5                       : V19       : power  :                   : 2.5V    : 5         :
 GND                  GND                          : V20       : gnd    :                   :         :           :
-E2BUSP6              e2bus_tx[6]                  : V21       : output : LVDS              :         : 5         : Y
-E2BUSN6              e2bus_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y
+DATA3P6              data3_tx[6]                  : V21       : output : LVDS              :         : 5         : Y
+DATA3N6              data3_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y
 DCLKOL11             adc_dclk_tx[11](n)           : W1        : output : LVDS              :         : 2         : Y
 DCLKOH11             adc_dclk_tx[11]              : W2        : output : LVDS              :         : 2         : Y
 GND                  GND                          : W3        : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO2                       : W4        : power  :                   : 2.5V    : 2         :
 VCCIO_2V5            VCCIO3                       : W5        : power  :                   : 2.5V    : 3         :
-E2BUSP2              e2bus_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y
-E2BUSP5              e2bus_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y
+DATA3P2              data3_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y
+DATA3P5              data3_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W8        :        :                   :         : 3         :
 VCCIO_2V5            VCCIO3                       : W9        : power  :                   : 2.5V    : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W10       :        :                   :         : 3         :
 VCCIO_2V5            VCCIO3                       : W11       : power  :                   : 2.5V    : 3         :
 VCCIO_2V5            VCCIO4                       : W12       : power  :                   : 2.5V    : 4         :
-E0BUSP2              e0bus_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y
+DATA1P2              data1_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W14       :        :                   :         : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W15       :        :                   :         : 4         :
 VCCIO_2V5            VCCIO4                       : W16       : power  :                   : 2.5V    : 4         :
-E1BUSP3              e1bus_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y
+DATA2P3              data2_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y
 VCCIO_2V5            VCCIO4                       : W18       : power  :                   : 2.5V    : 4         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W19       :        :                   :         : 5         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : W20       :        :                   :         : 5         :
-E1BUSP6              e1bus_tx[6]                  : W21       : output : LVDS              :         : 5         : Y
-E1BUSN6              e1bus_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y
+DATA2P6              data2_tx[6]                  : W21       : output : LVDS              :         : 5         : Y
+DATA2N6              data2_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y
 DOUTAL0              adc_da[0](n)                 : Y1        : output : LVDS              :         : 2         : Y
 DOUTAH0              adc_da[0]                    : Y2        : output : LVDS              :         : 2         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : Y3        :        :                   :         : 3         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : Y4        :        :                   :         : 3         :
 GND                  GND                          : Y5        : gnd    :                   :         :           :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : Y6        :        :                   :         : 3         :
-E2BUSN5              e2bus_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y
+DATA3N5              data3_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : Y8        :        :                   :         : 3         :
 GND                  GND                          : Y9        : gnd    :                   :         :           :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : Y10       :        :                   :         : 3         :
 GND                  GND                          : Y11       : gnd    :                   :         :           :
 GND                  GND                          : Y12       : gnd    :                   :         :           :
-E0BUSN2              e0bus_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y
+DATA1N2              data1_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y
 VCCIO_2V5            VCCIO4                       : Y14       : power  :                   : 2.5V    : 4         :
 GND                  GND                          : Y15       : gnd    :                   :         :           :
 GND                  GND                          : Y16       : gnd    :                   :         :           :
-E1BUSN3              e1bus_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y
+DATA2N3              data2_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y
 GND                  GND                          : Y18       : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO5                       : Y19       : power  :                   : 2.5V    : 5         :
 GND                  GND                          : Y20       : gnd    :                   :         :           :
-E0BUSP6              e0bus_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y
-E0BUSN6              e0bus_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y
+DATA1P6              data1_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y
+DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y
 
 
 
@@ -595,22 +595,22 @@ SEL_CLK_I            sel_clk_i                    : A17       : output : 3.3-V L
 SEL_SDI_O1           sel_sdi_o[1]                 : A18       : input  : 3.3-V LVCMOS      :         : 7         : Y
 SEL_SDI_I0           sel_sdi_i[0]                 : A19       : output : 3.3-V LVCMOS      :         : 7         : Y
 SYNC_I               sync_i                       : A20       : output : 3.3-V LVCMOS      :         : 7         : Y
-E2BUSP1              e2bus_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y
-F125P                f125                         : AA12      : input  : LVDS              :         : 4         : Y
-E0BUSP4              e0bus_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y
-E0BUSP0              e0bus_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y
-E0BUSP1              e0bus_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y
-E0BUSP3              e0bus_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y
-E1BUSP1              e1bus_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y
-E1BUSP5              e1bus_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y
-E2BUSN1              e2bus_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y
-F125N                f125(n)                      : AB12      : input  : LVDS              :         : 4         : Y
-E0BUSN4              e0bus_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y
-E0BUSN0              e0bus_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y
-E0BUSN1              e0bus_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y
-E0BUSN3              e0bus_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y
-E1BUSN1              e1bus_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y
-E1BUSN5              e1bus_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y
+DATA3P1              data3_rx[1]                  : AA5       : input  : LVDS              :         : 3         : Y
+F333P                f333                         : AA12      : input  : LVDS              :         : 4         : Y
+DATA1P4              data1_rx[4]                  : AA13      : input  : LVDS              :         : 4         : Y
+DATA1P0              data1_rx[0]                  : AA14      : input  : LVDS              :         : 4         : Y
+DATA1P1              data1_rx[1]                  : AA15      : input  : LVDS              :         : 4         : Y
+DATA1P3              data1_rx[3]                  : AA16      : input  : LVDS              :         : 4         : Y
+DATA2P1              data2_rx[1]                  : AA17      : input  : LVDS              :         : 4         : Y
+DATA2P5              data2_rx[5]                  : AA20      : input  : LVDS              :         : 4         : Y
+DATA3N1              data3_rx[1](n)               : AB5       : input  : LVDS              :         : 3         : Y
+F333N                f333(n)                      : AB12      : input  : LVDS              :         : 4         : Y
+DATA1N4              data1_rx[4](n)               : AB13      : input  : LVDS              :         : 4         : Y
+DATA1N0              data1_rx[0](n)               : AB14      : input  : LVDS              :         : 4         : Y
+DATA1N1              data1_rx[1](n)               : AB15      : input  : LVDS              :         : 4         : Y
+DATA1N3              data1_rx[3](n)               : AB16      : input  : LVDS              :         : 4         : Y
+DATA2N1              data2_rx[1](n)               : AB17      : input  : LVDS              :         : 4         : Y
+DATA2N5              data2_rx[5](n)               : AB20      : input  : LVDS              :         : 4         : Y
 CMOS_RX              cmos_rx                      : B1        : input  : 3.3-V LVCMOS      :         : 1         : Y
 TEST_NC1             test_nc[1]                   : B2        : output : 3.3-V LVCMOS      :         : 1         : Y
 DCLKH10              adc_dclk_rx[10]              : B4        : input  : LVDS              :         : 8         : Y
@@ -742,8 +742,8 @@ DCLKOH4              adc_dclk_tx[4]               : P2        : output : LVDS   
 DCLKOL6              adc_dclk_tx[6](n)            : P3        : output : LVDS              :         : 2         : Y
 DCLKOH6              adc_dclk_tx[6]               : P4        : output : LVDS              :         : 2         : Y
 DOUTAL1              adc_da[1](n)                 : P7        : output : LVDS              :         : 2         : Y
-E1BUSN7              e1bus_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y
-E1BUSP7              e1bus_tx[7]                  : P16       : output : LVDS              :         : 5         : Y
+DATA2N7              data2_tx[7](n)               : P15       : output : LVDS              :         : 5         : Y
+DATA2P7              data2_tx[7]                  : P16       : output : LVDS              :         : 5         : Y
 DOUTAH5              adc_da[5]                    : P21       : output : LVDS              :         : 5         : Y
 DOUTAL5              adc_da[5](n)                 : P22       : output : LVDS              :         : 5         : Y
 DCLKOL5              adc_dclk_tx[5](n)            : R1        : output : LVDS              :         : 2         : Y
@@ -754,46 +754,46 @@ DOUTAH3              adc_da[3]                    : R19       : output : LVDS   
 DOUTAH4              adc_da[4]                    : R21       : output : LVDS              :         : 5         : Y
 DOUTAL4              adc_da[4](n)                 : R22       : output : LVDS              :         : 5         : Y
 DOUTAL2              adc_da[2](n)                 : T7        : output : LVDS              :         : 2         : Y
-E2BUSP3              e2bus_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y
-E2BUSN3              e2bus_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y
-E0BUSP5              e0bus_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y
-E0BUSN5              e0bus_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y
-E1BUSP2              e1bus_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y
-E1BUSN2              e1bus_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y
+DATA3P3              data3_rx[3]                  : T8        : input  : LVDS              :         : 3         : Y
+DATA3N3              data3_rx[3](n)               : T9        : input  : LVDS              :         : 3         : Y
+DATA1P5              data1_rx[5]                  : T12       : input  : LVDS              :         : 4         : Y
+DATA1N5              data1_rx[5](n)               : T13       : input  : LVDS              :         : 4         : Y
+DATA2P2              data2_rx[2]                  : T14       : input  : LVDS              :         : 4         : Y
+DATA2N2              data2_rx[2](n)               : T15       : input  : LVDS              :         : 4         : Y
 DCLKOL7              adc_dclk_tx[7](n)            : U1        : output : LVDS              :         : 2         : Y
 DCLKOH7              adc_dclk_tx[7]               : U2        : output : LVDS              :         : 2         : Y
-E2BUSP0              e2bus_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y
-E2BUSN0              e2bus_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y
-E1BUSN4              e1bus_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y
-E1BUSP0              e1bus_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y
-E0BUSP7              e0bus_tx[7]                  : U19       : output : LVDS              :         : 5         : Y
-E0BUSN7              e0bus_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y
-E2BUSP7              e2bus_tx[7]                  : U21       : output : LVDS              :         : 5         : Y
-E2BUSN7              e2bus_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y
+DATA3P0              data3_rx[0]                  : U7        : input  : LVDS              :         : 3         : Y
+DATA3N0              data3_rx[0](n)               : U8        : input  : LVDS              :         : 3         : Y
+DATA2N4              data2_rx[4](n)               : U14       : input  : LVDS              :         : 4         : Y
+DATA2P0              data2_rx[0]                  : U15       : input  : LVDS              :         : 4         : Y
+DATA1P7              data1_tx[7]                  : U19       : output : LVDS              :         : 5         : Y
+DATA1N7              data1_tx[7](n)               : U20       : output : LVDS              :         : 5         : Y
+DATA3P7              data3_tx[7]                  : U21       : output : LVDS              :         : 5         : Y
+DATA3N7              data3_tx[7](n)               : U22       : output : LVDS              :         : 5         : Y
 DCLKOL8              adc_dclk_tx[8](n)            : V1        : output : LVDS              :         : 2         : Y
 DCLKOH8              adc_dclk_tx[8]               : V2        : output : LVDS              :         : 2         : Y
-E2BUSN4              e2bus_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y
-E2BUSP4              e2bus_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y
-E2BUSN2              e2bus_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y
-E1BUSP4              e1bus_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y
-E1BUSN0              e1bus_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y
-E2BUSP6              e2bus_tx[6]                  : V21       : output : LVDS              :         : 5         : Y
-E2BUSN6              e2bus_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y
+DATA3N4              data3_rx[4](n)               : V5        : input  : LVDS              :         : 3         : Y
+DATA3P4              data3_rx[4]                  : V6        : input  : LVDS              :         : 3         : Y
+DATA3N2              data3_rx[2](n)               : V7        : input  : LVDS              :         : 3         : Y
+DATA2P4              data2_rx[4]                  : V14       : input  : LVDS              :         : 4         : Y
+DATA2N0              data2_rx[0](n)               : V15       : input  : LVDS              :         : 4         : Y
+DATA3P6              data3_tx[6]                  : V21       : output : LVDS              :         : 5         : Y
+DATA3N6              data3_tx[6](n)               : V22       : output : LVDS              :         : 5         : Y
 DCLKOL11             adc_dclk_tx[11](n)           : W1        : output : LVDS              :         : 2         : Y
 DCLKOH11             adc_dclk_tx[11]              : W2        : output : LVDS              :         : 2         : Y
-E2BUSP2              e2bus_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y
-E2BUSP5              e2bus_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y
-E0BUSP2              e0bus_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y
-E1BUSP3              e1bus_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y
-E1BUSP6              e1bus_tx[6]                  : W21       : output : LVDS              :         : 5         : Y
-E1BUSN6              e1bus_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y
+DATA3P2              data3_rx[2]                  : W6        : input  : LVDS              :         : 3         : Y
+DATA3P5              data3_rx[5]                  : W7        : input  : LVDS              :         : 3         : Y
+DATA1P2              data1_rx[2]                  : W13       : input  : LVDS              :         : 4         : Y
+DATA2P3              data2_rx[3]                  : W17       : input  : LVDS              :         : 4         : Y
+DATA2P6              data2_tx[6]                  : W21       : output : LVDS              :         : 5         : Y
+DATA2N6              data2_tx[6](n)               : W22       : output : LVDS              :         : 5         : Y
 DOUTAL0              adc_da[0](n)                 : Y1        : output : LVDS              :         : 2         : Y
 DOUTAH0              adc_da[0]                    : Y2        : output : LVDS              :         : 2         : Y
-E2BUSN5              e2bus_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y
-E0BUSN2              e0bus_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y
-E1BUSN3              e1bus_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y
-E0BUSP6              e0bus_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y
-E0BUSN6              e0bus_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y
+DATA3N5              data3_rx[5](n)               : Y7        : input  : LVDS              :         : 3         : Y
+DATA1N2              data1_rx[2](n)               : Y13       : input  : LVDS              :         : 4         : Y
+DATA2N3              data2_rx[3](n)               : Y17       : input  : LVDS              :         : 4         : Y
+DATA1P6              data1_tx[6]                  : Y21       : output : LVDS              :         : 5         : Y
+DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS              :         : 5         : Y
 
 
 
@@ -1086,12 +1086,12 @@ GND                  GND                          : Y20       : gnd    :        
 
 Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
-DCLKL10              DCLK10N           : A4        : INPUT  : LVDS              :         : 8         : Y
-DCLKL5               DCLK5N            : A6        : INPUT  : LVDS              :         : 8         : Y
-DCLKL4               DCLK4N            : A7        : INPUT  : LVDS              :         : 8         : Y
-DCLKL3               DCLK3N            : A8        : INPUT  : LVDS              :         : 8         : Y
-DCLKL2               DCLK2N            : A9        : INPUT  : LVDS              :         : 8         : Y
-DCLKL1               DCLK1N            : A10       : INPUT  : LVDS              :         : 8         : Y
+DCLKL10              ADCLK_RX10N           : A4        : INPUT  : LVDS              :         : 8         : Y
+DCLKL5               ADCLK_RX5N            : A6        : INPUT  : LVDS              :         : 8         : Y
+DCLKL4               ADCLK_RX4N            : A7        : INPUT  : LVDS              :         : 8         : Y
+DCLKL3               ADCLK_RX3N            : A8        : INPUT  : LVDS              :         : 8         : Y
+DCLKL2               ADCLK_RX2N            : A9        : INPUT  : LVDS              :         : 8         : Y
+DCLKL1               ADCLK_RX1N            : A10       : INPUT  : LVDS              :         : 8         : Y
 RST_I                RST_I                        : A13       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
 SCLK_I               SCLK_I                       : A14       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
 SDI_I                SDI_I                        : A15       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
@@ -1100,30 +1100,30 @@ SEL_CLK_I            SEL_CLK_I                    : A17       : OUTPUT : 3.3-V L
 SEL_SDI_O1           SEL_SDI_O1                 : A18       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
 SEL_SDI_I0           SEL_SDI_I0                 : A19       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
 SYNC_I               SYNC_I                       : A20       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
-E2BUSP1              E2BUS1                  : AA5       : INPUT  : LVDS              :         : 3         : Y
-F125P                F125                         : AA12      : INPUT  : LVDS              :         : 4         : Y
-E0BUSP4              E0BUS4                  : AA13      : INPUT  : LVDS              :         : 4         : Y
-E0BUSP0              E0BUS0                  : AA14      : INPUT  : LVDS              :         : 4         : Y
-E0BUSP1              E0BUS1                  : AA15      : INPUT  : LVDS              :         : 4         : Y
-E0BUSP3              E0BUS3                  : AA16      : INPUT  : LVDS              :         : 4         : Y
-E1BUSP1              E1BUS1                  : AA17      : INPUT  : LVDS              :         : 4         : Y
-E1BUSP5              E1BUS5                  : AA20      : INPUT  : LVDS              :         : 4         : Y
-E2BUSN1              E2BUS1N               : AB5       : INPUT  : LVDS              :         : 3         : Y
-F125N                F125N                      : AB12      : INPUT  : LVDS              :         : 4         : Y
-E0BUSN4              E0BUS4N               : AB13      : INPUT  : LVDS              :         : 4         : Y
-E0BUSN0              E0BUS0N               : AB14      : INPUT  : LVDS              :         : 4         : Y
-E0BUSN1              E0BUS1N               : AB15      : INPUT  : LVDS              :         : 4         : Y
-E0BUSN3              E0BUS3N               : AB16      : INPUT  : LVDS              :         : 4         : Y
-E1BUSN1              E1BUS1N               : AB17      : INPUT  : LVDS              :         : 4         : Y
-E1BUSN5              E1BUS5N               : AB20      : INPUT  : LVDS              :         : 4         : Y
+DATA3P1              DATA3_RX1                  : AA5       : INPUT  : LVDS              :         : 3         : Y
+F333P                F333                         : AA12      : INPUT  : LVDS              :         : 4         : Y
+DATA1P4              DATA1_RX4                  : AA13      : INPUT  : LVDS              :         : 4         : Y
+DATA1P0              DATA1_RX0                  : AA14      : INPUT  : LVDS              :         : 4         : Y
+DATA1P1              DATA1_RX1                  : AA15      : INPUT  : LVDS              :         : 4         : Y
+DATA1P3              DATA1_RX3                  : AA16      : INPUT  : LVDS              :         : 4         : Y
+DATA2P1              DATA2_RX1                  : AA17      : INPUT  : LVDS              :         : 4         : Y
+DATA2P5              DATA2_RX5                  : AA20      : INPUT  : LVDS              :         : 4         : Y
+DATA3N1              DATA3_RX1N               : AB5       : INPUT  : LVDS              :         : 3         : Y
+F333N                F333N                      : AB12      : INPUT  : LVDS              :         : 4         : Y
+DATA1N4              DATA1_RX4N               : AB13      : INPUT  : LVDS              :         : 4         : Y
+DATA1N0              DATA1_RX0N               : AB14      : INPUT  : LVDS              :         : 4         : Y
+DATA1N1              DATA1_RX1N               : AB15      : INPUT  : LVDS              :         : 4         : Y
+DATA1N3              DATA1_RX3N               : AB16      : INPUT  : LVDS              :         : 4         : Y
+DATA2N1              DATA2_RX1N               : AB17      : INPUT  : LVDS              :         : 4         : Y
+DATA2N5              DATA2_RX5N               : AB20      : INPUT  : LVDS              :         : 4         : Y
 CMOS_RX              CMOS_RX                      : B1        : INPUT  : 3.3-V LVCMOS      :         : 1         : Y
 TEST_NC1             TEST_NC1                   : B2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKH10              DCLK10              : B4        : INPUT  : LVDS              :         : 8         : Y
-DCLKH5               DCLK5               : B6        : INPUT  : LVDS              :         : 8         : Y
-DCLKH4               DCLK4               : B7        : INPUT  : LVDS              :         : 8         : Y
-DCLKH3               DCLK3               : B8        : INPUT  : LVDS              :         : 8         : Y
-DCLKH2               DCLK2               : B9        : INPUT  : LVDS              :         : 8         : Y
-DCLKH1               DCLK1               : B10       : INPUT  : LVDS              :         : 8         : Y
+DCLKH10              ADCLK_RX10              : B4        : INPUT  : LVDS              :         : 8         : Y
+DCLKH5               ADCLK_RX5               : B6        : INPUT  : LVDS              :         : 8         : Y
+DCLKH4               ADCLK_RX4               : B7        : INPUT  : LVDS              :         : 8         : Y
+DCLKH3               ADCLK_RX3               : B8        : INPUT  : LVDS              :         : 8         : Y
+DCLKH2               ADCLK_RX2               : B9        : INPUT  : LVDS              :         : 8         : Y
+DCLKH1               ADCLK_RX1               : B10       : INPUT  : LVDS              :         : 8         : Y
 RST_O                RST_O                        : B13       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
 SCLK_O               SCLK_O                       : B14       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
 SDI_O                SDI_O                        : B15       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
@@ -1132,64 +1132,64 @@ SEL_CLK_O            SEL_CLK_O                    : B17       : INPUT  : 3.3-V L
 SEL_SDI_I1           SEL_SDI_I1                 : B18       : OUTPUT : 3.3-V LVCMOS      :         : 7         : Y
 SYNC_O               SYNC_O                       : B19       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
 SEL_SDI_O0           SEL_SDI_O0                 : B20       : INPUT  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTAH11             DOUTA11                   : B21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTAL11             DOUTA11N                : B22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTAH11             DAC_DA11                   : B21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTAL11             DAC_DA11N                : B22       : OUTPUT : LVDS              :         : 6         : Y
 CMOS_TX              CMOS_TX                      : C1        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 KT4                  KT4                        : C2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKL9               DCLK9N            : C6        : INPUT  : LVDS              :         : 8         : Y
-DCLKH6               DCLK6               : C7        : INPUT  : LVDS              :         : 8         : Y
-DCLKL6               DCLK6N            : C8        : INPUT  : LVDS              :         : 8         : Y
+DCLKL9               ADCLK_RX9N            : C6        : INPUT  : LVDS              :         : 8         : Y
+DCLKH6               ADCLK_RX6               : C7        : INPUT  : LVDS              :         : 8         : Y
+DCLKL6               ADCLK_RX6N            : C8        : INPUT  : LVDS              :         : 8         : Y
 PWR_RES1             PWR_RES1                   : C13       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTBH11             DOUTB11                   : C21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL11             DOUTB11N                : C22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH11             DAC_DB11                   : C21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL11             DAC_DB11N                : C22       : OUTPUT : LVDS              :         : 6         : Y
 ASD                  ~ALTERA_ASDO_DATA1~ / RESERVED_INPUT_WITH_WEAK_PUL : D1        : INPUT  : 3.3-V LVCMOS      :         : 1         : N
 KT2                  KT2                        : D2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKH9               DCLK9               : D7        : INPUT  : LVDS              :         : 8         : Y
-DCLKL0               DCLK0N            : D10       : INPUT  : LVDS              :         : 8         : Y
+DCLKH9               ADCLK_RX9               : D7        : INPUT  : LVDS              :         : 8         : Y
+DCLKL0               ADCLK_RX0N            : D10       : INPUT  : LVDS              :         : 8         : Y
 PWR_RES2             PWR_RES2                   : D13       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTBH8              DOUTB8                    : D21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL8              DOUTB8N                 : D22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH8              DAC_DB8                    : D21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL8              DAC_DB8N                 : D22       : OUTPUT : LVDS              :         : 6         : Y
 KT1                  KT1                        : E1        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 NCSO                 ~ALTERA_FLASH_NCE_NCSO~ / RESERVED_INPUT_WITH_WEAK_PUL : E2        : INPUT  : 3.3-V LVCMOS      :         : 1         : N
 P_SYNC1              PW_SYNC1                   : E3        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 START                START                        : E4        : INPUT  : 3.3-V LVCMOS      :         : 1         : Y
-DCLKH0               DCLK0               : E10       : INPUT  : LVDS              :         : 8         : Y
+DCLKH0               ADCLK_RX0               : E10       : INPUT  : LVDS              :         : 8         : Y
 PWR_RES3             PWR_RES3                   : E12       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
 PWR_OE1              PWR_OE1                    : E15       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
 PWR_CPV1             PWR_CPV1                   : E16       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTBH6              DOUTB6                    : E21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL6              DOUTB6N                 : E22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH6              DAC_DB6                    : E21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL6              DAC_DB6N                 : E22       : OUTPUT : LVDS              :         : 6         : Y
 LED3                 LED3                       : F1        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 LED2                 LED2                       : F2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKL11              DCLK11N           : F8        : INPUT  : LVDS              :         : 8         : Y
-DCLKH8               DCLK8               : F10       : INPUT  : LVDS              :         : 8         : Y
+DCLKL11              ADCLK_RX11N           : F8        : INPUT  : LVDS              :         : 8         : Y
+DCLKH8               ADCLK_RX8               : F10       : INPUT  : LVDS              :         : 8         : Y
 PWR_STV1             PWR_STV1                   : F13       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
 PWR_CPV0             PWR_CPV0                   : F14       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
 PWR_OE0              PWR_OE0                    : F15       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTBL0              DOUTB0N                 : F17       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH9              DOUTB9                    : F19       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL9              DOUTB9N                 : F20       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH4              DOUTB4                    : F21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL4              DOUTB4N                 : F22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL0              DAC_DB0N                 : F17       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH9              DAC_DB9                    : F19       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL9              DAC_DB9N                 : F20       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH4              DAC_DB4                    : F21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL4              DAC_DB4N                 : F22       : OUTPUT : LVDS              :         : 6         : Y
 CTRL_CPV0            CTRL_CPV                     : G3        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 TEST_NC0             TEST_NC0                   : G4        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKH11              DCLK11              : G8        : INPUT  : LVDS              :         : 8         : Y
-DCLKL8               DCLK8N            : G10       : INPUT  : LVDS              :         : 8         : Y
+DCLKH11              ADCLK_RX11              : G8        : INPUT  : LVDS              :         : 8         : Y
+DCLKL8               ADCLK_RX8N            : G10       : INPUT  : LVDS              :         : 8         : Y
 PWR_STV0             PWR_STV0                   : G13       : BIDIR  : 3.3-V LVCMOS      :         : 7         : Y
-DOUTBH0              DOUTB0                    : G17       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL10             DOUTB10N                : G18       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH0              DAC_DB0                    : G17       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL10             DAC_DB10N                : G18       : OUTPUT : LVDS              :         : 6         : Y
 LED1                 LED1                       : H1        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 P_SYNC4              PW_SYNC4                   : H2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 TEST0                TEST0                      : H6        : BIDIR  : 3.3-V LVCMOS      :         : 1         : Y
 KT3                  KT3                        : H8        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DCLKH7               DCLK7               : H10       : INPUT  : LVDS              :         : 8         : Y
-DCLKL7               DCLK7N            : H11       : INPUT  : LVDS              :         : 8         : Y
-DOUTBH7              DOUTB7                    : H16       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH10             DOUTB10                   : H17       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH5              DOUTB5                    : H19       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL5              DOUTB5N                 : H20       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH2              DOUTB2                    : H21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL2              DOUTB2N                 : H22       : OUTPUT : LVDS              :         : 6         : Y
+DCLKH7               ADCLK_RX7               : H10       : INPUT  : LVDS              :         : 8         : Y
+DCLKL7               ADCLK_RX7N            : H11       : INPUT  : LVDS              :         : 8         : Y
+DOUTBH7              DAC_DB7                    : H16       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH10             DAC_DB10                   : H17       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH5              DAC_DB5                    : H19       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL5              DAC_DB5N                 : H20       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH2              DAC_DB2                    : H21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL2              DAC_DB2N                 : H22       : OUTPUT : LVDS              :         : 6         : Y
 P_SYNC3              PW_SYNC3                   : J1        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 P_SYNC2              PW_SYNC2                   : J2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 SEL_LOAD_B           SEL_LOAD                     : J4        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
@@ -1197,108 +1197,108 @@ CTRL_P_ON0           CTRL_P_ON                    : J5        : OUTPUT : 3.3-V L
 TEST1                TEST1                      : J6        : BIDIR  : 3.3-V LVCMOS      :         : 1         : Y
 TEST2                TEST2                      : J7        : BIDIR  : 3.3-V LVCMOS      :         : 1         : Y
 KT0                  KT0                        : J8        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DOUTBL7              DOUTB7N                 : J17       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH1              DOUTB1                    : J21       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBL1              DOUTB1N                 : J22       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL7              DAC_DB7N                 : J17       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH1              DAC_DB1                    : J21       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL1              DAC_DB1N                 : J22       : OUTPUT : LVDS              :         : 6         : Y
 DATA                 ~ALTERA_DATA0~ / RESERVED_INPUT_WITH_WEAK_PUL : K1        : INPUT  : 3.3-V LVCMOS      :         : 1         : N
 DCLK                 ~ALTERA_DCLK~                : K2        : OUTPUT : 3.3-V LVCMOS      :         : 1         : N
 NCONFIG              NCONFIG                      : K5        :        :                   :         : 1         :
 NSTATUS              NSTATUS                      : K6        :        :                   :         : 1         :
 TEST3                TEST3                      : K7        : BIDIR  : 3.3-V LVCMOS      :         : 1         : Y
 CTRL_STV0            CTRL_STV                     : K8        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
-DOUTBL3              DOUTB3N                 : K17       : OUTPUT : LVDS              :         : 6         : Y
-DOUTBH3              DOUTB3                    : K18       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBL3              DAC_DB3N                 : K17       : OUTPUT : LVDS              :         : 6         : Y
+DOUTBH3              DAC_DB3                    : K18       : OUTPUT : LVDS              :         : 6         : Y
 N22284               MSEL3                        : K20       :        :                   :         : 6         :
 TMS_A2L3-5         TMS                          : L1        : INPUT  :                   :         : 1         :
 TCK_A2L3-5         TCK                          : L2        : INPUT  :                   :         : 1         :
 DNCE                 NCE                          : L3        :        :                   :         : 1         :
 TDO_A2L3-5         TDO                          : L4        : OUTPUT :                   :         : 1         :
 TDI_A2L3-5         TDI                          : L5        : INPUT  :                   :         : 1         :
-DCLKOH0              DCLKO0               : L6        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH0              ADCLK_TX0               : L6        : OUTPUT : LVDS              :         : 2         : Y
 CTRL_OE0             CTRL_OE                      : L8        : OUTPUT : 3.3-V LVCMOS      :         : 1         : Y
 N22276               MSEL2                        : L17       :        :                   :         : 6         :
 N22280               MSEL1                        : L18       :        :                   :         : 6         :
-DCLKOL1              DCLKO1N            : M1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH1              DCLKO1               : M2        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOL2              DCLKO2N            : M3        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH2              DCLKO2               : M4        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOL0              DCLKO0N            : M6        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOL9              DCLKO9N            : M7        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH10             DCLKO10              : M8        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL1              ADCLK_TX1N            : M1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH1              ADCLK_TX1               : M2        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL2              ADCLK_TX2N            : M3        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH2              ADCLK_TX2               : M4        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL0              ADCLK_TX0N            : M6        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL9              ADCLK_TX9N            : M7        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH10             ADCLK_TX10              : M8        : OUTPUT : LVDS              :         : 2         : Y
 N22288               MSEL0                        : M17       :        :                   :         : 6         :
 CONFDONE             CONF_DONE                    : M18       :        :                   :         : 6         :
-DOUTAH10             DOUTA10                   : M19       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL10             DOUTA10N                : M20       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH9              DOUTA9                    : M21       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL9              DOUTA9N                 : M22       : OUTPUT : LVDS              :         : 5         : Y
-DCLKOL3              DCLKO3N            : N1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH3              DCLKO3               : N2        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH9              DCLKO9               : N6        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAH1              DOUTA1                    : N7        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOL10             DCLKO10N           : N8        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAL7              DOUTA7N                 : N17       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH7              DOUTA7                    : N18       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH6              DOUTA6                    : N19       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL6              DOUTA6N                 : N20       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH8              DOUTA8                    : N21       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL8              DOUTA8N                 : N22       : OUTPUT : LVDS              :         : 5         : Y
-DCLKOL4              DCLKO4N            : P1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH4              DCLKO4               : P2        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOL6              DCLKO6N            : P3        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH6              DCLKO6               : P4        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAL1              DOUTA1N                 : P7        : OUTPUT : LVDS              :         : 2         : Y
-E1BUSN7              E1BUS7N               : P15       : OUTPUT : LVDS              :         : 5         : Y
-E1BUSP7              E1BUS7                  : P16       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH5              DOUTA5                    : P21       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL5              DOUTA5N                 : P22       : OUTPUT : LVDS              :         : 5         : Y
-DCLKOL5              DCLKO5N            : R1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH5              DCLKO5               : R2        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAH2              DOUTA2                    : R7        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAL3              DOUTA3N                 : R18       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH3              DOUTA3                    : R19       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAH4              DOUTA4                    : R21       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL4              DOUTA4N                 : R22       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL2              DOUTA2N                 : T7        : OUTPUT : LVDS              :         : 2         : Y
-E2BUSP3              E2BUS3                  : T8        : INPUT  : LVDS              :         : 3         : Y
-E2BUSN3              E2BUS3N               : T9        : INPUT  : LVDS              :         : 3         : Y
-E0BUSP5              E0BUS5                  : T12       : INPUT  : LVDS              :         : 4         : Y
-E0BUSN5              E0BUS5N               : T13       : INPUT  : LVDS              :         : 4         : Y
-E1BUSP2              E1BUS2                  : T14       : INPUT  : LVDS              :         : 4         : Y
-E1BUSN2              E1BUS2N               : T15       : INPUT  : LVDS              :         : 4         : Y
-DCLKOL7              DCLKO7N            : U1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH7              DCLKO7               : U2        : OUTPUT : LVDS              :         : 2         : Y
-E2BUSP0              E2BUS0                  : U7        : INPUT  : LVDS              :         : 3         : Y
-E2BUSN0              E2BUS0N               : U8        : INPUT  : LVDS              :         : 3         : Y
-E1BUSN4              E1BUS4N               : U14       : INPUT  : LVDS              :         : 4         : Y
-E1BUSP0              E1BUS0                  : U15       : INPUT  : LVDS              :         : 4         : Y
-E0BUSP7              E0BUS7                  : U19       : OUTPUT : LVDS              :         : 5         : Y
-E0BUSN7              E0BUS7N               : U20       : OUTPUT : LVDS              :         : 5         : Y
-E2BUSP7              E2BUS7                  : U21       : OUTPUT : LVDS              :         : 5         : Y
-E2BUSN7              E2BUS7N               : U22       : OUTPUT : LVDS              :         : 5         : Y
-DCLKOL8              DCLKO8N            : V1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH8              DCLKO8               : V2        : OUTPUT : LVDS              :         : 2         : Y
-E2BUSN4              E2BUS4N               : V5        : INPUT  : LVDS              :         : 3         : Y
-E2BUSP4              E2BUS4                  : V6        : INPUT  : LVDS              :         : 3         : Y
-E2BUSN2              E2BUS2N               : V7        : INPUT  : LVDS              :         : 3         : Y
-E1BUSP4              E1BUS4                  : V14       : INPUT  : LVDS              :         : 4         : Y
-E1BUSN0              E1BUS0N               : V15       : INPUT  : LVDS              :         : 4         : Y
-E2BUSP6              E2BUS6                  : V21       : OUTPUT : LVDS              :         : 5         : Y
-E2BUSN6              E2BUS6N               : V22       : OUTPUT : LVDS              :         : 5         : Y
-DCLKOL11             DCLKO11N           : W1        : OUTPUT : LVDS              :         : 2         : Y
-DCLKOH11             DCLKO11              : W2        : OUTPUT : LVDS              :         : 2         : Y
-E2BUSP2              E2BUS2                  : W6        : INPUT  : LVDS              :         : 3         : Y
-E2BUSP5              E2BUS5                  : W7        : INPUT  : LVDS              :         : 3         : Y
-E0BUSP2              E0BUS2                  : W13       : INPUT  : LVDS              :         : 4         : Y
-E1BUSP3              E1BUS3                  : W17       : INPUT  : LVDS              :         : 4         : Y
-E1BUSP6              E1BUS6                  : W21       : OUTPUT : LVDS              :         : 5         : Y
-E1BUSN6              E1BUS6N               : W22       : OUTPUT : LVDS              :         : 5         : Y
-DOUTAL0              DOUTA0N                 : Y1        : OUTPUT : LVDS              :         : 2         : Y
-DOUTAH0              DOUTA0                    : Y2        : OUTPUT : LVDS              :         : 2         : Y
-E2BUSN5              E2BUS5N               : Y7        : INPUT  : LVDS              :         : 3         : Y
-E0BUSN2              E0BUS2N               : Y13       : INPUT  : LVDS              :         : 4         : Y
-E1BUSN3              E1BUS3N               : Y17       : INPUT  : LVDS              :         : 4         : Y
-E0BUSP6              E0BUS6                  : Y21       : OUTPUT : LVDS              :         : 5         : Y
-E0BUSN6              E0BUS6N               : Y22       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH10             DAC_DA10                   : M19       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL10             DAC_DA10N                : M20       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH9              DAC_DA9                    : M21       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL9              DAC_DA9N                 : M22       : OUTPUT : LVDS              :         : 5         : Y
+DCLKOL3              ADCLK_TX3N            : N1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH3              ADCLK_TX3               : N2        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH9              ADCLK_TX9               : N6        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAH1              DAC_DA1                    : N7        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL10             ADCLK_TX10N           : N8        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAL7              DAC_DA7N                 : N17       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH7              DAC_DA7                    : N18       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH6              DAC_DA6                    : N19       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL6              DAC_DA6N                 : N20       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH8              DAC_DA8                    : N21       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL8              DAC_DA8N                 : N22       : OUTPUT : LVDS              :         : 5         : Y
+DCLKOL4              ADCLK_TX4N            : P1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH4              ADCLK_TX4               : P2        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOL6              ADCLK_TX6N            : P3        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH6              ADCLK_TX6               : P4        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAL1              DAC_DA1N                 : P7        : OUTPUT : LVDS              :         : 2         : Y
+DATA2N7              DATA2_TX7N               : P15       : OUTPUT : LVDS              :         : 5         : Y
+DATA2P7              DATA2_TX7                  : P16       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH5              DAC_DA5                    : P21       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL5              DAC_DA5N                 : P22       : OUTPUT : LVDS              :         : 5         : Y
+DCLKOL5              ADCLK_TX5N            : R1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH5              ADCLK_TX5               : R2        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAH2              DAC_DA2                    : R7        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAL3              DAC_DA3N                 : R18       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH3              DAC_DA3                    : R19       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAH4              DAC_DA4                    : R21       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL4              DAC_DA4N                 : R22       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL2              DAC_DA2N                 : T7        : OUTPUT : LVDS              :         : 2         : Y
+DATA3P3              DATA3_RX3                  : T8        : INPUT  : LVDS              :         : 3         : Y
+DATA3N3              DATA3_RX3N               : T9        : INPUT  : LVDS              :         : 3         : Y
+DATA1P5              DATA1_RX5                  : T12       : INPUT  : LVDS              :         : 4         : Y
+DATA1N5              DATA1_RX5N               : T13       : INPUT  : LVDS              :         : 4         : Y
+DATA2P2              DATA2_RX2                  : T14       : INPUT  : LVDS              :         : 4         : Y
+DATA2N2              DATA2_RX2N               : T15       : INPUT  : LVDS              :         : 4         : Y
+DCLKOL7              ADCLK_TX7N            : U1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH7              ADCLK_TX7               : U2        : OUTPUT : LVDS              :         : 2         : Y
+DATA3P0              DATA3_RX0                  : U7        : INPUT  : LVDS              :         : 3         : Y
+DATA3N0              DATA3_RX0N               : U8        : INPUT  : LVDS              :         : 3         : Y
+DATA2N4              DATA2_RX4N               : U14       : INPUT  : LVDS              :         : 4         : Y
+DATA2P0              DATA2_RX0                  : U15       : INPUT  : LVDS              :         : 4         : Y
+DATA1P7              DATA1_TX7                  : U19       : OUTPUT : LVDS              :         : 5         : Y
+DATA1N7              DATA1_TX7N               : U20       : OUTPUT : LVDS              :         : 5         : Y
+DATA3P7              DATA3_TX7                  : U21       : OUTPUT : LVDS              :         : 5         : Y
+DATA3N7              DATA3_TX7N               : U22       : OUTPUT : LVDS              :         : 5         : Y
+DCLKOL8              ADCLK_TX8N            : V1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH8              ADCLK_TX8               : V2        : OUTPUT : LVDS              :         : 2         : Y
+DATA3N4              DATA3_RX4N               : V5        : INPUT  : LVDS              :         : 3         : Y
+DATA3P4              DATA3_RX4                  : V6        : INPUT  : LVDS              :         : 3         : Y
+DATA3N2              DATA3_RX2N               : V7        : INPUT  : LVDS              :         : 3         : Y
+DATA2P4              DATA2_RX4                  : V14       : INPUT  : LVDS              :         : 4         : Y
+DATA2N0              DATA2_RX0N               : V15       : INPUT  : LVDS              :         : 4         : Y
+DATA3P6              DATA3_TX6                  : V21       : OUTPUT : LVDS              :         : 5         : Y
+DATA3N6              DATA3_TX6N               : V22       : OUTPUT : LVDS              :         : 5         : Y
+DCLKOL11             ADCLK_TX11N           : W1        : OUTPUT : LVDS              :         : 2         : Y
+DCLKOH11             ADCLK_TX11              : W2        : OUTPUT : LVDS              :         : 2         : Y
+DATA3P2              DATA3_RX2                  : W6        : INPUT  : LVDS              :         : 3         : Y
+DATA3P5              DATA3_RX5                  : W7        : INPUT  : LVDS              :         : 3         : Y
+DATA1P2              DATA1_RX2                  : W13       : INPUT  : LVDS              :         : 4         : Y
+DATA2P3              DATA2_RX3                  : W17       : INPUT  : LVDS              :         : 4         : Y
+DATA2P6              DATA2_TX6                  : W21       : OUTPUT : LVDS              :         : 5         : Y
+DATA2N6              DATA2_TX6N               : W22       : OUTPUT : LVDS              :         : 5         : Y
+DOUTAL0              DAC_DA0N                 : Y1        : OUTPUT : LVDS              :         : 2         : Y
+DOUTAH0              DAC_DA0                    : Y2        : OUTPUT : LVDS              :         : 2         : Y
+DATA3N5              DATA3_RX5N               : Y7        : INPUT  : LVDS              :         : 3         : Y
+DATA1N2              DATA1_RX2N               : Y13       : INPUT  : LVDS              :         : 4         : Y
+DATA2N3              DATA2_RX3N               : Y17       : INPUT  : LVDS              :         : 4         : Y
+DATA1P6              DATA1_TX6                  : Y21       : OUTPUT : LVDS              :         : 5         : Y
+DATA1N6              DATA1_TX6N               : Y22       : OUTPUT : LVDS              :         : 5         : Y
 
 
 

@@ -1,11 +1,11 @@
 [Configuration]
 format_signal = 1
 full_merged = 1
-netlist_file = ./pstxnet.dat
+netlist_file = ../tests/data/inputs/pstxnet.dat
 noconnect = 1
 nosignal = 1
 power = 1
-quartus_pin_file = ./main_ctrl.pin
+quartus_pin_file = ../tests/data/inputs/quartus.pin
 refdes = DD2
 refdes_pin_name = 0
 signal = 1
