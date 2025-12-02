@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-# Time-stamp: <2018-02-19 14:55:01>
 """Get data from Cadence Allegro net-list
 """
 
 from __future__ import print_function
 import datetime
 
-__version__ = '0.1.0'
+# Constants for netlist parsing
+SINGLE_NET_MAX_NODES = 100  # Max nodes for a net to be considered "single"
 
 
 class AllegroNetList(object):
@@ -27,17 +27,18 @@ class AllegroNetList(object):
                      ['REFDESN',['net1', 'pin1'], ['net1', 'pin2'], ..., ['netN', 'pinN']]]
     """
 
-    net_list = []
-    date = 0
-    time = 0
-    version = 0
-    refdes_list = []
-
     def __init__(self, fname):
         """Get data from net-list (read from file)
         """
-        self.read_file(fname)
+        # Initialize instance variables
+        self.net_list = []
+        self.date = 0
+        self.time = 0
+        self.version = 0
+        self.refdes_list = []
         self.fname = fname
+        # Read file data
+        self.read_file(fname)
 
     def read_file(self, fname):
         """read file data"""

@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
-# Time-stamp: <2017-02-14 12:27:28>
-
 """Get data from Quartus pin file
 """
-
-__version__ = '0.1.0'
 
 
 class QuartusPin(object):
@@ -27,20 +23,20 @@ class QuartusPin(object):
     fname        -- Quartus pin file name
     """
 
-    header = ''
-    table_header = ''
-    table_line = ''
-    data = []
-    date = 0
-    time = 0
-    version = 0
-
     def __init__(self, fname):
         """Returns data from Quartus pin file (read file)
         """
-        # print(fname)
-        self.read_file(fname)
+        # Initialize instance variables
+        self.header = ''
+        self.table_header = ''
+        self.table_line = ''
+        self.data = []
+        self.date = 0
+        self.time = 0
+        self.version = 0
         self.fname = fname
+        # Read file data
+        self.read_file(fname)
 
     def read_file(self, fname):
         try:
