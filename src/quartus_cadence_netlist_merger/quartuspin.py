@@ -39,6 +39,10 @@ class QuartusPin(object):
         self.read_file(fname)
 
     def read_file(self, fname):
+        """Read and parse Quartus pin file
+        Keyword Arguments:
+        fname -- file name to read
+        """
         f = None
         try:
             # print('read fname: ' + str(fname))

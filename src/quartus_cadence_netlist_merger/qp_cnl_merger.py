@@ -43,6 +43,7 @@ class QuartusCadenceMerger(Frame):
     fname_header = '.qp_cnl_merger_header.dat'
 
     def read_config_file(self):
+        """Read configuration file and initialize application settings"""
         k = {'Configuration': {'netlist_file'     : '',
                                'quartus_pin_file' : '',
                                'refdes'           : '',
@@ -70,6 +71,7 @@ class QuartusCadenceMerger(Frame):
         self.net_name        = int(self.cfg.get_key('Configuration', 'net_name'))
 
     def save_config(self):
+        """Save current configuration to config file"""
         self.cfg.edit_key('Configuration', 'netlist_file',     self.cnl_fname)
         self.cfg.edit_key('Configuration', 'quartus_pin_file', self.qp_fname)
         self.cfg.edit_key('Configuration', 'refdes',           self.refdes)
@@ -84,6 +86,7 @@ class QuartusCadenceMerger(Frame):
         self.cfg.write2file()
 
     def make_widgets(self):
+        """Create and layout all GUI widgets"""
         Label(self,  text='Cadence Netlist File:').pack()
         fname = self.cnl_fname
         self.gui_cnl_fname = StringVar()
@@ -120,6 +123,7 @@ class QuartusCadenceMerger(Frame):
                command=self.save_and_exit, height=1, width=10).pack(side=RIGHT)
 
     def run_config_dialog(self):
+        """Show settings dialog for output file configuration"""
         self.update_and_save_config()
         win = Toplevel()
         win.title('Output file settings')
@@ -175,22 +179,26 @@ class QuartusCadenceMerger(Frame):
         self.net_name        = net_name.get()
 
     def write_template_file(self):
+        """Create template files for rename mask and header if they don't exist"""
         if not os.path.exists(self.fname_rename):
             self.write2file(self.fname_rename, 'old_name new_name')
         if not os.path.exists(self.fname_header):
             self.write2file(self.fname_header, '')
 
     def update_gui2self(self):
+        """Update internal state from GUI variables"""
         self.cnl_fname = self.gui_cnl_fname.get()
         self.qp_fname = self.gui_qp_fname.get()
         self.refdes = self.gui_refdes.get()
 
     def update_self2gui(self):
+        """Update GUI variables from internal state"""
         self.gui_cnl_fname.set(self.cnl_fname)
         self.gui_qp_fname.set(self.qp_fname)
         self.gui_refdes.set(self.refdes)
 
     def update_and_save_config(self):
+        """Update internal state from GUI and save configuration"""
         self.update_gui2self()
         self.save_config()
 
@@ -206,6 +214,7 @@ class QuartusCadenceMerger(Frame):
     # refdes_pin_name
     # net_name
     def build(self):
+        """Build merged report by combining Quartus Pin file with Cadence netlist"""
         self.update_and_save_config()
         self.gui_state.set('Running...')
         fname = 'MergedQC.rpt'
@@ -501,6 +510,7 @@ class QuartusCadenceMerger(Frame):
             return 'N/A'
 
     def select_netlist(self):
+        """Show file dialog to select Cadence netlist file"""
         self.update_and_save_config()
         fname = askopenfilename(filetypes=(("Cadence Netlist", "pstxnet.dat"), ("All files", "*.*")))
         if fname != '':
@@ -508,6 +518,7 @@ class QuartusCadenceMerger(Frame):
             self.update_self2gui()
 
     def select_qp_file(self):
+        """Show file dialog to select Quartus Pin file"""
         self.update_and_save_config()
         fname = askopenfilename(filetypes=(("Quartus Pin File", "*.pin"), ("All files", "*.*")))
         if fname != '':
@@ -515,6 +526,7 @@ class QuartusCadenceMerger(Frame):
             self.update_self2gui()
 
     def save_and_exit(self):
+        """Save configuration and exit application"""
         self.update_and_save_config()
         self.quit()
 
