@@ -24,14 +24,14 @@ def test_quartuspin_reads_valid_file(sample_quartus_pin_file):
 
 
 @pytest.mark.unit
-def test_quartuspin_data_length(sample_quartus_pin_file):
+def test_quartuspin_data_length(mock_quartus_file):
     """Test data_length returns correct count"""
-    pin = QuartusPin(sample_quartus_pin_file)
+    pin = QuartusPin(mock_quartus_file)
 
     length = pin.data_length()
 
     assert isinstance(length, int)
-    assert length == 4  # Based on sample file: GND, net1, net2, NC
+    assert length == 4  # Based on mock file: GND, net1, net2, NC
 
 
 @pytest.mark.unit

@@ -54,3 +54,31 @@ markers = [
 ]
 # Minimum Python version for testing
 minversion = "4.6"
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["quartus_cadence_netlist_merger"]
+omit = [
+    "*/tests/*",
+    "*/test/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+]
+branch = true
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if 0:",
+    "if False:",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"

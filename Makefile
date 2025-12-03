@@ -62,12 +62,15 @@ help:
 	@echo "INFORMATION:"
 	@echo "  info         - show project info, built package, and installation status"
 	@echo ""
-	@echo "TESTING:"
+	@echo "AUTOMATED TESTING:"
+	@echo "  pytest            - run all automated pytest tests"
+	@echo "  test-unit         - run unit tests only"
+	@echo "  test-integration  - run integration tests only"
+	@echo "  coverage          - run pytest with coverage report (HTML + terminal)"
+	@echo "  test-coverage     - alias for 'coverage'"
+	@echo ""
+	@echo "MANUAL TESTING:"
 	@echo "  test         - run manual tests (compare outputs in examples/ dir)"
-	@echo "  pytest       - run automated pytest tests"
-	@echo "  coverage     - run pytest with coverage report (HTML + terminal)"
-	@echo "  test-unit    - run unit tests only"
-	@echo "  test-integration - run integration tests only"
 	@echo "  check-deps   - verify build dependencies are installed"
 	@echo ""
 
@@ -75,7 +78,7 @@ help:
 .PHONY: info test check-deps dist
 .PHONY: venv venv-install venv-dev venv-clean
 .PHONY: test-env test-env-install test-env-dev test-env-clean test-run
-.PHONY: pytest coverage test-unit test-integration
+.PHONY: pytest coverage test-coverage test-unit test-integration
 
 # Check if required build tools are installed
 check-deps:
@@ -378,3 +381,6 @@ test-integration: venv
 	@.venv/bin/python -m pytest tests/integration/
 	@echo ""
 	@echo "✓ Integration tests complete"
+
+# Alias for coverage (matches TASKS.md naming convention)
+test-coverage: coverage
