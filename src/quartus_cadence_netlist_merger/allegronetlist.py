@@ -42,9 +42,11 @@ class AllegroNetList(object):
 
     def read_file(self, fname):
         """read file data"""
+        f = None
         try:
             # print('read fname: ' + str(fname))
-            with open(fname, 'r') as f:
+            f = open(fname, 'r')
+            with f:
                 find_net_name = 0
                 wait_end_net = 0
                 net = []
@@ -60,7 +62,10 @@ class AllegroNetList(object):
                             find_net_name = 0
                             wait_end_net = 1
                             # cut char - ' from net name
-                            net = s[1:len(s)-1]
+                            if len(s) >= 2:
+                                net = s[1:len(s)-1]
+                            else:
+                                net = s
                             # print('Find net_name', net)
                         if s.find('NET_NAME') == 0 or s.find('END.') == 0:
                             if wait_end_net:
@@ -97,9 +102,13 @@ class AllegroNetList(object):
                             # NOTE: example sting:
                             #    { Using PSTWRITER 16.3.0 p002Mar-22-2016 at 10:54:51 }
                             cfg = s.split()
-                            self.version = cfg[3]
-                            self.date = cfg[4][4:]
-                            self.time = cfg[6]
+                            if len(cfg) >= 7:
+                                self.version = cfg[3]
+                                if len(cfg[4]) > 4:
+                                    self.date = cfg[4][4:]
+                                else:
+                                    self.date = cfg[4]
+                                self.time = cfg[6]
                     except OSError:
                         print('+-----------------------------------+')
                         print('| Error! With Net-list handler      |')
@@ -110,7 +119,8 @@ class AllegroNetList(object):
             print('| Error! With file: \'%s\'' % fname)
             print('+-----------------------------------+')
         finally:
-            f.close()
+            if f:
+                f.close()
 
     def net_list_length(self):
         """Returns length of net-list"""
@@ -349,13 +359,26 @@ class AllegroNetList(object):
         """Write net-list data (with title to string) to file
         Keyword Arguments:
         fname -- output file name
+        message_en -- enable success message
+        Returns:
+        True if successful, False if error occurred
         """
         s = self.all_data2string()
-        f = open(fname, 'w')
-        f.write(s)
-        f.close()
-        if message_en:
-            print('Write Net-List report file: %s' % fname)
+        f = None
+        try:
+            f = open(fname, 'w')
+            f.write(s)
+            if message_en:
+                print('Write Net-List report file: %s' % fname)
+            return True
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot write file: \'%s\'' % fname)
+            print('+-----------------------------------+')
+            return False
+        finally:
+            if f:
+                f.close()
 
     def net_list_info(self):
         """Returns net-list info as string

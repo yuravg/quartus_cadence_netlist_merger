@@ -393,14 +393,23 @@ class QuartusCadenceMerger(Frame):
     rename_mask = []
 
     def read_rename_mask_file(self, fname):
+        """Read rename mask file for signal formatting
+        Keyword Arguments:
+        fname -- rename mask file name
+        """
         if os.path.exists(fname):
             try:
                 with open(fname) as f:
                     for line in f:
-                        a, b = line.split()
-                        self.rename_mask.append([a, b])
+                        parts = line.split()
+                        if len(parts) >= 2:
+                            a = parts[0]
+                            b = parts[1]
+                            self.rename_mask.append([a, b])
+            except IOError:
+                print('Error! Can\'t read rename mask file: \'%s\'' % fname)
             except:
-                print('Error! Can\'t read rename mask file: \'%s\', wrong format' % fname)
+                print('Error! Can\'t parse rename mask file: \'%s\', wrong format' % fname)
 
     def read_header_file(self, fname):
         s = ''
@@ -428,23 +437,68 @@ class QuartusCadenceMerger(Frame):
     def write2newfile(self, fname, s):
         """Write data to file
         If file does not exist, new file will be created
-        If file exists, it will be renamed and new file will be created"""
+        If file exists, it will be renamed and new file will be created
+        Keyword Arguments:
+        fname -- file name
+        s     -- string data to write
+        Returns:
+        True if successful, False if error occurred
+        """
         if os.path.exists(fname):
+            backup_created = False
             for i in range(100):
                 new_fname = '%s,%s' % (fname, i)
                 if not os.path.exists(new_fname):
-                    os.rename(fname, new_fname)
-                    print('renamed old file to %s' % new_fname)
-                    break
-        self.write2file(fname, s)
+                    try:
+                        os.rename(fname, new_fname)
+                        print('renamed old file to %s' % new_fname)
+                        backup_created = True
+                        break
+                    except OSError:
+                        print('+-----------------------------------+')
+                        print('| Error! Cannot rename file: \'%s\'' % fname)
+                        print('+-----------------------------------+')
+                        return False
+            if not backup_created:
+                print('+-----------------------------------+')
+                print('| Warning! All 100 backup slots full for: \'%s\'' % fname)
+                print('| Overwriting existing file without backup')
+                print('+-----------------------------------+')
+        return self.write2file(fname, s)
 
     def write2file(self, fname, s):
-        f = open(fname, 'w')
-        f.write(s)
-        f.close()
+        """Write data to file with error handling
+        Keyword Arguments:
+        fname -- file name
+        s     -- string data to write
+        Returns:
+        True if successful, False if error occurred
+        """
+        f = None
+        try:
+            f = open(fname, 'w')
+            f.write(s)
+            return True
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot write file: \'%s\'' % fname)
+            print('+-----------------------------------+')
+            return False
+        finally:
+            if f:
+                f.close()
 
     def get_file_mtime(self, fname):
-        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime(fname)))
+        """Get file modification time as formatted string
+        Keyword Arguments:
+        fname -- file name
+        Returns:
+        Formatted time string or 'N/A' if file doesn't exist
+        """
+        try:
+            return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime(fname)))
+        except OSError:
+            return 'N/A'
 
     def select_netlist(self):
         self.update_and_save_config()

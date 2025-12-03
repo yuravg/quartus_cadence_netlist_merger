@@ -39,9 +39,11 @@ class QuartusPin(object):
         self.read_file(fname)
 
     def read_file(self, fname):
+        f = None
         try:
             # print('read fname: ' + str(fname))
-            with open(fname, 'r') as f:
+            f = open(fname, 'r')
+            with f:
                 find_table = 0
                 find_table_line = 0
                 header = ''
@@ -71,7 +73,11 @@ class QuartusPin(object):
                                     sfn.append(i)
                                 # print('i = \'%s\'' % i)
                                 # print('k = %s' % sfn)
-                                data.append([s, sfn[0], sfn[1]])
+                                if len(sfn) >= 2:
+                                    data.append([s, sfn[0], sfn[1]])
+                                else:
+                                    # Skip malformed lines
+                                    pass
                         self.header = header
                         self.table_header = table_header
                         self.table_line = table_line
@@ -85,7 +91,8 @@ class QuartusPin(object):
             print('| Error! With file: \'%s\'' % fname)
             print('+-----------------------------------+')
         finally:
-            f.close()
+            if f:
+                f.close()
 
     def get_header(self):
         """Returns Quartus file header as string
