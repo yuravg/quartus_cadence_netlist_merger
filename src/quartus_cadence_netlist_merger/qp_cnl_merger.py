@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Quartus pin and Cadence Allegro Net-List merger (cnl - Cadence Net-List)
+Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
 """
 
 import sys
@@ -27,13 +27,13 @@ from .allegronetlist import AllegroNetList
 
 
 class QuartusCadenceMerger(Frame):
-    """Quartus pin and Cadence Allegro net-list merger (cnl - Cadence net-list)
+    """Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
     """
 
     def __init__(self, parent=None):
         Frame.__init__(self, parent)
         self.read_config_file()
-        self.master.title("Quartus pin and Cadence Allegro net-list merger")
+        self.master.title("Quartus Pin and Cadence Allegro Netlist Merger")
         self.master.geometry("550x400")
         self.pack()
         self.make_widgets()
@@ -54,7 +54,7 @@ class QuartusCadenceMerger(Frame):
                                'noconnect'        : '1',
                                'refdes_pin_name'  : '0',
                                'net_name'         : '1'},
-             'Info': {'Description': 'Configuration file to Quartus pin and Cadence Allegro net-list merger'}
+             'Info': {'Description': 'Configuration file for Quartus Pin and Cadence Allegro Netlist Merger'}
              }
         self.cfg             = ConfigFile(self.fname_config, k)
         self.cnl_fname       = self.cfg.get_key('Configuration', 'netlist_file')
@@ -84,20 +84,20 @@ class QuartusCadenceMerger(Frame):
         self.cfg.write2file()
 
     def make_widgets(self):
-        Label(self,  text='Cadence net-list:').pack()
+        Label(self,  text='Cadence Netlist File:').pack()
         fname = self.cnl_fname
         self.gui_cnl_fname = StringVar()
         self.gui_cnl_fname.set(fname)
         Label(self, textvariable=self.gui_cnl_fname).pack()
-        Button(self, text='Browse', command=self.select_netlist, height=1, width=10).pack()
+        Button(self, text='Browse...', command=self.select_netlist, height=1, width=10).pack()
 
         Label(self, text='').pack()
-        Label(self, text='Quartus pin file:').pack()
+        Label(self, text='Quartus Pin File:').pack()
         qp_fname = self.qp_fname
         self.gui_qp_fname = StringVar()
         self.gui_qp_fname.set(qp_fname)
         Label(self, textvariable=self.gui_qp_fname).pack()
-        Button(self, text='Browse', command=self.select_qp_file, height=1, width=10).pack()
+        Button(self, text='Browse...', command=self.select_qp_file, height=1, width=10).pack()
 
         Label(self, text='').pack()
         Label(self, text='Capture Refdes:').pack()
@@ -108,13 +108,13 @@ class QuartusCadenceMerger(Frame):
         ent.pack()
 
         Label(self, text='').pack()
-        Button(self, text='Build', command=self.build, height=1, width=10).pack()
+        Button(self, text='Generate Merged Report', command=self.build, height=1, width=20).pack()
         self.gui_state = StringVar()
-        self.gui_state.set('Idle')
+        self.gui_state.set('Ready')
         Label(self, textvariable=self.gui_state).pack()
         Label(self, text='').pack()
 
-        Button(self, text='Config',
+        Button(self, text='Settings',
                command=self.run_config_dialog, height=1, width=10).pack(side=LEFT)
         Button(self, text='Exit',
                command=self.save_and_exit, height=1, width=10).pack(side=RIGHT)
@@ -140,28 +140,28 @@ class QuartusCadenceMerger(Frame):
         noconnect.set(self.noconnect)
         refdes_pin_name.set(self.refdes_pin_name)
         net_name.set(self.net_name)
-        lebel_text = 'Output files: MergedQC.rpt, MergedQC.summary.rpt'
-        Label(win, text=lebel_text).pack()
+        label_text = 'Output Files: MergedQC.rpt, MergedQC.summary.rpt'
+        Label(win, text=label_text).pack()
         Label(win, text='').pack()
-        Label(win, text='Columns(all files):').pack()
-        Checkbutton(win, text='Cadence Net name',        variable=net_name        ).pack(anchor=W)
-        Checkbutton(win, text='Cadence Refdes pin name', variable=refdes_pin_name ).pack(anchor=W)
+        Label(win, text='Columns (All Files):').pack()
+        Checkbutton(win, text='Cadence Net Name',        variable=net_name        ).pack(anchor=W)
+        Checkbutton(win, text='Cadence Refdes Pin Name', variable=refdes_pin_name ).pack(anchor=W)
         Label(win, text='').pack()
-        Label(win, text='Groups of summary file:').pack()
-        Checkbutton(win, text='Summary',          variable=full_merged   ).pack(anchor=W)
-        Checkbutton(win, text='Signal',           variable=signal        ).pack(anchor=W)
-        Checkbutton(win, text='Not Signal',       variable=nosignal      ).pack(anchor=W)
-        Checkbutton(win, text='Formatted Signal', variable=format_signal ).pack(anchor=W)
-        Checkbutton(win, text='Power pins',       variable=power         ).pack(anchor=W)
-        Checkbutton(win, text='Unconnected pins', variable=noconnect     ).pack(anchor=W)
+        Label(win, text='Groups in Summary File:').pack()
+        Checkbutton(win, text='Full Merged Summary',  variable=full_merged   ).pack(anchor=W)
+        Checkbutton(win, text='Signal Pins',          variable=signal        ).pack(anchor=W)
+        Checkbutton(win, text='Non-Signal Pins',      variable=nosignal      ).pack(anchor=W)
+        Checkbutton(win, text='Formatted Signal Pins', variable=format_signal ).pack(anchor=W)
+        Checkbutton(win, text='Power Pins',           variable=power         ).pack(anchor=W)
+        Checkbutton(win, text='Unconnected Pins',     variable=noconnect     ).pack(anchor=W)
         Label(win, text='').pack()
-        Button(win, text='Set', command=win.destroy, height=1, width=10).pack()
+        Button(win, text='OK', command=win.destroy, height=1, width=10).pack()
         Label(win, text='').pack()
-        s = 'Create templates:'
+        s = 'Create Template Files:'
         s = s + '\n%s - header for summary file' % self.fname_header
         s = s + '\n%s - rename mask file' % self.fname_rename
         Label(win, text=s, justify=LEFT).pack()
-        Button(win, text='templates', command=self.write_template_file, height=1, width=9).pack()
+        Button(win, text='Create Templates', command=self.write_template_file, height=1, width=15).pack()
         win.grab_set()
         win.focus_set()
         win.wait_window()
@@ -207,7 +207,7 @@ class QuartusCadenceMerger(Frame):
     # net_name
     def build(self):
         self.update_and_save_config()
-        self.gui_state.set('Runnig...')
+        self.gui_state.set('Running...')
         fname = 'MergedQC.rpt'
         fname_summary = 'MergedQC.summary.rpt'
         date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
@@ -231,7 +231,7 @@ class QuartusCadenceMerger(Frame):
             s = s + self.noconnect2string()
         self.write2newfile(fname_summary, s)
         work_dir = os.getcwd()
-        done_msg = 'Done: %s\nwrited file(s): %s, %s\n(output directory: %s)' % (date, fname, fname_summary, work_dir)
+        done_msg = 'Done: %s\nWritten files: %s, %s\n(Output directory: %s)' % (date, fname, fname_summary, work_dir)
         self.gui_state.set(done_msg)
 
     def header2string(self, date):
@@ -239,26 +239,26 @@ class QuartusCadenceMerger(Frame):
         time_qp_fname = self.get_file_mtime(self.qp_fname)
         rpt = ''
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-        rpt = rpt + '| File contains merged Quartus pin and Cadence PCB Editor (Allegro) net-list     |\n'
-        rpt = rpt + '| NOTE: this file was auto-generated                                             |\n'
-        rpt = rpt + '| report creation date: %s                                      |\n' % date
+        rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |\n'
+        rpt = rpt + '| NOTE: This file was auto-generated                                             |\n'
+        rpt = rpt + '| Report creation date: %s                                      |\n' % date
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-        rpt = rpt + '| Quartus, Cadence files and refdes info:                                        |\n'
+        rpt = rpt + '| Quartus, Cadence files and Refdes info:                                        |\n'
         rpt = rpt + '|  %s - %s \n' % (time_cnl_fname, self.cnl_fname)
         rpt = rpt + '|  %s - %s \n' % (time_qp_fname, self.qp_fname)
-        rpt = rpt + '|  refdes = %s\n' % self.refdes
+        rpt = rpt + '|  Refdes = %s\n' % self.refdes
         rpt = rpt + '|--------------------------------------------------------------------------------|\n'
         return rpt
 
     def qp_pin_header2string(self, require_pin_name, req_net_name):
         pin = QuartusPin(self.qp_fname)
         rpt = ''
-        rpt = rpt + '* MERGED Quartus pin file'
+        rpt = rpt + '* MERGED Quartus Pin File'
         rpt = rpt + pin.header
         if require_pin_name:
-            rpt = rpt + 'Pin Name(capture) :  '
+            rpt = rpt + 'Pin Name (Capture):  '
         if req_net_name:
-            rpt = rpt + 'Net Name(capture) :  '
+            rpt = rpt + 'Net Name (Capture):  '
         rpt = rpt + pin.table_header
         rpt = rpt + '\n' + pin.table_line + '\n'
         return rpt
@@ -301,9 +301,9 @@ class QuartusCadenceMerger(Frame):
     def table_header2string(self, pin):
         s = '\n'
         if self.refdes_pin_name:
-            s = s + 'Pin Name(capture) :  '
+            s = s + 'Pin Name (Capture):  '
         if self.net_name:
-            s = s + 'Net Name(capture) :  '
+            s = s + 'Net Name (Capture):  '
         s = s + pin.table_header
         s = s + '\n' + pin.table_line + '\n'
         return s
@@ -311,9 +311,9 @@ class QuartusCadenceMerger(Frame):
     def noconnect2string(self):
         pin = QuartusPin(self.qp_fname)
         s = '\n'*3
-        s = s + '* NO connected pins\n'
+        s = s + '* Unconnected Pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '| No Connect (repeating part of pin list):                                       |\n'
+        s = s + '| No Connect (Repeating part of pin list):                                      |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + self.table_header2string(pin)
         s = s + self.find_in_merged_data(self.nosignal_name)
@@ -325,9 +325,9 @@ class QuartusCadenceMerger(Frame):
     def power_pins2string(self):
         pin = QuartusPin(self.qp_fname)
         s = '\n'*3
-        s = s + '* POWERS pins\n'
+        s = s + '* Power Pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '| POWER pins only (repeating part of pin list):                                  |\n'
+        s = s + '| POWER Pins Only (Repeating part of pin list):                                 |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
         for i in self.pwr_name:
             result = self.find_in_merged_data(i)
@@ -341,9 +341,9 @@ class QuartusCadenceMerger(Frame):
     def only_signal2string(self):
         pin = QuartusPin(self.qp_fname)
         s = '\n'*3
-        s = s + '* SIGNAL pins\n'
+        s = s + '* Signal Pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '| SIGNAL pins only (repeating part of pin list):                                 |\n'
+        s = s + '| SIGNAL Pins Only (Repeating part of pin list):                                |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + self.table_header2string(pin)
         cut_name = self.pwr_name + [self.nosignal_name]
@@ -364,9 +364,9 @@ class QuartusCadenceMerger(Frame):
     def only_formatted_signal2string(self):
         pin = QuartusPin(self.qp_fname)
         s = '\n'*3
-        s = s + '* FORMATED SIGNAL pins\n'
+        s = s + '* Formatted Signal Pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '| FORMATED SIGNAL pins only (repeating part of pin list):                        |\n'
+        s = s + '| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                      |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + self.table_header2string(pin)
         cut_name = self.pwr_name + [self.nosignal_name]
@@ -417,18 +417,18 @@ class QuartusCadenceMerger(Frame):
             self.only_signal2string()
         pin = QuartusPin(self.qp_fname)
         s = '\n'*3
-        s = s + '* No singal pins\n'
+        s = s + '* Non-Signal Pins\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
-        s = s + '| No Signal pins(repeating part of pin list):                                    |\n'
+        s = s + '| Non-Signal Pins (Repeating part of pin list):                                 |\n'
         s = s + '|--------------------------------------------------------------------------------|\n'
         s = s + self.table_header2string(pin)
         s = s + self.nosignal_strings
         return s
 
     def write2newfile(self, fname, s):
-        """write data to file
-        if file not exist new file will created
-        if file exist it will renamed and new file will created"""
+        """Write data to file
+        If file does not exist, new file will be created
+        If file exists, it will be renamed and new file will be created"""
         if os.path.exists(fname):
             for i in range(100):
                 new_fname = '%s,%s' % (fname, i)
@@ -448,14 +448,14 @@ class QuartusCadenceMerger(Frame):
 
     def select_netlist(self):
         self.update_and_save_config()
-        fname = askopenfilename(filetypes=(("Cadence neltist", "pstxnet.dat"), ("All files", "*.*")))
+        fname = askopenfilename(filetypes=(("Cadence Netlist", "pstxnet.dat"), ("All files", "*.*")))
         if fname != '':
             self.cnl_fname = fname
             self.update_self2gui()
 
     def select_qp_file(self):
         self.update_and_save_config()
-        fname = askopenfilename(filetypes=(("Quartus pin file", "*.pin"), ("All files", "*.*")))
+        fname = askopenfilename(filetypes=(("Quartus Pin File", "*.pin"), ("All files", "*.*")))
         if fname != '':
             self.qp_fname = fname
             self.update_self2gui()

@@ -148,14 +148,14 @@ def test_merger_header2string_format(sample_netlist_file, sample_quartus_pin_fil
             time_qp_fname = self.get_file_mtime(self.qp_fname)
             rpt = ''
             rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-            rpt = rpt + '| File contains merged Quartus pin and Cadence PCB Editor (Allegro) net-list     |\n'
-            rpt = rpt + '| NOTE: this file was auto-generated                                             |\n'
-            rpt = rpt + '| report creation date: %s                                      |\n' % date
+            rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |\n'
+            rpt = rpt + '| NOTE: This file was auto-generated                                             |\n'
+            rpt = rpt + '| Report creation date: %s                                      |\n' % date
             rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-            rpt = rpt + '| Quartus, Cadence files and refdes info:                                        |\n'
+            rpt = rpt + '| Quartus, Cadence files and Refdes info:                                        |\n'
             rpt = rpt + '|  %s - %s \n' % (time_cnl_fname, self.cnl_fname)
             rpt = rpt + '|  %s - %s \n' % (time_qp_fname, self.qp_fname)
-            rpt = rpt + '|  refdes = %s\n' % self.refdes
+            rpt = rpt + '|  Refdes = %s\n' % self.refdes
             rpt = rpt + '|--------------------------------------------------------------------------------|\n'
             return rpt
 
@@ -165,7 +165,7 @@ def test_merger_header2string_format(sample_netlist_file, sample_quartus_pin_fil
     header = merger.header2string(date)
 
     assert '|----' in header
-    assert 'merged Quartus pin and Cadence' in header
+    assert 'merged Quartus Pin and Cadence' in header
     assert date in header
     assert 'DD2' in header
 

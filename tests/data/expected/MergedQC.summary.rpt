@@ -8,16 +8,16 @@
 # Hi-lock: (("1V2"  (0 '(:background "PowderBlue") prepend)))
 # Hi-lock: (("1.2V" (0 '(:background "aquamarine") prepend)))
 |--------------------------------------------------------------------------------|
-| File contains merged Quartus pin and Cadence PCB Editor (Allegro) net-list     |
-| NOTE: this file was auto-generated                                             |
-| report creation date: 2019-08-26 15:46:48                                      |
+| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |
+| NOTE: This file was auto-generated                                             |
+| Report creation date: 2025-12-03 12:33:10                                      |
 |--------------------------------------------------------------------------------|
-| Quartus, Cadence files and refdes info:                                        |
-|  2025-12-02 18:44:42 - ../tests/data/inputs/pstxnet.dat 
-|  2025-12-02 19:04:21 - ../tests/data/inputs/quartus.pin 
-|  refdes = DD2
+| Quartus, Cadence files and Refdes info:                                        |
+|  2025-12-03 12:32:16 - ../tests/data/inputs/pstxnet.dat 
+|  2025-12-03 12:32:16 - ../tests/data/inputs/quartus.pin 
+|  Refdes = DD2
 |--------------------------------------------------------------------------------|
-* MERGED Quartus pin file
+* MERGED Quartus Pin File
  -- Copyright (C) 1991-2013 Altera Corporation
  -- Your use of Altera Corporation's design tools, logic functions
  -- and other software and tools, and its AMPP partner logic
@@ -85,7 +85,7 @@
 
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
 CHIP  "quartus"  ASSIGNED TO AN: EP4CE30F23C7
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GND                  GND                          : A1        : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO8                       : A2        : power  :                   : 2.5V    : 8         :
@@ -574,12 +574,12 @@ DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS   
 
 
 
-* SIGNAL pins
+* Signal Pins
 |--------------------------------------------------------------------------------|
-| SIGNAL pins only (repeating part of pin list):                                 |
+| SIGNAL Pins Only (Repeating part of pin list):                                |
 |--------------------------------------------------------------------------------|
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 DCLKL10              adc_dclk_rx[10](n)           : A4        : input  : LVDS              :         : 8         : Y
 DCLKL5               adc_dclk_rx[5](n)            : A6        : input  : LVDS              :         : 8         : Y
@@ -798,12 +798,12 @@ DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS   
 
 
 
-* No singal pins
+* Non-Signal Pins
 |--------------------------------------------------------------------------------|
-| No Signal pins(repeating part of pin list):                                    |
+| Non-Signal Pins (Repeating part of pin list):                                 |
 |--------------------------------------------------------------------------------|
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GND                  GND                          : A1        : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO8                       : A2        : power  :                   : 2.5V    : 8         :
@@ -1079,12 +1079,12 @@ GND                  GND                          : Y20       : gnd    :        
 
 
 
-* FORMATED SIGNAL pins
+* Formatted Signal Pins
 |--------------------------------------------------------------------------------|
-| FORMATED SIGNAL pins only (repeating part of pin list):                        |
+| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                      |
 |--------------------------------------------------------------------------------|
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 DCLKL10              ADCLK_RX10N           : A4        : INPUT  : LVDS              :         : 8         : Y
 DCLKL5               ADCLK_RX5N            : A6        : INPUT  : LVDS              :         : 8         : Y
@@ -1303,14 +1303,14 @@ DATA1N6              DATA1_TX6N               : Y22       : OUTPUT : LVDS       
 
 
 
-* POWERS pins
+* Power Pins
 |--------------------------------------------------------------------------------|
-| POWER pins only (repeating part of pin list):                                  |
+| POWER Pins Only (Repeating part of pin list):                                 |
 |--------------------------------------------------------------------------------|
 
 ** Power: 3.3V
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 VCCIO_3V3            VCCIO7                       : A21       : power  :                   : 3.3V    : 7         :
 VCCIO_3V3            VCCIO1                       : D4        : power  :                   : 3.3V    : 1         :
@@ -1324,7 +1324,7 @@ VCCIO_3V3            VCCIO1                       : K4        : power  :        
 
 ** Power: 2.5V
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 VCCIO_2V5            VCCIO8                       : A2        : power  :                   : 2.5V    : 8         :
 VCCIO_2V5            VCCIO3                       : AA6       : power  :                   : 2.5V    : 3         :
@@ -1360,7 +1360,7 @@ VCCIO_2V5            VCCIO5                       : Y19       : power  :        
 
 ** Power: 1.2V
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 VCCD_PLL_1V2         VCCD_PLL2                    : E17       : power  :                   : 1.2V    :           :
 VCCD_PLL_1V2         VCCD_PLL3                    : F6        : power  :                   : 1.2V    :           :
@@ -1397,7 +1397,7 @@ VCCD_PLL_1V2         VCCD_PLL4                    : V17       : power  :        
 
 ** Power: GND
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GND                  GND                          : A1        : gnd    :                   :         :           :
 GND                  GND+                         : A11       :        :                   :         : 8         :
@@ -1482,7 +1482,7 @@ GND                  GND                          : Y20       : gnd    :        
 
 ** Power: GNDA
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GNDA                 GNDA2                        : E18       : gnd    :                   :         :           :
 GNDA                 GNDA3                        : F5        : gnd    :                   :         :           :
@@ -1491,12 +1491,12 @@ GNDA                 GNDA4                        : V18       : gnd    :        
 
 
 
-* NO connected pins
+* Unconnected Pins
 |--------------------------------------------------------------------------------|
-| No Connect (repeating part of pin list):                                       |
+| No Connect (Repeating part of pin list):                                      |
 |--------------------------------------------------------------------------------|
 
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : A3        :        :                   :         : 8         :
 NC                   RESERVED_INPUT_WITH_WEAK_PUL : A5        :        :                   :         : 8         :

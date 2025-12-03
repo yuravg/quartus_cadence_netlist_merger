@@ -1,14 +1,14 @@
 |--------------------------------------------------------------------------------|
-| File contains merged Quartus pin and Cadence PCB Editor (Allegro) net-list     |
-| NOTE: this file was auto-generated                                             |
-| report creation date: 2019-08-26 15:46:48                                      |
+| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |
+| NOTE: This file was auto-generated                                             |
+| Report creation date: 2025-12-03 12:33:10                                      |
 |--------------------------------------------------------------------------------|
-| Quartus, Cadence files and refdes info:                                        |
-|  2025-12-02 18:44:42 - ../tests/data/inputs/pstxnet.dat 
-|  2025-12-02 19:04:21 - ../tests/data/inputs/quartus.pin 
-|  refdes = DD2
+| Quartus, Cadence files and Refdes info:                                        |
+|  2025-12-03 12:32:16 - ../tests/data/inputs/pstxnet.dat 
+|  2025-12-03 12:32:16 - ../tests/data/inputs/quartus.pin 
+|  Refdes = DD2
 |--------------------------------------------------------------------------------|
-* MERGED Quartus pin file
+* MERGED Quartus Pin File
  -- Copyright (C) 1991-2013 Altera Corporation
  -- Your use of Altera Corporation's design tools, logic functions
  -- and other software and tools, and its AMPP partner logic
@@ -76,7 +76,7 @@
 
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
 CHIP  "quartus"  ASSIGNED TO AN: EP4CE30F23C7
-Net Name(capture) :  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
+Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
 -------------------------------------------------------------------------------------------------------------
 GND                  GND                          : A1        : gnd    :                   :         :           :
 VCCIO_2V5            VCCIO8                       : A2        : power  :                   : 2.5V    : 8         :
