@@ -13,15 +13,15 @@ config = ConfigParser()
 
 
 class ConfigFile(object):
-    """Work with configuration file,
-    read and write key from/to configuration file
+    """Work with configuration file, read and write keys from/to INI files
 
-    Arguments:
-    k -- keys of configuration file
-        k = {'section0': {'key_name0':value0, 'key_name1':value1},
-             'section1': {'key_name0':value0, 'key_name1':value1},
-             'section2': {'key_name0':value0, 'key_name1':value1}
-            }
+    The configuration is stored internally as a nested dictionary:
+        self.k = {
+            'section0': {'key_name0': value0, 'key_name1': value1},
+            'section1': {'key_name0': value0, 'key_name1': value1}
+        }
+
+    Note: 'k' is used throughout as shorthand for 'keys' (the configuration dictionary).
     """
 
     def __init__(self, fname='fname.ini', k={}, verbosity=0):
@@ -110,19 +110,6 @@ class ConfigFile(object):
         """
         return self.k[section][name]
 
-    # def del_key(self, id):
-    #     """Delete key from configuration files
-    #     Note: need usage method clear to delete from configuration file
-    #     """
-    #     print('Delete key: ' + str(id))
-    #     del self.k[str(id)]
-
-    # def clear(self):
-    #     """Delete all not assigned key and sections from configuration files
-    #     """
-    #     print('Clear configuration file: ' + str(self.fname))
-    #     config.clear()
-
     def write2file(self):
         """Write keys to configuration file
         """
@@ -176,9 +163,7 @@ if __name__ == '__main__':
     print('--------------------------------------------------------')
     print('* Config: ' + str(c))
     print('--------------------------------------------------------')
-    # print('end of config file')
     print('Write2file')
-    # c.sort_keys()
     c.edit_key('Default2', 'name99', 'new_name99')
     c.write2file()
     print('-------------')

@@ -9,6 +9,9 @@ import datetime
 # Constants for netlist parsing
 SINGLE_NET_MAX_NODES = 100  # Max nodes for a net to be considered "single"
 
+# Constants for netlist parsing
+SINGLE_NET_MAX_NODES = 100  # Max nodes for a net to be considered "single"
+
 
 class AllegroNetList(object):
     """Cadence Allegro net-list data
@@ -44,88 +47,120 @@ class AllegroNetList(object):
         self.read_file(fname)
 
     def read_file(self, fname):
-        """read file data"""
-        f = None
+        """Read and parse Cadence Allegro netlist file
+
+        The netlist file has a specific format with NET_NAME and NODE_NAME sections.
+        This method uses a state machine approach to parse the file:
+        - State 1: Looking for NET_NAME keyword (find_net_name flag)
+        - State 2: Reading net name on next line
+        - State 3: Collecting NODE_NAME entries until next NET_NAME or END
+        """
+        file_handle = None
         try:
-            # print('read fname: ' + str(fname))
-            f = open(fname, 'r')
-            with f:
-                find_net_name = 0
-                wait_end_net = 0
-                net = []
-                node = []
-                cnt_string = 0
-                wait_refdes_cnt = 0
-                wait_refdes_en = False
-                self.net_list = []
-                for line in f:
-                    s = line.rstrip()
-                    try:
-                        if find_net_name:
-                            find_net_name = 0
-                            wait_end_net = 1
-                            # cut char - ' from net name
-                            if len(s) >= 2:
-                                net = s[1:len(s)-1]
-                            else:
-                                net = s
-                            # print('Find net_name', net)
-                        if s.find('NET_NAME') == 0 or s.find('END.') == 0:
-                            if wait_end_net:
-                                wait_end_net = 0
-                                net_and_node = [net, node]
-                                net = []
-                                node = []
-                                self.net_list.append(net_and_node)
-                                # print('net and node:', net_and_node)
-                            find_net_name = 1
-                            net = s
-                            # print('Wait net')
-                        else:
-                            if s.find('NODE_NAME') == 0:
-                                s = s.split()
-                                ref_des = s[1]
-                                des_pin = s[2]
-                                ref_and_pin = [ref_des, des_pin]
-                                # print(' Find node:', ref_and_pin)
-                                node.append(ref_and_pin)
-                                wait_refdes_en = True
-                                wait_refdes_cnt = 0
-                        if wait_refdes_en:
-                            if wait_refdes_cnt < 2:
-                                wait_refdes_cnt = wait_refdes_cnt + 1
-                            else:
-                                wait_refdes_en = False
-                                for char in " \\';:":
-                                    s = s.replace(char, '')
-                                ref_and_pin.append(s)
-                        if cnt_string < 3:
-                            cnt_string = cnt_string + 1
-                        if cnt_string == 2:
-                            # NOTE: example sting:
-                            #    { Using PSTWRITER 16.3.0 p002Mar-22-2016 at 10:54:51 }
-                            cfg = s.split()
-                            if len(cfg) >= 7:
-                                self.version = cfg[3]
-                                if len(cfg[4]) > 4:
-                                    self.date = cfg[4][4:]
-                                else:
-                                    self.date = cfg[4]
-                                self.time = cfg[6]
-                    except OSError:
-                        print('+-----------------------------------+')
-                        print('| Error! With Net-list handler      |')
-                        print('+-----------------------------------+')
+            file_handle = open(fname, 'r')
+            with file_handle:
+                self._parse_netlist_content(file_handle)
             self.net_list.sort()
-            # Build lookup dictionaries for O(1) access
             self._build_lookup_dicts()
         except OSError:
             print('+-----------------------------------+')
             print('| Error! With file: \'%s\'' % fname)
             print('+-----------------------------------+')
         finally:
-            if f:
-                f.close()
+            if file_handle:
+                file_handle.close()
+
+    def _parse_netlist_content(self, file_handle):
+        """Parse netlist content from file handle
+
+        Keyword Arguments:
+        file_handle -- open file handle to read from
+        """
+        # State machine flags
+        expecting_net_name = False
+        inside_net_block = False
+        # Current net data being collected
+        current_net_name = []
+        current_nodes = []
+        # Pin name reading state (pin name appears 2 lines after NODE_NAME)
+        pin_name_countdown = 0
+        current_node_ref = None
+        # Header parsing
+        header_line_count = 0
+
+        self.net_list = []
+
+        for line in file_handle:
+            stripped_line = line.rstrip()
+            try:
+                # Handle net name capture (line after NET_NAME keyword)
+                if expecting_net_name:
+                    expecting_net_name = False
+                    inside_net_block = True
+                    # Strip surrounding quotes from net name
+                    if len(stripped_line) >= 2:
+                        current_net_name = stripped_line[1:-1]
+                    else:
+                        current_net_name = stripped_line
+
+                # Check for NET_NAME or END markers
+                if stripped_line.startswith('NET_NAME') or stripped_line.startswith('END.'):
+                    if inside_net_block:
+                        # Save completed net block
+                        inside_net_block = False
+                        self.net_list.append([current_net_name, current_nodes])
+                        current_net_name = []
+                        current_nodes = []
+                    expecting_net_name = True
+                    current_net_name = stripped_line
+                elif stripped_line.startswith('NODE_NAME'):
+                    # Parse NODE_NAME line: NODE_NAME REFDES PIN
+                    parts = stripped_line.split()
+                    refdes = parts[1]
+                    pin = parts[2]
+                    current_node_ref = [refdes, pin]
+                    current_nodes.append(current_node_ref)
+                    # Start countdown to capture pin name (2 lines later)
+                    pin_name_countdown = 2
+
+                # Capture pin name (appears 2 lines after NODE_NAME)
+                if pin_name_countdown > 0:
+                    pin_name_countdown -= 1
+                    if pin_name_countdown == 0:
+                        # Clean pin name by removing special characters
+                        pin_name = stripped_line
+                        for char in " \\';:":
+                            pin_name = pin_name.replace(char, '')
+                        current_node_ref.append(pin_name)
+
+                # Parse header info from line 2 (PSTWRITER version info)
+                if header_line_count < 3:
+                    header_line_count += 1
+                if header_line_count == 2:
+                    self._parse_header_line(stripped_line)
+
+            except OSError:
+                print('+-----------------------------------+')
+                print('| Error! With Net-list handler      |')
+                print('+-----------------------------------+')
+
+    def _parse_header_line(self, line):
+        """Parse header line to extract version, date and time
+
+        Expected format: { Using PSTWRITER 16.3.0 p002Mar-22-2016 at 10:54:51 }
+
+        Keyword Arguments:
+        line -- header line string
+        """
+        parts = line.split()
+        if len(parts) >= 7:
+            self.version = parts[3]
+            date_field = parts[4]
+            if len(date_field) > 4:
+                self.date = date_field[4:]  # Strip prefix like 'p002'
+            else:
+                self.date = date_field
+            self.time = parts[6]
 
     def _build_lookup_dicts(self):
         """Build lookup dictionaries from net_list for fast access"""
@@ -303,13 +338,15 @@ class AllegroNetList(object):
 
     def single_net_list2string(self):
         """Return single net-list data as string
+
+        A "single net" is one with few connections (typically dangling or stub nets).
         """
         lines = []
         for i in range(self.net_list_length()):
-            string = self.net2string(i)
-            length = len(string.split())
-            if length < 5:
-                lines.append(string)
+            net_string = self.net2string(i)
+            word_count = len(net_string.split())
+            if word_count < SINGLE_NET_MAX_NODES + 1:
+                lines.append(net_string)
         return '\n'.join(lines) + '\n' if lines else ''
 
     def net_list_title(self):

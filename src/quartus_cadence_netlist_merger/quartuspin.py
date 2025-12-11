@@ -40,52 +40,58 @@ class QuartusPin(object):
 
     def read_file(self, fname):
         """Read and parse Quartus pin file
+
+        The Quartus pin file has three sections:
+        1. Header: Everything before "Pin Name/Usage" line
+        2. Table header: The "Pin Name/Usage" line with column names
+        3. Table line: Separator line (dashes)
+        4. Data: Pin entries in format "net_name : pin : direction : io_standard : ..."
+
         Keyword Arguments:
         fname -- file name to read
         """
-        f = None
+        file_handle = None
         try:
-            # print('read fname: ' + str(fname))
-            f = open(fname, 'r')
-            with f:
-                find_table = 0
-                find_table_line = 0
-                header = ''
-                table_header = ''
-                table_line = ''
-                data = []
+            file_handle = open(fname, 'r')
+            with file_handle:
+                # Parsing state flags
+                found_table_start = False
+                found_table_separator = False
+                # Accumulated data
+                header_lines = ''
+                table_header_line = ''
+                table_separator_line = ''
+                pin_data = []
                 self.data = []
-                for line in f:
-                    s = line.rstrip()
-                    # print(str(s))
+
+                for line in file_handle:
+                    stripped_line = line.rstrip()
                     try:
-                        if not find_table:
-                            if 'Pin Name/Usage' in s:
-                                table_header = s
-                                find_table = 1
+                        if not found_table_start:
+                            # Looking for table header (contains column names)
+                            if 'Pin Name/Usage' in stripped_line:
+                                table_header_line = stripped_line
+                                found_table_start = True
                             else:
-                                header = '%s\n%s' % (header, s)
+                                header_lines = '%s\n%s' % (header_lines, stripped_line)
                         else:
-                            if not find_table_line:
-                                find_table_line = 1
-                                table_line = s
+                            if not found_table_separator:
+                                # First line after header is the separator (dashes)
+                                found_table_separator = True
+                                table_separator_line = stripped_line
                             else:
-                                sf = s.split(':')
-                                sfn = []
-                                for i in sf:
-                                    i = i.replace(' ', '')
-                                    sfn.append(i)
-                                # print('i = \'%s\'' % i)
-                                # print('k = %s' % sfn)
-                                if len(sfn) >= 2:
-                                    data.append([s, sfn[0], sfn[1]])
-                                else:
-                                    # Skip malformed lines
-                                    pass
-                        self.header = header
-                        self.table_header = table_header
-                        self.table_line = table_line
-                        self.data = data
+                                # Parse pin data lines (colon-separated fields)
+                                fields = stripped_line.split(':')
+                                cleaned_fields = [field.replace(' ', '') for field in fields]
+                                if len(cleaned_fields) >= 2:
+                                    net_name = cleaned_fields[0]
+                                    pin_number = cleaned_fields[1]
+                                    pin_data.append([stripped_line, net_name, pin_number])
+
+                        self.header = header_lines
+                        self.table_header = table_header_line
+                        self.table_line = table_separator_line
+                        self.data = pin_data
                     except:
                         print('+-----------------------------------+')
                         print('| Error! With Quartus pin file      |')
@@ -95,8 +101,8 @@ class QuartusPin(object):
             print('| Error! With file: \'%s\'' % fname)
             print('+-----------------------------------+')
         finally:
-            if f:
-                f.close()
+            if file_handle:
+                file_handle.close()
 
     def get_header(self):
         """Returns Quartus file header as string

@@ -25,6 +25,25 @@ from .allegronetlist import AllegroNetList
 # TODO: make several output files
 # FIXME: refdes field is cleared after selecting a file(after the first launch)
 
+# Constants for GUI layout
+MAIN_WINDOW_GEOMETRY = "550x400"
+SETTINGS_DIALOG_GEOMETRY = "300x470"
+
+# Constants for output formatting
+COLUMN_WIDTH = 20  # Width for net name and pin name columns
+
+# Constants for backup management
+MAX_BACKUP_COUNT = 100  # Maximum number of backup files (0-99)
+
+# No-connect pin marker in Cadence netlist
+NC_PIN_MARKER = 'NC'
+
+# Standard power rail voltage names for pin categorization
+POWER_RAIL_NAMES = [
+    '5.0V', '3.3V', '3.0V', '2.5V', '1.8V', '1.5V', '1.35V', '1.25V', '1.2V',
+    '1.1V', '1.0V', '0.9V', '0.8V', '0.75V', '0.675V', 'GND', 'GNDA'
+]
+
 
 class QuartusCadenceMerger(Frame):
     """Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
@@ -34,7 +53,7 @@ class QuartusCadenceMerger(Frame):
         Frame.__init__(self, parent)
         self.read_config_file()
         self.master.title("Quartus Pin and Cadence Allegro Netlist Merger")
-        self.master.geometry("550x400")
+        self.master.geometry(MAIN_WINDOW_GEOMETRY)
         self.pack()
         self.make_widgets()
 
@@ -151,7 +170,7 @@ class QuartusCadenceMerger(Frame):
         self.update_and_save_config()
         win = Toplevel()
         win.title('Output file settings')
-        win.geometry("300x470")
+        win.geometry(SETTINGS_DIALOG_GEOMETRY)
         full_merged     = IntVar()
         signal          = IntVar()
         nosignal        = IntVar()
@@ -297,39 +316,59 @@ class QuartusCadenceMerger(Frame):
         return ''.join(parts)
 
     def build_merged_data(self, require_pin_name, req_net_name):
-        net = AllegroNetList(self.cnl_fname)
-        net.build_refdes_list(self.refdes)
-        pin = self._get_quartus_pin()
-        max_length = 20
-        lines = []
-        for i in range(len(pin.data)):
-            pin_in_pin_file = pin.get_pin(i)
-            net_in_net_file = ''
+        """Build merged data combining Quartus pin and Cadence netlist information
+
+        Creates a row for each pin in the Quartus file, adding the corresponding
+        net name and pin name from the Cadence netlist.
+
+        Keyword Arguments:
+        require_pin_name -- include Cadence pin names in output
+        req_net_name     -- include Cadence net names in output
+        """
+        netlist = AllegroNetList(self.cnl_fname)
+        netlist.build_refdes_list(self.refdes)
+        quartus_pin = self._get_quartus_pin()
+        output_lines = []
+
+        for pin_index in range(len(quartus_pin.data)):
+            pin_number = quartus_pin.get_pin(pin_index)
+
+            # Get net name from Cadence netlist (padded to fixed width)
+            net_name_column = ''
             if req_net_name:
-                net_in_net_file = net.get_net_name4refdes_pin(self.refdes, pin_in_pin_file)
-                net_in_net_file = net_in_net_file + ' ' * (max_length - len(net_in_net_file))
-            pin_name = ''
+                cadence_net_name = netlist.get_net_name4refdes_pin(self.refdes, pin_number)
+                net_name_column = cadence_net_name.ljust(COLUMN_WIDTH)
+
+            # Get pin name from Cadence netlist (padded to fixed width)
+            pin_name_column = ''
             if require_pin_name:
-                pin_name = net.get_refdes_pin_name(self.refdes, pin_in_pin_file)
-                pin_name = pin_name + ' ' * (max_length - len(pin_name))
-            summary = '%s%s' % (pin_name, net_in_net_file)
-            formated_pin_text = pin.data_qpin2string(i).replace(
+                cadence_pin_name = netlist.get_refdes_pin_name(self.refdes, pin_number)
+                pin_name_column = cadence_pin_name.ljust(COLUMN_WIDTH)
+
+            # Combine columns with Quartus pin data
+            prefix_columns = '%s%s' % (pin_name_column, net_name_column)
+            quartus_pin_text = quartus_pin.data_qpin2string(pin_index).replace(
                 'RESERVED_INPUT_WITH_WEAK_PULLUP', 'RESERVED_INPUT_WITH_WEAK_PUL')
-            lines.append('%s %s' % (summary, formated_pin_text))
-        self.merged_data = '\n'.join(lines) + '\n' if lines else ''
+            output_lines.append('%s %s' % (prefix_columns, quartus_pin_text))
 
-    def find_in_merged_data(self, d):
-        lines = []
-        data = self.merged_data.split('\n')
-        for i in data:
-            j = i.split()
-            for k in j:
-                if k == d:
-                    lines.append(i)
-                    break
-        return '\n'.join(lines) + '\n' if lines else ''
+        self.merged_data = '\n'.join(output_lines) + '\n' if output_lines else ''
 
-    nosignal_name = 'NC'
+    def find_in_merged_data(self, search_term):
+        """Find all lines in merged data containing the search term
+
+        Keyword Arguments:
+        search_term -- exact word to search for in merged data
+
+        Returns:
+        String containing all matching lines, or empty string if none found
+        """
+        matching_lines = []
+        data_lines = self.merged_data.split('\n')
+        for line in data_lines:
+            words = line.split()
+            if search_term in words:
+                matching_lines.append(line)
+        return '\n'.join(matching_lines) + '\n' if matching_lines else ''
 
     def table_header2string(self, pin):
         parts = ['\n']
@@ -342,23 +381,22 @@ class QuartusCadenceMerger(Frame):
         return ''.join(parts)
 
     def noconnect2string(self):
-        pin = self._get_quartus_pin()
+        """Generate report section for unconnected (NC) pins"""
+        quartus_pin = self._get_quartus_pin()
         parts = [
             '\n\n\n',
             '* Unconnected Pins\n',
             '|--------------------------------------------------------------------------------|\n',
             '| No Connect (Repeating part of pin list):                                      |\n',
             '|--------------------------------------------------------------------------------|\n',
-            self.table_header2string(pin),
-            self.find_in_merged_data(self.nosignal_name)
+            self.table_header2string(quartus_pin),
+            self.find_in_merged_data(NC_PIN_MARKER)
         ]
         return ''.join(parts)
 
-    pwr_name = ['5.0V', '3.3V', '3.0V', '2.5V', '1.8V', '1.5V', '1.35V', '1.25V', '1.2V',
-                '1.1V', '1.0V', '0.9V', '0.8V', '0.75V', '0.675V', 'GND', 'GNDA']
-
     def power_pins2string(self):
-        pin = self._get_quartus_pin()
+        """Generate report section for power pins grouped by voltage rail"""
+        quartus_pin = self._get_quartus_pin()
         parts = [
             '\n\n\n',
             '* Power Pins\n',
@@ -366,67 +404,87 @@ class QuartusCadenceMerger(Frame):
             '| POWER Pins Only (Repeating part of pin list):                                 |\n',
             '|--------------------------------------------------------------------------------|\n'
         ]
-        for i in self.pwr_name:
-            result = self.find_in_merged_data(i)
-            if result != '':
-                parts.append('\n** Power: %s\n' % i)
-                parts.append(self.table_header2string(pin))
-                parts.append(result)
+        for voltage_rail in POWER_RAIL_NAMES:
+            matching_pins = self.find_in_merged_data(voltage_rail)
+            if matching_pins != '':
+                parts.append('\n** Power: %s\n' % voltage_rail)
+                parts.append(self.table_header2string(quartus_pin))
+                parts.append(matching_pins)
         return ''.join(parts)
 
     nosignal_strings = ''
+
     def only_signal2string(self):
-        pin = self._get_quartus_pin()
+        """Generate report section for signal pins only
+
+        Signal pins are those NOT connected to power rails or marked as NC.
+        Also populates nosignal_strings for use by nosignal2string().
+        """
+        quartus_pin = self._get_quartus_pin()
         parts = [
             '\n\n\n',
             '* Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
             '| SIGNAL Pins Only (Repeating part of pin list):                                |\n',
             '|--------------------------------------------------------------------------------|\n',
-            self.table_header2string(pin)
+            self.table_header2string(quartus_pin)
         ]
-        cut_name_set = set(self.pwr_name + [self.nosignal_name])
-        data = self.merged_data.split('\n')
+        # Create set of power and NC markers for fast lookup
+        excluded_names = set(POWER_RAIL_NAMES + [NC_PIN_MARKER])
+        data_lines = self.merged_data.split('\n')
         signal_lines = []
         nosignal_lines = []
-        for i in data:
-            j = i.split()
-            is_nosignal = any(k in cut_name_set for k in j)
-            if not is_nosignal:
-                signal_lines.append(i)
+
+        for line in data_lines:
+            words = line.split()
+            # Check if any word matches power rail or NC marker
+            is_power_or_nc = any(word in excluded_names for word in words)
+            if not is_power_or_nc:
+                signal_lines.append(line)
             else:
-                nosignal_lines.append(i)
+                nosignal_lines.append(line)
+
         parts.append('\n'.join(signal_lines) + '\n' if signal_lines else '')
         self.nosignal_strings = '\n'.join(nosignal_lines) + '\n' if nosignal_lines else ''
         return ''.join(parts)
 
     def only_formatted_signal2string(self):
-        pin = self._get_quartus_pin()
+        """Generate report section for signal pins with formatting applied
+
+        Similar to only_signal2string() but applies:
+        - Uppercase conversion
+        - Rename mask substitutions from config file
+        - Removal of bracket characters []()
+        """
+        quartus_pin = self._get_quartus_pin()
         parts = [
             '\n\n\n',
             '* Formatted Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
             '| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                      |\n',
             '|--------------------------------------------------------------------------------|\n',
-            self.table_header2string(pin)
+            self.table_header2string(quartus_pin)
         ]
-        cut_name_set = set(self.pwr_name + [self.nosignal_name])
-        data = self.merged_data.split('\n')
+        # Create set of power and NC markers for fast lookup
+        excluded_names = set(POWER_RAIL_NAMES + [NC_PIN_MARKER])
+        data_lines = self.merged_data.split('\n')
         self.read_rename_mask_file(self.fname_rename)
-        signal_lines = []
-        for i in data:
-            j = i.split()
-            is_nosignal = any(k in cut_name_set for k in j)
-            if not is_nosignal:
-                line = i.upper()
-                for m in self.rename_mask:
-                    line = line.replace(m[0], m[1])
-                line = line.replace('[', '')
-                line = line.replace(']', '')
-                line = line.replace('(', '')
-                line = line.replace(')', '')
-                signal_lines.append(line)
-        parts.append('\n'.join(signal_lines) + '\n' if signal_lines else '')
+        formatted_signal_lines = []
+
+        for line in data_lines:
+            words = line.split()
+            is_power_or_nc = any(word in excluded_names for word in words)
+            if not is_power_or_nc:
+                # Apply formatting: uppercase and rename substitutions
+                formatted_line = line.upper()
+                for old_name, new_name in self.rename_mask:
+                    formatted_line = formatted_line.replace(old_name, new_name)
+                # Remove bracket characters
+                for bracket_char in '[]()':
+                    formatted_line = formatted_line.replace(bracket_char, '')
+                formatted_signal_lines.append(formatted_line)
+
+        parts.append('\n'.join(formatted_signal_lines) + '\n' if formatted_signal_lines else '')
         return ''.join(parts)
 
     rename_mask = []
@@ -461,38 +519,45 @@ class QuartusCadenceMerger(Frame):
         return s
 
     def nosignal2string(self):
+        """Generate report section for non-signal pins (power and NC)
+
+        Uses cached nosignal_strings from only_signal2string() if available.
+        """
         if self.nosignal_strings == '':
             self.only_signal2string()
-        pin = self._get_quartus_pin()
+        quartus_pin = self._get_quartus_pin()
         parts = [
             '\n\n\n',
             '* Non-Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
             '| Non-Signal Pins (Repeating part of pin list):                                 |\n',
             '|--------------------------------------------------------------------------------|\n',
-            self.table_header2string(pin),
+            self.table_header2string(quartus_pin),
             self.nosignal_strings
         ]
         return ''.join(parts)
 
-    def write2newfile(self, fname, s):
-        """Write data to file
-        If file does not exist, new file will be created
-        If file exists, it will be renamed and new file will be created
+    def write2newfile(self, fname, data_string):
+        """Write data to file with automatic backup rotation
+
+        If file does not exist, creates new file.
+        If file exists, renames it to fname,N (where N is 0-99) before writing.
+
         Keyword Arguments:
-        fname -- file name
-        s     -- string data to write
+        fname       -- file name
+        data_string -- string data to write
+
         Returns:
         True if successful, False if error occurred
         """
         if os.path.exists(fname):
             backup_created = False
-            for i in range(100):
-                new_fname = '%s,%s' % (fname, i)
-                if not os.path.exists(new_fname):
+            for backup_index in range(MAX_BACKUP_COUNT):
+                backup_fname = '%s,%s' % (fname, backup_index)
+                if not os.path.exists(backup_fname):
                     try:
-                        os.rename(fname, new_fname)
-                        print('renamed old file to %s' % new_fname)
+                        os.rename(fname, backup_fname)
+                        print('renamed old file to %s' % backup_fname)
                         backup_created = True
                         break
                     except OSError:
@@ -502,10 +567,10 @@ class QuartusCadenceMerger(Frame):
                         return False
             if not backup_created:
                 print('+-----------------------------------+')
-                print('| Warning! All 100 backup slots full for: \'%s\'' % fname)
+                print('| Warning! All %d backup slots full for: \'%s\'' % (MAX_BACKUP_COUNT, fname))
                 print('| Overwriting existing file without backup')
                 print('+-----------------------------------+')
-        return self.write2file(fname, s)
+        return self.write2file(fname, data_string)
 
     def write2file(self, fname, s):
         """Write data to file with error handling
