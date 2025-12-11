@@ -176,7 +176,7 @@ class QuartusCadenceMerger(Frame):
 
     def write_template_file(self):
         if not os.path.exists(self.fname_rename):
-            self.write2file(self.fname_rename, 'had_name has_name')
+            self.write2file(self.fname_rename, 'old_name new_name')
         if not os.path.exists(self.fname_header):
             self.write2file(self.fname_header, '')
 

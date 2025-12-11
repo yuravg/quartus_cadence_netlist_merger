@@ -274,7 +274,7 @@ class AllegroNetList(object):
             return ''
 
     def net2string(self, i):
-        """Returns full net as sting (net name and her refdes and pins)
+        """Returns full net as string (net name and its refdes and pins)
         Keyword Arguments:
         i -- net name index
         """
@@ -287,7 +287,7 @@ class AllegroNetList(object):
         return net_and_node
 
     def __str__(self):
-        """Returns net-list as sting
+        """Returns net-list as string
         """
         s = ''
         for i in range(self.net_list_length()):
@@ -298,7 +298,7 @@ class AllegroNetList(object):
         return s
 
     def net_list2string(self):
-        """Return net-list data as stirng
+        """Return net-list data as string
         """
         s = ''
         for i in range(self.net_list_length()):
@@ -307,7 +307,7 @@ class AllegroNetList(object):
         return s
 
     def single_net_list2string(self):
-        """Return single net-list data as stirng
+        """Return single net-list data as string
         """
         s = ''
         for i in range(self.net_list_length()):
@@ -318,7 +318,7 @@ class AllegroNetList(object):
         return s
 
     def net_list_title(self):
-        """Return net-list title as stirng
+        """Return net-list title as string
         """
         date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         s = ''
@@ -348,7 +348,7 @@ class AllegroNetList(object):
         return s
 
     def all_data2string(self):
-        """Return all net-list data (tilte, data, warnings) as string
+        """Return all net-list data (title, data, warnings) as string
         """
         s = self.net_list_title() + '\n'
         s = s + self.net_list2string()

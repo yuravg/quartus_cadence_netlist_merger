@@ -1,17 +1,13 @@
 #!/usr/bin/env python
 
-# Time-stamp: <2017-04-14 15:43:04>
-
 """
-Work wiht configuration file by ConfigParser
+Work with configuration file by ConfigParser
 """
 
 try:
     from configparser import ConfigParser
 except ImportError:  # for version < 3.0
     from ConfigParser import ConfigParser
-
-__version__ = '0.1.3'
 
 config = ConfigParser()
 
@@ -30,7 +26,7 @@ class ConfigFile(object):
 
     def __init__(self, fname='fname.ini', k={}, verbosity=0):
         """Open configuration file name, read keys
-        If configuration file has key, it's value will override initial valueq
+        If configuration file has key, its value will override initial value
         Keyword Arguments:
         fname     -- file name
         k         -- configuration keys
@@ -79,10 +75,10 @@ class ConfigFile(object):
             self.k[i] = k[i]
 
     def edit_key_dict(self, k):
-        """Edit configuration configuration keys, edit exist, add new
+        """Edit configuration keys, edit existing or add new
         Input keys in dictionary format
         Keyword Arguments:
-        k --keys of configuration file
+        k -- keys of configuration file
         """
         self.update_keys(k)
         if self.verbosity:
@@ -91,11 +87,11 @@ class ConfigFile(object):
                     print('Edit key: section: %s, keys: %s=%s' % (section, i, str(k[section][i])))
 
     def edit_key(self, section, kname, kval):
-        """Edit key with usage them field name
+        """Edit key using field names
         Keyword Arguments:
-        sections -- sections of keys
-        kname    -- name of keys
-        kval     -- value of keys
+        section -- section of key
+        kname   -- name of key
+        kval    -- value of key
         """
         if self.verbosity:
             print('Edit key: section: %s, keys: %s=%s' % (str(section), str(kname), str(kval)))
@@ -152,12 +148,12 @@ if __name__ == '__main__':
     def write_template_file(fname):
         f = open(fname, 'w')
         f.write('[Default1]\n')
-        f.write('name10 = orign10\n')
-        f.write('name11 = orign11\n')
+        f.write('name10 = origin10\n')
+        f.write('name11 = origin11\n')
         f.write('\n')
         f.write('[Default0]\n')
-        f.write('name01 = orign01\n')
-        f.write('name00 = orign00\n')
+        f.write('name01 = origin01\n')
+        f.write('name00 = origin00\n')
         f.close()
 
     fname = 'configfile.ini'

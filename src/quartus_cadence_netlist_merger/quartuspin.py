@@ -148,7 +148,7 @@ class QuartusPin(object):
         Keyword Arguments:
         i -- net name index
         Returns:
-        Net name or false if there are note this net name
+        Net name or false if there is no such net name
         """
         if self.check_data_index(i):
             net = self.data[i][1]
@@ -170,7 +170,7 @@ class QuartusPin(object):
             return False
 
     def __str__(self):
-        """Returns net-list as sting
+        """Returns net-list as string
         """
         s = ''
         for i in range(self.data_length()):
