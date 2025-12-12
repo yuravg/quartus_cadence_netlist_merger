@@ -6,6 +6,7 @@ Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
 
 import sys
 import os
+import subprocess
 try:
     from tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
     from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
@@ -337,9 +338,20 @@ class QuartusCadenceMerger(Frame):
             if sys.platform == 'win32':
                 os.startfile(output_dir)
             elif sys.platform == 'darwin':
-                os.system('open "%s"' % output_dir)
+                # Use Popen to launch without blocking, suppress all output
+                with open(os.devnull, 'w') as devnull:
+                    subprocess.Popen(['open', output_dir],
+                                     stdout=devnull,
+                                     stderr=devnull,
+                                     close_fds=True)
             else:
-                os.system('xdg-open "%s"' % output_dir)
+                # Use Popen to launch without blocking, suppress all output
+                # (prevents FFmpeg warnings from file manager thumbnail generation)
+                with open(os.devnull, 'w') as devnull:
+                    subprocess.Popen(['xdg-open', output_dir],
+                                     stdout=devnull,
+                                     stderr=devnull,
+                                     close_fds=True)
         except:
             messagebox.showinfo('Output Directory', output_dir)
 
