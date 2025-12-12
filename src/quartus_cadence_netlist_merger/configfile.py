@@ -32,12 +32,21 @@ class ConfigFile(object):
         k         -- configuration keys
         verbosity -- verbosity for work with config file (1 - for enable verbosity)
         """
+        # Validate filename
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid config filename    |')
+            print('| Please provide a valid filename   |')
+            print('+-----------------------------------+')
+            raise ValueError('Invalid config filename: %s' % str(fname))
+
         if verbosity == 1:
             self.verbosity = 1
         else:
             self.verbosity = 0
         self.fname = fname
         config.optionxform = str
+        # ConfigParser.read() silently ignores missing files, which is OK for config files
         config.read(fname)
         # override from file:
         for section in k:
@@ -112,15 +121,43 @@ class ConfigFile(object):
 
     def write2file(self):
         """Write keys to configuration file
+        Returns:
+        True if successful, False if error occurred
         """
-        sections = config.sections()
-        for section in sorted(self.k):
-            if section not in sections:
-                config.add_section(section)
-            for i in sorted(self.k[section]):
-                config.set(section, i, self.k[section][i])
-        with open(self.fname, 'w') as configfile:
-            config.write(configfile)
+        if not self.fname or not isinstance(self.fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid config filename    |')
+            print('+-----------------------------------+')
+            return False
+
+        f = None
+        try:
+            sections = config.sections()
+            for section in sorted(self.k):
+                if section not in sections:
+                    config.add_section(section)
+                for i in sorted(self.k[section]):
+                    config.set(section, i, self.k[section][i])
+            f = open(self.fname, 'w')
+            config.write(f)
+            return True
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot write config file   |')
+            print('| File: \'%s\'' % self.fname)
+            print('| Check file permissions and disk   |')
+            print('| space                              |')
+            print('+-----------------------------------+')
+            return False
+        except:
+            print('+-----------------------------------+')
+            print('| Error! Writing configuration      |')
+            print('| File: \'%s\'' % self.fname)
+            print('+-----------------------------------+')
+            return False
+        finally:
+            if f:
+                f.close()
 
     def __str__(self):
         s = 'File name: %s' % str(self.fname)

@@ -3,6 +3,8 @@
 """Get data from Quartus pin file
 """
 
+import os
+
 
 class QuartusPin(object):
     """Quartus pin file data
@@ -50,6 +52,22 @@ class QuartusPin(object):
         Keyword Arguments:
         fname -- file name to read
         """
+        # Validate filename
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid pin file name      |')
+            print('| Please provide a valid filename   |')
+            print('+-----------------------------------+')
+            return
+
+        if not os.path.exists(fname):
+            print('+-----------------------------------+')
+            print('| Error! Pin file not found         |')
+            print('| File: \'%s\'' % fname)
+            print('| Please check the file path        |')
+            print('+-----------------------------------+')
+            return
+
         file_handle = None
         try:
             file_handle = open(fname, 'r')
@@ -94,11 +112,39 @@ class QuartusPin(object):
                         self.data = pin_data
                     except:
                         print('+-----------------------------------+')
-                        print('| Error! With Quartus pin file      |')
+                        print('| Error! Parsing pin data line      |')
+                        print('| Line: \'%s\'' % stripped_line[:40])
+                        print('| Check file format                 |')
                         print('+-----------------------------------+')
+
+            # Validate parsed data
+            if not found_table_start:
+                print('+-----------------------------------+')
+                print('| Warning! No pin table found       |')
+                print('| File: \'%s\'' % fname)
+                print('| Expected \'Pin Name/Usage\' header  |')
+                print('| Check Quartus pin file format     |')
+                print('+-----------------------------------+')
+
+            if len(pin_data) == 0:
+                print('+-----------------------------------+')
+                print('| Warning! No pins found in file    |')
+                print('| File: \'%s\'' % fname)
+                print('| Check file format and content     |')
+                print('+-----------------------------------+')
+
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot read pin file       |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file permissions            |')
+            print('+-----------------------------------+')
         except:
             print('+-----------------------------------+')
-            print('| Error! With file: \'%s\'' % fname)
+            print('| Error! Parsing pin file           |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file format (expected       |')
+            print('| Quartus pin file format)          |')
             print('+-----------------------------------+')
         finally:
             if file_handle:

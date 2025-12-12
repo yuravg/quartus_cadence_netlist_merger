@@ -259,6 +259,51 @@ class QuartusCadenceMerger(Frame):
     def build(self):
         """Build merged report by combining Quartus Pin file with Cadence netlist"""
         self.update_and_save_config()
+
+        # Validate input files before processing
+        if not self.cnl_fname or not self.cnl_fname.strip():
+            self.gui_state.set('Error! Please select a Cadence netlist file')
+            print('+-----------------------------------+')
+            print('| Error! No netlist file selected   |')
+            print('| Please select a netlist file      |')
+            print('+-----------------------------------+')
+            return
+
+        if not os.path.exists(self.cnl_fname):
+            self.gui_state.set('Error! Netlist file not found: %s' % self.cnl_fname)
+            print('+-----------------------------------+')
+            print('| Error! Netlist file not found     |')
+            print('| File: \'%s\'' % self.cnl_fname)
+            print('| Please check the file path        |')
+            print('+-----------------------------------+')
+            return
+
+        if not self.qp_fname or not self.qp_fname.strip():
+            self.gui_state.set('Error! Please select a Quartus pin file')
+            print('+-----------------------------------+')
+            print('| Error! No pin file selected       |')
+            print('| Please select a Quartus pin file  |')
+            print('+-----------------------------------+')
+            return
+
+        if not os.path.exists(self.qp_fname):
+            self.gui_state.set('Error! Pin file not found: %s' % self.qp_fname)
+            print('+-----------------------------------+')
+            print('| Error! Pin file not found         |')
+            print('| File: \'%s\'' % self.qp_fname)
+            print('| Please check the file path        |')
+            print('+-----------------------------------+')
+            return
+
+        if not self.refdes or not self.refdes.strip():
+            self.gui_state.set('Error! Please enter a refdes')
+            print('+-----------------------------------+')
+            print('| Error! No refdes specified        |')
+            print('| Please enter a component refdes   |')
+            print('| (e.g., DD2, U1, IC5)              |')
+            print('+-----------------------------------+')
+            return
+
         self.gui_state.set('Running...')
         fname = 'MergedQC.rpt'
         fname_summary = 'MergedQC.summary.rpt'
@@ -494,28 +539,78 @@ class QuartusCadenceMerger(Frame):
         Keyword Arguments:
         fname -- rename mask file name
         """
-        if os.path.exists(fname):
-            try:
-                with open(fname) as f:
-                    for line in f:
-                        parts = line.split()
-                        if len(parts) >= 2:
-                            a = parts[0]
-                            b = parts[1]
-                            self.rename_mask.append([a, b])
-            except IOError:
-                print('Error! Can\'t read rename mask file: \'%s\'' % fname)
-            except:
-                print('Error! Can\'t parse rename mask file: \'%s\', wrong format' % fname)
+        # Validate filename
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid rename mask file   |')
+            print('| Please provide a valid filename   |')
+            print('+-----------------------------------+')
+            return
+
+        if not os.path.exists(fname):
+            # Silently ignore missing rename mask file (it's optional)
+            return
+
+        try:
+            with open(fname) as f:
+                line_num = 0
+                for line in f:
+                    line_num += 1
+                    parts = line.split()
+                    if len(parts) >= 2:
+                        a = parts[0]
+                        b = parts[1]
+                        self.rename_mask.append([a, b])
+                    elif len(parts) == 1:
+                        # Warn about malformed lines
+                        print('Warning! Rename mask line %d has only 1 field (expected 2)' % line_num)
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot read rename mask    |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file permissions            |')
+            print('+-----------------------------------+')
+        except:
+            print('+-----------------------------------+')
+            print('| Error! Parsing rename mask file   |')
+            print('| File: \'%s\'' % fname)
+            print('| Expected format: old_name new_name|')
+            print('+-----------------------------------+')
 
     def read_header_file(self, fname):
+        """Read custom header file for summary report
+        Keyword Arguments:
+        fname -- header file name
+        Returns:
+        Header content as string, or empty string if file doesn't exist
+        """
         s = ''
-        if os.path.exists(fname):
-            try:
-                with open(fname) as f:
-                    s = f.read()
-            except:
-                print('Error! Can\'t read header file: \'%s\', wrong format' % fname)
+
+        # Validate filename
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid header file name   |')
+            print('+-----------------------------------+')
+            return s
+
+        if not os.path.exists(fname):
+            # Silently ignore missing header file (it's optional)
+            return s
+
+        try:
+            with open(fname) as f:
+                s = f.read()
+        except IOError:
+            print('+-----------------------------------+')
+            print('| Error! Cannot read header file    |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file permissions            |')
+            print('+-----------------------------------+')
+        except:
+            print('+-----------------------------------+')
+            print('| Error! Reading header file        |')
+            print('| File: \'%s\'' % fname)
+            print('+-----------------------------------+')
         return s
 
     def nosignal2string(self):

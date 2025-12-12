@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 import datetime
+import os
 
 # Constants for netlist parsing
 SINGLE_NET_MAX_NODES = 100  # Max nodes for a net to be considered "single"
@@ -55,16 +56,50 @@ class AllegroNetList(object):
         - State 2: Reading net name on next line
         - State 3: Collecting NODE_NAME entries until next NET_NAME or END
         """
+        # Validate filename
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid netlist filename   |')
+            print('| Please provide a valid filename   |')
+            print('+-----------------------------------+')
+            return
+
+        if not os.path.exists(fname):
+            print('+-----------------------------------+')
+            print('| Error! Netlist file not found     |')
+            print('| File: \'%s\'' % fname)
+            print('| Please check the file path        |')
+            print('+-----------------------------------+')
+            return
+
         file_handle = None
         try:
             file_handle = open(fname, 'r')
             with file_handle:
                 self._parse_netlist_content(file_handle)
+
+            # Validate parsed data
+            if len(self.net_list) == 0:
+                print('+-----------------------------------+')
+                print('| Warning! No nets found in netlist |')
+                print('| File: \'%s\'' % fname)
+                print('| Check file format and content     |')
+                print('+-----------------------------------+')
+
             self.net_list.sort()
             self._build_lookup_dicts()
-        except OSError:
+        except IOError:
             print('+-----------------------------------+')
-            print('| Error! With file: \'%s\'' % fname)
+            print('| Error! Cannot read netlist file   |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file permissions            |')
+            print('+-----------------------------------+')
+        except:
+            print('+-----------------------------------+')
+            print('| Error! Parsing netlist file       |')
+            print('| File: \'%s\'' % fname)
+            print('| Check file format (expected       |')
+            print('| Cadence Allegro format)           |')
             print('+-----------------------------------+')
         finally:
             if file_handle:
@@ -260,6 +295,23 @@ class AllegroNetList(object):
         Returns true if find refdes and just added it to refdes list,
         or false in there are not refdes in net-list
         """
+        # Validate refdes
+        if not refdes or not isinstance(refdes, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid refdes value       |')
+            print('| Please provide a valid refdes     |')
+            print('| (e.g., DD2, U1, IC5)              |')
+            print('+-----------------------------------+')
+            return False
+
+        if not refdes.strip():
+            print('+-----------------------------------+')
+            print('| Error! Empty refdes value         |')
+            print('| Please enter a component refdes   |')
+            print('| (e.g., DD2, U1, IC5)              |')
+            print('+-----------------------------------+')
+            return False
+
         refdes_list = [refdes]
         find_net = 0
         if self.find_in_refdes_list(refdes):
@@ -275,7 +327,12 @@ class AllegroNetList(object):
         if find_net:
             return True
         else:
-            print('Error! Can\'t find refdes: \'%s\' in net-list: %s' % (refdes, self.fname))
+            print('+-----------------------------------+')
+            print('| Error! Refdes not found in netlist|')
+            print('| Refdes: \'%s\'' % refdes)
+            print('| File: \'%s\'' % self.fname)
+            print('| Check refdes name and netlist     |')
+            print('+-----------------------------------+')
             return False
 
     def get_net_name4refdes_pin(self, refdes, pin):
