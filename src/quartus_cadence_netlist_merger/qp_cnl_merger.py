@@ -7,13 +7,13 @@ Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
 import sys
 import os
 try:
-    from tkinter import Frame, Button, Label, StringVar, Entry
-    from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W
+    from tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
+    from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
     from tkinter.filedialog import askopenfilename
     from tkinter import messagebox
 except ImportError:  # for version < 3.0
-    from Tkinter import Frame, Button, Label, StringVar, Entry
-    from Tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W
+    from Tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
+    from Tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
     from tkFileDialog import askopenfilename
     import tkMessageBox as messagebox
 
@@ -28,8 +28,8 @@ from .allegronetlist import AllegroNetList
 # FIXME: refdes field is cleared after selecting a file(after the first launch)
 
 # Constants for GUI layout
-MAIN_WINDOW_GEOMETRY = "550x400"
-SETTINGS_DIALOG_GEOMETRY = "300x470"
+MAIN_WINDOW_GEOMETRY = "620x580"
+SETTINGS_DIALOG_GEOMETRY = "400x500"
 
 # Constants for output formatting
 COLUMN_WIDTH = 20  # Width for net name and pin name columns
@@ -133,39 +133,68 @@ class QuartusCadenceMerger(Frame):
     def make_widgets(self):
         """Create and layout all GUI widgets"""
         # Cadence Netlist File section
-        Label(self, text='Cadence Netlist File:').pack(pady=(10, 2))
+        Label(self, text='Cadence Netlist File:', font=('Arial', 11, 'bold')).pack(pady=(10, 2))
         fname = self.cnl_fname
         self.gui_cnl_fname = StringVar()
-        self.gui_cnl_fname.set(fname)
-        Label(self, textvariable=self.gui_cnl_fname).pack(pady=(0, 5))
+        self.gui_cnl_fname.set(self._get_display_filename(fname))
+        Label(self, textvariable=self.gui_cnl_fname, font=('Arial', 11)).pack(pady=(0, 0))
+        self.gui_cnl_path = StringVar()
+        self.gui_cnl_path.set(self._get_display_path(fname))
+        Label(self, textvariable=self.gui_cnl_path, fg='gray20', font=('Arial', 11)).pack(pady=(0, 5))
         Button(self, text='Browse...', command=self.select_netlist, height=1, width=10).pack(pady=(0, 5))
 
         # Quartus Pin File section
-        Label(self, text='Quartus Pin File:').pack(pady=(10, 2))
+        Label(self, text='Quartus Pin File:', font=('Arial', 11, 'bold')).pack(pady=(10, 2))
         qp_fname = self.qp_fname
         self.gui_qp_fname = StringVar()
-        self.gui_qp_fname.set(qp_fname)
-        Label(self, textvariable=self.gui_qp_fname).pack(pady=(0, 5))
+        self.gui_qp_fname.set(self._get_display_filename(qp_fname))
+        Label(self, textvariable=self.gui_qp_fname, font=('Arial', 11)).pack(pady=(0, 0))
+        self.gui_qp_path = StringVar()
+        self.gui_qp_path.set(self._get_display_path(qp_fname))
+        Label(self, textvariable=self.gui_qp_path, fg='gray20', font=('Arial', 11)).pack(pady=(0, 5))
         Button(self, text='Browse...', command=self.select_qp_file, height=1, width=10).pack(pady=(0, 5))
 
         # Capture Refdes section
-        Label(self, text='Capture Refdes:').pack(pady=(10, 2))
+        Label(self, text='Capture Refdes:', font=('Arial', 11, 'bold')).pack(pady=(10, 2))
+        refdes_frame = Frame(self)
+        refdes_frame.pack(pady=(0, 2))
         self.gui_refdes = StringVar()
         self.gui_refdes.set(self.refdes)
-        ent = Entry(self, textvariable=self.gui_refdes, width=30)
-        ent.pack(pady=(0, 5))
+        ent = Entry(refdes_frame, textvariable=self.gui_refdes, width=8)
+        ent.pack(side=LEFT, padx=(0, 5))
+        Label(self, text='(e.g., D1 or DD1, etc.)', fg='gray').pack(pady=(0, 5))
 
         # Generate button and status
-        Button(self, text='Generate Merged Report', command=self.build, height=1, width=20).pack(pady=(15, 10))
-        self.gui_state = StringVar()
-        self.gui_state.set('Ready')
-        Label(self, textvariable=self.gui_state, wraplength=500, justify=LEFT).pack(pady=(0, 10))
+        Button(self, text='Generate Merged Report', command=self.build, height=2, width=25,
+               bg='#4CAF50', fg='white', font=('Arial', 10, 'bold')).pack(pady=(15, 10))
+
+        # Status message area with scrollbar
+        status_frame = Frame(self)
+        status_frame.pack(fill='both', expand=True, pady=(0, 5), padx=10)
+
+        # Scrollbar for status text
+        scrollbar = Scrollbar(status_frame, orient=VERTICAL)
+        scrollbar.pack(side=RIGHT, fill='y')
+
+        # Text widget for status messages
+        self.status_text = Text(status_frame, height=6, wrap='word',
+                                yscrollcommand=scrollbar.set, state=DISABLED,
+                                font=('Arial', 10))
+        self.status_text.pack(side=LEFT, fill='both', expand=True)
+        scrollbar.config(command=self.status_text.yview)
+
+        # Set initial status
+        self._set_status('Ready')
 
         # Bottom buttons
-        Button(self, text='Settings',
-               command=self.run_config_dialog, height=1, width=10).pack(side=LEFT, padx=(10, 5), pady=10)
-        Button(self, text='Exit',
-               command=self.save_and_exit, height=1, width=10).pack(side=RIGHT, padx=(5, 10), pady=10)
+        bottom_frame = Frame(self)
+        bottom_frame.pack(side='bottom', fill='x', pady=10)
+        Button(bottom_frame, text='Settings',
+               command=self.run_config_dialog, height=1, width=10).pack(side=LEFT, padx=(10, 5))
+        Button(bottom_frame, text='Open Output Dir',
+               command=self._open_output_directory, height=1, width=13).pack(side=LEFT, padx=(5, 5))
+        Button(bottom_frame, text='Exit',
+               command=self.save_and_exit, height=1, width=10).pack(side=RIGHT, padx=(5, 10))
 
         # Keyboard shortcuts
         self.master.bind('<Control-q>', lambda event: self.save_and_exit())
@@ -246,14 +275,16 @@ class QuartusCadenceMerger(Frame):
 
     def update_gui2self(self):
         """Update internal state from GUI variables"""
-        self.cnl_fname = self.gui_cnl_fname.get()
-        self.qp_fname = self.gui_qp_fname.get()
+        # Note: File paths are updated in select_* methods, only refdes is updated here
+        # gui_cnl_fname and gui_qp_fname are display-only (show just filename)
         self.refdes = self.gui_refdes.get()
 
     def update_self2gui(self):
         """Update GUI variables from internal state"""
-        self.gui_cnl_fname.set(self.cnl_fname)
-        self.gui_qp_fname.set(self.qp_fname)
+        self.gui_cnl_fname.set(self._get_display_filename(self.cnl_fname))
+        self.gui_cnl_path.set(self._get_display_path(self.cnl_fname))
+        self.gui_qp_fname.set(self._get_display_filename(self.qp_fname))
+        self.gui_qp_path.set(self._get_display_path(self.qp_fname))
         self.gui_refdes.set(self.refdes)
 
     def update_and_save_config(self):
@@ -268,6 +299,67 @@ class QuartusCadenceMerger(Frame):
         message -- error message to display
         """
         messagebox.showerror(title, message)
+
+    def _get_display_filename(self, filepath):
+        """Get display name for file (just filename, or message if empty)
+        Keyword Arguments:
+        filepath -- full file path
+        Returns:
+        Filename only, or '(not selected)' if empty
+        """
+        if not filepath or not filepath.strip():
+            return '(not selected)'
+        return os.path.basename(filepath)
+
+    def _get_display_path(self, filepath):
+        """Get directory path for display
+        Keyword Arguments:
+        filepath -- full file path
+        Returns:
+        Directory path, or empty string if no file selected
+        """
+        if not filepath or not filepath.strip():
+            return ''
+        dirpath = os.path.dirname(filepath)
+        if not dirpath:
+            dirpath = os.getcwd()
+        return dirpath
+
+    def _clear_refdes(self):
+        """Clear the refdes entry field"""
+        self.gui_refdes.set('')
+
+    def _open_output_directory(self):
+        """Open the output directory in file manager"""
+        output_dir = os.getcwd()
+        try:
+            # Try different methods depending on OS
+            if sys.platform == 'win32':
+                os.startfile(output_dir)
+            elif sys.platform == 'darwin':
+                os.system('open "%s"' % output_dir)
+            else:
+                os.system('xdg-open "%s"' % output_dir)
+        except:
+            messagebox.showinfo('Output Directory', output_dir)
+
+    def _set_status(self, message, append=False):
+        """Update status message in text widget
+        Keyword Arguments:
+        message -- status message to display
+        append  -- if True, append to existing text; if False, replace
+        """
+        self.status_text.config(state=NORMAL)
+        if not append:
+            self.status_text.delete(1.0, END)
+        else:
+            # Add newline before appending if there's existing content
+            current = self.status_text.get(1.0, END).strip()
+            if current:
+                self.status_text.insert(END, '\n')
+        self.status_text.insert(END, message)
+        self.status_text.config(state=DISABLED)
+        self.status_text.see(END)  # Auto-scroll to bottom
 
     merged_data = ''
 
@@ -288,7 +380,7 @@ class QuartusCadenceMerger(Frame):
         if not self.cnl_fname or not self.cnl_fname.strip():
             error_msg = 'Please select a Cadence netlist file using the Browse button.'
             self.show_error('No Netlist File', error_msg)
-            self.gui_state.set('Error! No netlist file selected')
+            self._set_status('Error! No netlist file selected')
             print('+-----------------------------------+')
             print('| Error! No netlist file selected   |')
             print('| Please select a netlist file      |')
@@ -298,7 +390,7 @@ class QuartusCadenceMerger(Frame):
         if not os.path.exists(self.cnl_fname):
             error_msg = 'Netlist file not found:\n%s\n\nPlease check the file path.' % self.cnl_fname
             self.show_error('File Not Found', error_msg)
-            self.gui_state.set('Error! Netlist file not found')
+            self._set_status('Error! Netlist file not found')
             print('+-----------------------------------+')
             print('| Error! Netlist file not found     |')
             print('| File: \'%s\'' % self.cnl_fname)
@@ -309,7 +401,7 @@ class QuartusCadenceMerger(Frame):
         if not self.qp_fname or not self.qp_fname.strip():
             error_msg = 'Please select a Quartus pin file using the Browse button.'
             self.show_error('No Pin File', error_msg)
-            self.gui_state.set('Error! No pin file selected')
+            self._set_status('Error! No pin file selected')
             print('+-----------------------------------+')
             print('| Error! No pin file selected       |')
             print('| Please select a Quartus pin file  |')
@@ -319,7 +411,7 @@ class QuartusCadenceMerger(Frame):
         if not os.path.exists(self.qp_fname):
             error_msg = 'Pin file not found:\n%s\n\nPlease check the file path.' % self.qp_fname
             self.show_error('File Not Found', error_msg)
-            self.gui_state.set('Error! Pin file not found')
+            self._set_status('Error! Pin file not found')
             print('+-----------------------------------+')
             print('| Error! Pin file not found         |')
             print('| File: \'%s\'' % self.qp_fname)
@@ -330,7 +422,7 @@ class QuartusCadenceMerger(Frame):
         if not self.refdes or not self.refdes.strip():
             error_msg = 'Please enter a component refdes (e.g., DD2, U1, IC5).'
             self.show_error('No Refdes Specified', error_msg)
-            self.gui_state.set('Error! No refdes specified')
+            self._set_status('Error! No refdes specified')
             print('+-----------------------------------+')
             print('| Error! No refdes specified        |')
             print('| Please enter a component refdes   |')
@@ -338,25 +430,25 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return
 
-        self.gui_state.set('Reading netlist and pin files...')
+        # self._set_status('Reading netlist and pin files...')
         self.update_idletasks()  # Force GUI update
 
         fname = 'MergedQC.rpt'
         fname_summary = 'MergedQC.summary.rpt'
         date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
-        self.gui_state.set('Building merged data...')
+        # self._set_status('Building merged data...', append=True)
         self.update_idletasks()
         self.build_merged_data(self.refdes_pin_name, self.net_name)
 
-        self.gui_state.set('Generating main report...')
+        # self._set_status('Generating main report...', append=True)
         self.update_idletasks()
         s = self.header2string(date)
         s = s + self.qp_pin_header2string(self.refdes_pin_name, self.net_name)
         s = s + self.merged_data
         self.write2newfile(fname, s)
 
-        self.gui_state.set('Generating summary report...')
+        # self._set_status('Generating summary report...', append=True)
         self.update_idletasks()
         if not self.full_merged:
             s = self.header2string(date)
@@ -372,13 +464,13 @@ class QuartusCadenceMerger(Frame):
         if self.noconnect:
             s = s + self.noconnect2string()
 
-        self.gui_state.set('Writing output files...')
+        # self._set_status('Writing output files...', append=True)
         self.update_idletasks()
         self.write2newfile(fname_summary, s)
 
         work_dir = os.getcwd()
-        done_msg = 'Done: %s\nWritten files: %s, %s\n(Output directory: %s)' % (date, fname, fname_summary, work_dir)
-        self.gui_state.set(done_msg)
+        done_msg = 'Files created: %s, %s\nOutput directory: %s\nCompleted: %s' % (fname, fname_summary, work_dir, date)
+        self._set_status(done_msg, append=True)
 
     def header2string(self, date):
         time_cnl_fname = self.get_file_mtime(self.cnl_fname)
@@ -701,7 +793,9 @@ class QuartusCadenceMerger(Frame):
                 if not os.path.exists(backup_fname):
                     try:
                         os.rename(fname, backup_fname)
-                        print('renamed old file to %s' % backup_fname)
+                        backup_msg = 'Renamed old file to: %s' % backup_fname
+                        self._set_status(backup_msg, append=True)
+                        self.update_idletasks()
                         backup_created = True
                         break
                     except OSError:
