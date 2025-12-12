@@ -10,10 +10,12 @@ try:
     from tkinter import Frame, Button, Label, StringVar, Entry
     from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W
     from tkinter.filedialog import askopenfilename
+    from tkinter import messagebox
 except ImportError:  # for version < 3.0
     from Tkinter import Frame, Button, Label, StringVar, Entry
     from Tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W
     from tkFileDialog import askopenfilename
+    import tkMessageBox as messagebox
 
 import time
 import datetime
@@ -130,40 +132,47 @@ class QuartusCadenceMerger(Frame):
 
     def make_widgets(self):
         """Create and layout all GUI widgets"""
-        Label(self,  text='Cadence Netlist File:').pack()
+        # Cadence Netlist File section
+        Label(self, text='Cadence Netlist File:').pack(pady=(10, 2))
         fname = self.cnl_fname
         self.gui_cnl_fname = StringVar()
         self.gui_cnl_fname.set(fname)
-        Label(self, textvariable=self.gui_cnl_fname).pack()
-        Button(self, text='Browse...', command=self.select_netlist, height=1, width=10).pack()
+        Label(self, textvariable=self.gui_cnl_fname).pack(pady=(0, 5))
+        Button(self, text='Browse...', command=self.select_netlist, height=1, width=10).pack(pady=(0, 5))
 
-        Label(self, text='').pack()
-        Label(self, text='Quartus Pin File:').pack()
+        # Quartus Pin File section
+        Label(self, text='Quartus Pin File:').pack(pady=(10, 2))
         qp_fname = self.qp_fname
         self.gui_qp_fname = StringVar()
         self.gui_qp_fname.set(qp_fname)
-        Label(self, textvariable=self.gui_qp_fname).pack()
-        Button(self, text='Browse...', command=self.select_qp_file, height=1, width=10).pack()
+        Label(self, textvariable=self.gui_qp_fname).pack(pady=(0, 5))
+        Button(self, text='Browse...', command=self.select_qp_file, height=1, width=10).pack(pady=(0, 5))
 
-        Label(self, text='').pack()
-        Label(self, text='Capture Refdes:').pack()
-
+        # Capture Refdes section
+        Label(self, text='Capture Refdes:').pack(pady=(10, 2))
         self.gui_refdes = StringVar()
         self.gui_refdes.set(self.refdes)
-        ent = Entry(self, textvariable=self.gui_refdes)
-        ent.pack()
+        ent = Entry(self, textvariable=self.gui_refdes, width=30)
+        ent.pack(pady=(0, 5))
 
-        Label(self, text='').pack()
-        Button(self, text='Generate Merged Report', command=self.build, height=1, width=20).pack()
+        # Generate button and status
+        Button(self, text='Generate Merged Report', command=self.build, height=1, width=20).pack(pady=(15, 10))
         self.gui_state = StringVar()
         self.gui_state.set('Ready')
-        Label(self, textvariable=self.gui_state).pack()
-        Label(self, text='').pack()
+        Label(self, textvariable=self.gui_state, wraplength=500, justify=LEFT).pack(pady=(0, 10))
 
+        # Bottom buttons
         Button(self, text='Settings',
-               command=self.run_config_dialog, height=1, width=10).pack(side=LEFT)
+               command=self.run_config_dialog, height=1, width=10).pack(side=LEFT, padx=(10, 5), pady=10)
         Button(self, text='Exit',
-               command=self.save_and_exit, height=1, width=10).pack(side=RIGHT)
+               command=self.save_and_exit, height=1, width=10).pack(side=RIGHT, padx=(5, 10), pady=10)
+
+        # Keyboard shortcuts
+        self.master.bind('<Control-q>', lambda event: self.save_and_exit())
+        self.master.bind('<Control-s>', lambda event: self.run_config_dialog())
+        self.master.bind('<Control-b>', lambda event: self.build())
+        self.master.bind('<F5>', lambda event: self.build())
+        self.master.bind('<Escape>', lambda event: self.save_and_exit())
 
     def run_config_dialog(self):
         """Show settings dialog for output file configuration"""
@@ -187,28 +196,35 @@ class QuartusCadenceMerger(Frame):
         noconnect.set(self.noconnect)
         refdes_pin_name.set(self.refdes_pin_name)
         net_name.set(self.net_name)
+
+        # Output files info section
         label_text = 'Output Files: MergedQC.rpt, MergedQC.summary.rpt'
-        Label(win, text=label_text).pack()
-        Label(win, text='').pack()
-        Label(win, text='Columns (All Files):').pack()
-        Checkbutton(win, text='Cadence Net Name',        variable=net_name        ).pack(anchor=W)
-        Checkbutton(win, text='Cadence Refdes Pin Name', variable=refdes_pin_name ).pack(anchor=W)
-        Label(win, text='').pack()
-        Label(win, text='Groups in Summary File:').pack()
-        Checkbutton(win, text='Full Merged Summary',  variable=full_merged   ).pack(anchor=W)
-        Checkbutton(win, text='Signal Pins',          variable=signal        ).pack(anchor=W)
-        Checkbutton(win, text='Non-Signal Pins',      variable=nosignal      ).pack(anchor=W)
-        Checkbutton(win, text='Formatted Signal Pins', variable=format_signal ).pack(anchor=W)
-        Checkbutton(win, text='Power Pins',           variable=power         ).pack(anchor=W)
-        Checkbutton(win, text='Unconnected Pins',     variable=noconnect     ).pack(anchor=W)
-        Label(win, text='').pack()
-        Button(win, text='OK', command=win.destroy, height=1, width=10).pack()
-        Label(win, text='').pack()
+        Label(win, text=label_text).pack(pady=(10, 5))
+
+        # Columns section
+        Label(win, text='Columns (All Files):').pack(pady=(10, 5))
+        Checkbutton(win, text='Cadence Net Name',        variable=net_name        ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Cadence Refdes Pin Name', variable=refdes_pin_name ).pack(anchor=W, padx=20)
+
+        # Groups section
+        Label(win, text='Groups in Summary File:').pack(pady=(10, 5))
+        Checkbutton(win, text='Full Merged Summary',  variable=full_merged   ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Signal Pins',          variable=signal        ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Non-Signal Pins',      variable=nosignal      ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Formatted Signal Pins', variable=format_signal ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Power Pins',           variable=power         ).pack(anchor=W, padx=20)
+        Checkbutton(win, text='Unconnected Pins',     variable=noconnect     ).pack(anchor=W, padx=20)
+
+        # OK button
+        Button(win, text='OK', command=win.destroy, height=1, width=10).pack(pady=(15, 10))
+
+        # Template files section
         s = 'Create Template Files:'
         s = s + '\n%s - header for summary file' % self.fname_header
         s = s + '\n%s - rename mask file' % self.fname_rename
-        Label(win, text=s, justify=LEFT).pack()
-        Button(win, text='Create Templates', command=self.write_template_file, height=1, width=15).pack()
+        Label(win, text=s, justify=LEFT).pack(pady=(10, 5))
+        Button(win, text='Create Templates', command=self.write_template_file, height=1, width=15).pack(pady=(0, 10))
+
         win.grab_set()
         win.focus_set()
         win.wait_window()
@@ -245,6 +261,14 @@ class QuartusCadenceMerger(Frame):
         self.update_gui2self()
         self.save_config()
 
+    def show_error(self, title, message):
+        """Show error dialog to user
+        Keyword Arguments:
+        title   -- error dialog title
+        message -- error message to display
+        """
+        messagebox.showerror(title, message)
+
     merged_data = ''
 
     # List of groups:
@@ -262,7 +286,9 @@ class QuartusCadenceMerger(Frame):
 
         # Validate input files before processing
         if not self.cnl_fname or not self.cnl_fname.strip():
-            self.gui_state.set('Error! Please select a Cadence netlist file')
+            error_msg = 'Please select a Cadence netlist file using the Browse button.'
+            self.show_error('No Netlist File', error_msg)
+            self.gui_state.set('Error! No netlist file selected')
             print('+-----------------------------------+')
             print('| Error! No netlist file selected   |')
             print('| Please select a netlist file      |')
@@ -270,7 +296,9 @@ class QuartusCadenceMerger(Frame):
             return
 
         if not os.path.exists(self.cnl_fname):
-            self.gui_state.set('Error! Netlist file not found: %s' % self.cnl_fname)
+            error_msg = 'Netlist file not found:\n%s\n\nPlease check the file path.' % self.cnl_fname
+            self.show_error('File Not Found', error_msg)
+            self.gui_state.set('Error! Netlist file not found')
             print('+-----------------------------------+')
             print('| Error! Netlist file not found     |')
             print('| File: \'%s\'' % self.cnl_fname)
@@ -279,7 +307,9 @@ class QuartusCadenceMerger(Frame):
             return
 
         if not self.qp_fname or not self.qp_fname.strip():
-            self.gui_state.set('Error! Please select a Quartus pin file')
+            error_msg = 'Please select a Quartus pin file using the Browse button.'
+            self.show_error('No Pin File', error_msg)
+            self.gui_state.set('Error! No pin file selected')
             print('+-----------------------------------+')
             print('| Error! No pin file selected       |')
             print('| Please select a Quartus pin file  |')
@@ -287,7 +317,9 @@ class QuartusCadenceMerger(Frame):
             return
 
         if not os.path.exists(self.qp_fname):
-            self.gui_state.set('Error! Pin file not found: %s' % self.qp_fname)
+            error_msg = 'Pin file not found:\n%s\n\nPlease check the file path.' % self.qp_fname
+            self.show_error('File Not Found', error_msg)
+            self.gui_state.set('Error! Pin file not found')
             print('+-----------------------------------+')
             print('| Error! Pin file not found         |')
             print('| File: \'%s\'' % self.qp_fname)
@@ -296,7 +328,9 @@ class QuartusCadenceMerger(Frame):
             return
 
         if not self.refdes or not self.refdes.strip():
-            self.gui_state.set('Error! Please enter a refdes')
+            error_msg = 'Please enter a component refdes (e.g., DD2, U1, IC5).'
+            self.show_error('No Refdes Specified', error_msg)
+            self.gui_state.set('Error! No refdes specified')
             print('+-----------------------------------+')
             print('| Error! No refdes specified        |')
             print('| Please enter a component refdes   |')
@@ -304,15 +338,26 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return
 
-        self.gui_state.set('Running...')
+        self.gui_state.set('Reading netlist and pin files...')
+        self.update_idletasks()  # Force GUI update
+
         fname = 'MergedQC.rpt'
         fname_summary = 'MergedQC.summary.rpt'
         date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+        self.gui_state.set('Building merged data...')
+        self.update_idletasks()
         self.build_merged_data(self.refdes_pin_name, self.net_name)
+
+        self.gui_state.set('Generating main report...')
+        self.update_idletasks()
         s = self.header2string(date)
         s = s + self.qp_pin_header2string(self.refdes_pin_name, self.net_name)
         s = s + self.merged_data
         self.write2newfile(fname, s)
+
+        self.gui_state.set('Generating summary report...')
+        self.update_idletasks()
         if not self.full_merged:
             s = self.header2string(date)
         s = self.read_header_file(self.fname_header) + s
@@ -326,7 +371,11 @@ class QuartusCadenceMerger(Frame):
             s = s + self.power_pins2string()
         if self.noconnect:
             s = s + self.noconnect2string()
+
+        self.gui_state.set('Writing output files...')
+        self.update_idletasks()
         self.write2newfile(fname_summary, s)
+
         work_dir = os.getcwd()
         done_msg = 'Done: %s\nWritten files: %s, %s\n(Output directory: %s)' % (date, fname, fname_summary, work_dir)
         self.gui_state.set(done_msg)
@@ -704,18 +753,48 @@ class QuartusCadenceMerger(Frame):
     def select_netlist(self):
         """Show file dialog to select Cadence netlist file"""
         self.update_and_save_config()
-        fname = askopenfilename(filetypes=(("Cadence Netlist", "pstxnet.dat"), ("All files", "*.*")))
+        # Set initial directory based on current file if it exists
+        initial_dir = ''
+        if self.cnl_fname and os.path.exists(self.cnl_fname):
+            initial_dir = os.path.dirname(self.cnl_fname)
+        elif self.cnl_fname:
+            initial_dir = os.path.dirname(self.cnl_fname) if os.path.dirname(self.cnl_fname) else os.getcwd()
+        else:
+            initial_dir = os.getcwd()
+
+        fname = askopenfilename(
+            title='Select Cadence Allegro Netlist File',
+            filetypes=(("Cadence Netlist", "pstxnet.dat"), ("All files", "*.*")),
+            initialdir=initial_dir
+        )
         if fname != '':
             self.cnl_fname = fname
             self.update_self2gui()
+            # Invalidate cache when file changes
+            self._invalidate_quartus_pin_cache()
 
     def select_qp_file(self):
         """Show file dialog to select Quartus Pin file"""
         self.update_and_save_config()
-        fname = askopenfilename(filetypes=(("Quartus Pin File", "*.pin"), ("All files", "*.*")))
+        # Set initial directory based on current file if it exists
+        initial_dir = ''
+        if self.qp_fname and os.path.exists(self.qp_fname):
+            initial_dir = os.path.dirname(self.qp_fname)
+        elif self.qp_fname:
+            initial_dir = os.path.dirname(self.qp_fname) if os.path.dirname(self.qp_fname) else os.getcwd()
+        else:
+            initial_dir = os.getcwd()
+
+        fname = askopenfilename(
+            title='Select Quartus Pin File',
+            filetypes=(("Quartus Pin File", "*.pin"), ("All files", "*.*")),
+            initialdir=initial_dir
+        )
         if fname != '':
             self.qp_fname = fname
             self.update_self2gui()
+            # Invalidate cache when file changes
+            self._invalidate_quartus_pin_cache()
 
     def save_and_exit(self):
         """Save configuration and exit application"""
