@@ -149,7 +149,7 @@ class ConfigFile(object):
             print('| space                              |')
             print('+-----------------------------------+')
             return False
-        except:
+        except (OSError, ValueError):
             print('+-----------------------------------+')
             print('| Error! Writing configuration      |')
             print('| File: \'%s\'' % self.fname)

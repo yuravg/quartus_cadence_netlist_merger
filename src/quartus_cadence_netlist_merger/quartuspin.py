@@ -110,7 +110,7 @@ class QuartusPin(object):
                         self.table_header = table_header_line
                         self.table_line = table_separator_line
                         self.data = pin_data
-                    except:
+                    except (ValueError, IndexError):
                         print('+-----------------------------------+')
                         print('| Error! Parsing pin data line      |')
                         print('| Line: \'%s\'' % stripped_line[:40])
@@ -139,7 +139,7 @@ class QuartusPin(object):
             print('| File: \'%s\'' % fname)
             print('| Check file permissions            |')
             print('+-----------------------------------+')
-        except:
+        except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing pin file           |')
             print('| File: \'%s\'' % fname)

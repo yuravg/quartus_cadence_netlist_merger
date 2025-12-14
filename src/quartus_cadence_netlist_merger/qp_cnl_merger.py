@@ -333,6 +333,16 @@ class QuartusCadenceMerger(Frame):
     def _open_output_directory(self):
         """Open the output directory in file manager"""
         output_dir = os.getcwd()
+
+        # Validate output directory exists and is a directory
+        if not os.path.exists(output_dir) or not os.path.isdir(output_dir):
+            print('+-----------------------------------+')
+            print('| Error! Invalid output directory   |')
+            print('| Directory: \'%s\'' % output_dir)
+            print('+-----------------------------------+')
+            messagebox.showinfo('Output Directory', output_dir)
+            return
+
         try:
             # Try different methods depending on OS
             if sys.platform == 'win32':
@@ -352,7 +362,7 @@ class QuartusCadenceMerger(Frame):
                                      stdout=devnull,
                                      stderr=devnull,
                                      close_fds=True)
-        except:
+        except (OSError, ValueError):
             messagebox.showinfo('Output Directory', output_dir)
 
     def _set_status(self, message, append=False):
@@ -387,6 +397,9 @@ class QuartusCadenceMerger(Frame):
     def build(self):
         """Build merged report by combining Quartus Pin file with Cadence netlist"""
         self.update_and_save_config()
+
+        # Clear rename_mask to prevent data corruption on repeated builds
+        self.rename_mask = []
 
         # Validate input files before processing
         if not self.cnl_fname or not self.cnl_fname.strip():
@@ -453,6 +466,7 @@ class QuartusCadenceMerger(Frame):
         self.update_idletasks()
         self.build_merged_data(self.refdes_pin_name, self.net_name)
 
+        # s = ''
         # self._set_status('Generating main report...', append=True)
         self.update_idletasks()
         s = self.header2string(date)
@@ -530,6 +544,11 @@ class QuartusCadenceMerger(Frame):
 
         for pin_index in range(len(quartus_pin.data)):
             pin_number = quartus_pin.get_pin(pin_index)
+
+            # Validate pin_number - skip invalid pins
+            if pin_number is False:
+                print('Warning! Invalid pin at index %d, skipping' % pin_index)
+                continue
 
             # Get net name from Cadence netlist (padded to fixed width)
             net_name_column = ''
@@ -723,7 +742,7 @@ class QuartusCadenceMerger(Frame):
             print('| File: \'%s\'' % fname)
             print('| Check file permissions            |')
             print('+-----------------------------------+')
-        except:
+        except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing rename mask file   |')
             print('| File: \'%s\'' % fname)
@@ -759,7 +778,7 @@ class QuartusCadenceMerger(Frame):
             print('| File: \'%s\'' % fname)
             print('| Check file permissions            |')
             print('+-----------------------------------+')
-        except:
+        except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Reading header file        |')
             print('| File: \'%s\'' % fname)
@@ -798,6 +817,25 @@ class QuartusCadenceMerger(Frame):
         Returns:
         True if successful, False if error occurred
         """
+        # Validate filename to prevent path traversal
+        if not fname or not isinstance(fname, str):
+            print('+-----------------------------------+')
+            print('| Error! Invalid filename           |')
+            print('+-----------------------------------+')
+            return False
+
+        # Get absolute path and ensure it doesn't escape current directory
+        abs_fname = os.path.abspath(fname)
+        cwd = os.path.abspath(os.getcwd())
+        # Check if the file would be created in a subdirectory of cwd or cwd itself
+        if not abs_fname.startswith(cwd):
+            print('+-----------------------------------+')
+            print('| Error! Invalid file path          |')
+            print('| Path must be in current directory |')
+            print('| File: \'%s\'' % fname)
+            print('+-----------------------------------+')
+            return False
+
         if os.path.exists(fname):
             backup_created = False
             for backup_index in range(MAX_BACKUP_COUNT):

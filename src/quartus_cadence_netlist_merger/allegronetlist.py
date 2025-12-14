@@ -94,7 +94,7 @@ class AllegroNetList(object):
             print('| File: \'%s\'' % fname)
             print('| Check file permissions            |')
             print('+-----------------------------------+')
-        except:
+        except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing netlist file       |')
             print('| File: \'%s\'' % fname)
@@ -151,12 +151,16 @@ class AllegroNetList(object):
                 elif stripped_line.startswith('NODE_NAME'):
                     # Parse NODE_NAME line: NODE_NAME REFDES PIN
                     parts = stripped_line.split()
-                    refdes = parts[1]
-                    pin = parts[2]
-                    current_node_ref = [refdes, pin]
-                    current_nodes.append(current_node_ref)
-                    # Start countdown to capture pin name (2 lines later)
-                    pin_name_countdown = 2
+                    if len(parts) >= 3:
+                        refdes = parts[1]
+                        pin = parts[2]
+                        current_node_ref = [refdes, pin]
+                        current_nodes.append(current_node_ref)
+                        # Start countdown to capture pin name (2 lines later)
+                        pin_name_countdown = 2
+                    else:
+                        # Malformed NODE_NAME line - skip with warning
+                        print('Warning! Malformed NODE_NAME line (expected 3 fields, got %d): %s' % (len(parts), stripped_line))
 
                 # Capture pin name (appears 2 lines after NODE_NAME)
                 if pin_name_countdown > 0:

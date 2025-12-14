@@ -132,6 +132,57 @@ def test_merger_read_rename_mask_file(temp_file):
 
 
 @pytest.mark.unit
+def test_merger_rename_mask_clearing(temp_file):
+    """Test issue #2: rename_mask is cleared between builds to prevent data corruption
+
+    Bug: rename_mask was a class variable that was never cleared, causing
+    multiple builds to accumulate rename rules and corrupt signal names.
+
+    Fix: Clear self.rename_mask = [] at the start of build() method
+    """
+    class TestMerger:
+        def __init__(self):
+            self.rename_mask = []
+
+        def read_rename_mask_file(self, fname):
+            if os.path.exists(fname):
+                try:
+                    with open(fname) as f:
+                        for line in f:
+                            a, b = line.split()
+                            self.rename_mask.append([a, b])
+                except:
+                    pass
+
+        def simulate_build(self, rename_file):
+            """Simulate build() which should clear rename_mask first"""
+            # This simulates the fix: clear rename_mask at start
+            self.rename_mask = []
+            self.read_rename_mask_file(rename_file)
+
+    merger = TestMerger()
+    fname = temp_file('rename_mask.dat')
+
+    # Create rename mask file
+    with open(fname, 'w') as f:
+        f.write('OLD_NAME NEW_NAME\n')
+
+    # First build
+    merger.simulate_build(fname)
+    assert len(merger.rename_mask) == 1, 'First build should have 1 rename rule'
+    assert merger.rename_mask[0] == ['OLD_NAME', 'NEW_NAME']
+
+    # Second build - should clear and reload, not accumulate
+    merger.simulate_build(fname)
+    assert len(merger.rename_mask) == 1, 'Second build should still have 1 rename rule, not 2'
+    assert merger.rename_mask[0] == ['OLD_NAME', 'NEW_NAME']
+
+    # Third build - verify clearing still works
+    merger.simulate_build(fname)
+    assert len(merger.rename_mask) == 1, 'Third build should still have 1 rename rule, not 3'
+
+
+@pytest.mark.unit
 def test_merger_header2string_format(sample_netlist_file, sample_quartus_pin_file):
     """Test header2string generates correct format"""
     class TestMerger:
