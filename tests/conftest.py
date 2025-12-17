@@ -14,6 +14,18 @@ import shutil
 
 import pytest
 
+# Import toml for reading pyproject.toml
+try:
+    import tomllib  # Python 3.11+
+except ImportError:
+    try:
+        import tomli as tomllib  # Python 3.6-3.10
+    except ImportError:
+        try:
+            import toml as tomllib  # Python 2.7+ fallback
+        except ImportError:
+            tomllib = None
+
 
 @pytest.fixture
 def test_data_dir():
@@ -250,3 +262,93 @@ NC                           : A4        :        :                   :         
     with open(mock_file, 'w') as f:
         f.write(content)
     return mock_file
+
+
+# =============================================================================
+# Pytest hooks for test count validation
+# =============================================================================
+
+def pytest_collection_finish(session):
+    """Validate test count after collection to prevent accidental test removal
+
+    This hook runs after pytest collects all tests and validates that the
+    actual test count matches the expected count defined in pyproject.toml.
+
+    Configuration location:
+    [tool.quartus_cadence_netlist_merger.testing]
+    expected_test_count = 47
+
+    Keyword Arguments:
+    session -- pytest session object
+    """
+    if tomllib is None:
+        # Skip validation if toml library is not available
+        return
+
+    # Find pyproject.toml
+    rootdir = session.config.rootdir
+    if hasattr(rootdir, 'strpath'):  # pytest < 7
+        pyproject_path = os.path.join(rootdir.strpath, 'pyproject.toml')
+    else:  # pytest >= 7
+        pyproject_path = os.path.join(str(rootdir), 'pyproject.toml')
+
+    if not os.path.exists(pyproject_path):
+        return
+
+    # Read expected test count from pyproject.toml
+    try:
+        if hasattr(tomllib, 'load'):
+            # tomllib/tomli interface
+            with open(pyproject_path, 'rb') as f:
+                config = tomllib.load(f)
+        else:
+            # toml (Python 2.7) interface
+            with open(pyproject_path, 'r') as f:
+                config = tomllib.load(f)
+    except (IOError, OSError, ValueError) as e:
+        # Only catch config file reading errors, not pytest.exit()
+        print('Warning: Could not read test count config: %s' % str(e))
+        return
+
+    try:
+        expected_count = config.get('tool', {}).get(
+            'quartus_cadence_netlist_merger', {}
+        ).get('testing', {}).get('expected_test_count')
+
+        if expected_count is None:
+            return
+
+        # Get actual test count
+        actual_count = len(session.items)
+
+        # Validate test count
+        if actual_count != expected_count:
+            # Print error message
+            print('')
+            print('=' * 70)
+            print('ERROR: Test count validation failed!')
+            print('=' * 70)
+            print('Expected test count: %d' % expected_count)
+            print('Actual test count:   %d' % actual_count)
+            print('')
+            if actual_count < expected_count:
+                print('WARNING: Tests may have been accidentally removed!')
+                print('  - Review recent changes to test files')
+                print('  - Check if tests were renamed or moved')
+                print('  - If intentional, update expected_test_count in pyproject.toml')
+            else:
+                print('New tests added:')
+                print('  - Update expected_test_count in pyproject.toml')
+                print('  - Set: expected_test_count = %d' % actual_count)
+            print('=' * 70)
+            print('')
+
+            # Fail the test session - this will stop pytest from running tests
+            pytest.exit('Test count mismatch: expected %d, got %d' % (
+                expected_count, actual_count
+            ), returncode=1)
+
+    except (KeyError, AttributeError, TypeError) as e:
+        # Only catch config parsing errors, not pytest.exit()
+        print('Warning: Could not parse test count config: %s' % str(e))
+        return

@@ -63,7 +63,7 @@ help:
 	@echo "  info         - show project info, built package, and installation status"
 	@echo ""
 	@echo "AUTOMATED TESTING:"
-	@echo "  pytest            - run all automated pytest tests"
+	@echo "  pytest            - run all automated pytest tests (validates test count)"
 	@echo "  test-unit         - run unit tests only"
 	@echo "  test-integration  - run integration tests only"
 	@echo "  coverage          - run pytest with coverage report (HTML + terminal)"
@@ -348,9 +348,8 @@ pytest: venv
 	@echo "║  Running Pytest Tests                                                 ║"
 	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
 	@echo ""
-	@.venv/bin/python -m pytest
-	@echo ""
-	@echo "✓ All tests complete"
+	@.venv/bin/python -m pytest && { echo ""; echo "✓ All tests passed successfully"; } || \
+									{ echo ""; echo "✗ Tests failed"; false; }
 
 coverage: venv
 	@echo "╔═══════════════════════════════════════════════════════════════════════╗"

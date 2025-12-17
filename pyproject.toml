@@ -82,3 +82,7 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "htmlcov"
+
+# Test count validation (prevents accidental test removal)
+[tool.quartus_cadence_netlist_merger.testing]
+expected_test_count = 47
