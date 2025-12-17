@@ -14,6 +14,7 @@ import datetime
 
 from quartus_cadence_netlist_merger.allegronetlist import AllegroNetList
 from quartus_cadence_netlist_merger.quartuspin import QuartusPin
+from quartus_cadence_netlist_merger.qp_cnl_merger import QuartusCadenceMerger
 
 
 @pytest.fixture
@@ -237,6 +238,136 @@ def test_real_data_merge_output(real_netlist_file, real_quartus_pin_file,
         print("="*80)
 
     assert files_match, "Generated MergedQC.rpt does not match expected output"
+
+
+@pytest.fixture
+def expected_summary_file(real_expected_dir):
+    """Path to expected MergedQC.summary.rpt file"""
+    return os.path.join(real_expected_dir, 'MergedQC.summary.rpt')
+
+
+@pytest.mark.integration
+@pytest.mark.real_data
+def test_real_data_summary_report_output(real_netlist_file, real_quartus_pin_file,
+                                         expected_summary_file, temp_output_dir):
+    """
+    Integration test: Generate and validate MergedQC.summary.rpt
+
+    This test generates the summary report with all sections enabled
+    and compares it line-by-line with the expected output.
+
+    The summary report includes:
+    - Org-mode header with color coding
+    - Signal Pins section
+    - Non-Signal Pins section
+    - Formatted Signal Pins section
+    - Power Pins section
+    - Unconnected Pins section
+    """
+    # Verify input files exist
+    assert os.path.exists(real_netlist_file), \
+        "Input file missing: %s" % real_netlist_file
+    assert os.path.exists(real_quartus_pin_file), \
+        "Input file missing: %s" % real_quartus_pin_file
+    assert os.path.exists(expected_summary_file), \
+        "Expected output file missing: %s" % expected_summary_file
+
+    # Change to temp directory to generate output files there
+    original_dir = os.getcwd()
+    os.chdir(temp_output_dir)
+
+    # Copy header and rename mask files to temp directory
+    header_file = '.qp_cnl_merger_header.dat'
+    source_header = os.path.join(original_dir, 'examples', header_file)
+    if os.path.exists(source_header):
+        shutil.copy(source_header, header_file)
+
+    rename_file = '.qp_cnl_merger_rename.dat'
+    source_rename = os.path.join(original_dir, 'examples', rename_file)
+    if os.path.exists(source_rename):
+        shutil.copy(source_rename, rename_file)
+
+    try:
+        # Create merger instance (will create Tkinter root automatically)
+        # Following pattern from regenerate_expected.py
+        merger = QuartusCadenceMerger()
+
+        # Configure merger with input files and settings
+        merger.cnl_fname = real_netlist_file
+        merger.qp_fname = real_quartus_pin_file
+        merger.refdes = 'DD2'
+
+        # Enable all sections to match expected file
+        merger.signal = 1          # Signal Pins section
+        merger.nosignal = 1        # Non-Signal Pins section
+        merger.format_signal = 1   # Formatted Signal Pins section
+        merger.power = 1           # Power Pins section
+        merger.noconnect = 1       # Unconnected Pins section
+        merger.full_merged = 0     # Include org-mode header (not full merged)
+        merger.net_name = 1        # Show net names
+        merger.refdes_pin_name = 0 # Don't show refdes pin names
+
+        # Build merged data
+        merger.build_merged_data(merger.refdes_pin_name, merger.net_name)
+
+        # Generate summary report following regenerate_expected.py pattern (lines 88-102)
+        # Note: This matches how the original expected file was generated
+        date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        fname_summary = 'MergedQC.summary.rpt'
+
+        # Build summary report (matches expected file structure)
+        # The expected file contains:
+        # 1. Org-mode header
+        # 2. Report header (file info, date, etc.)
+        # 3. Pin file header + complete merged data table
+        # 4. Filtered sections (Signal, Non-Signal, Formatted, Power, NC)
+        s = ''
+        if not merger.full_merged:
+            s = merger.header2string(date)
+        s = merger.read_header_file(merger.fname_header) + s
+        s = s + merger.qp_pin_header2string(merger.refdes_pin_name, merger.net_name)
+        s = s + merger.merged_data  # Add complete merged data table
+        if merger.signal:
+            s = s + merger.only_signal2string()
+        if merger.nosignal:
+            s = s + merger.nosignal2string()
+        if merger.format_signal:
+            s = s + merger.only_formatted_signal2string()
+        if merger.power:
+            s = s + merger.power_pins2string()
+        if merger.noconnect:
+            s = s + merger.noconnect2string()
+        merger.write2newfile(fname_summary, s)
+
+        # Get the output file path
+        output_file = os.path.join(temp_output_dir, fname_summary)
+
+        # Verify output file was created
+        assert os.path.exists(output_file), "Output file was not created"
+
+        # Compare output with expected file
+        files_match, differences = compare_files(output_file, expected_summary_file)
+
+        if not files_match:
+            print("\n" + "="*80)
+            print("OUTPUT DOES NOT MATCH EXPECTED FILE!")
+            print("="*80)
+            for diff in differences[:10]:  # Show first 10 differences
+                print(diff)
+            if len(differences) > 10:
+                print("... and %d more differences" % (len(differences) - 10))
+            print("="*80)
+            print("\nExpected file: %s" % expected_summary_file)
+            print("Generated file: %s" % output_file)
+            print("\nTo update expected file if changes are correct:")
+            print("  cp %s %s" % (output_file, expected_summary_file))
+            print("="*80)
+
+        assert files_match, "Generated MergedQC.summary.rpt does not match expected output"
+
+    finally:
+        # Change back to original directory
+        os.chdir(original_dir)
 
 
 @pytest.mark.integration
