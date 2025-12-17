@@ -838,8 +838,8 @@ class QuartusCadenceMerger(Frame):
 
         if os.path.exists(fname):
             backup_created = False
-            for backup_index in range(MAX_BACKUP_COUNT):
-                backup_fname = '%s,%s' % (fname, backup_index)
+            for backup_index in range(1, MAX_BACKUP_COUNT + 1):
+                backup_fname = '%s,%02d' % (fname, backup_index)
                 if not os.path.exists(backup_fname):
                     try:
                         os.rename(fname, backup_fname)
