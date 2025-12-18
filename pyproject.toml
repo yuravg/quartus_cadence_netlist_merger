@@ -101,7 +101,7 @@ directory = "htmlcov"
 
 # Test count validation (prevents accidental test removal)
 [tool.quartus_cadence_netlist_merger.testing]
-expected_test_count = 47
+expected_test_count = 55
 
 # Mypy type checking configuration
 [tool.mypy]

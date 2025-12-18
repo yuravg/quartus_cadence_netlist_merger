@@ -290,3 +290,433 @@ def test_merger_config_save_and_load(temp_file):
     assert cfg2.get_key('Configuration', 'netlist_file') == 'test_netlist.dat'
     assert cfg2.get_key('Configuration', 'quartus_pin_file') == 'test_pin.pin'
     assert cfg2.get_key('Configuration', 'refdes') == 'DD2'
+
+
+@pytest.mark.unit
+def test_merger_get_display_filename():
+    """Test _get_display_filename extracts filename correctly from various path formats"""
+    from pathlib import Path
+
+    class TestMerger:
+        def _get_display_filename(self, filepath):
+            """Get display name for file (just filename, or message if empty)"""
+            if not filepath or not filepath.strip():
+                return '(not selected)'
+            return Path(filepath).name
+
+    merger = TestMerger()
+
+    # Test absolute path
+    assert merger._get_display_filename('/home/user/data/test.txt') == 'test.txt'
+
+    # Test relative path
+    assert merger._get_display_filename('data/test.pin') == 'test.pin'
+
+    # Test just filename
+    assert merger._get_display_filename('test.dat') == 'test.dat'
+
+    # Test empty string
+    assert merger._get_display_filename('') == '(not selected)'
+
+    # Test whitespace only
+    assert merger._get_display_filename('   ') == '(not selected)'
+
+    # Test tab and newline whitespace
+    assert merger._get_display_filename('\t\n') == '(not selected)'
+
+
+@pytest.mark.unit
+def test_merger_get_display_path():
+    """Test _get_display_path extracts directory path correctly"""
+    from pathlib import Path
+
+    class TestMerger:
+        def _get_display_path(self, filepath):
+            """Get directory path for display"""
+            if not filepath or not filepath.strip():
+                return ''
+            dirpath = Path(filepath).parent
+            if not str(dirpath) or str(dirpath) == '.':
+                dirpath = Path.cwd()
+            return str(dirpath)
+
+    merger = TestMerger()
+
+    # Test absolute path
+    result = merger._get_display_path('/home/user/data/test.txt')
+    assert result == '/home/user/data'
+
+    # Test relative path
+    result = merger._get_display_path('data/test.pin')
+    assert result == 'data'
+
+    # Test just filename (should return cwd)
+    result = merger._get_display_path('test.dat')
+    assert str(Path.cwd()) in result
+
+    # Test empty string
+    assert merger._get_display_path('') == ''
+
+    # Test whitespace only
+    assert merger._get_display_path('   ') == ''
+
+    # Test path with dot parent (should return cwd)
+    result = merger._get_display_path('./test.txt')
+    assert str(Path.cwd()) in result
+
+
+@pytest.mark.unit
+def test_merger_build_validation_empty_netlist(capsys):
+    """Test build() detects empty netlist filename"""
+    from pathlib import Path
+
+    class TestMerger:
+        def __init__(self):
+            self.cnl_fname = ''
+            self.error_shown = False
+            self.error_title = ''
+            self.error_message = ''
+
+        def show_error(self, title, message):
+            """Mock messagebox.showerror"""
+            self.error_shown = True
+            self.error_title = title
+            self.error_message = message
+
+        def _set_status(self, msg, append=False):
+            """Mock status widget update"""
+            pass  # No-op for testing
+
+        def update_and_save_config(self):
+            """Mock config save"""
+            pass  # No-op for testing
+
+        def validate_empty_netlist(self):
+            """Extract validation logic from build() method"""
+            if not self.cnl_fname or not self.cnl_fname.strip():
+                error_msg = 'Please select a Cadence netlist file using the Browse button.'
+                self.show_error('No Netlist File', error_msg)
+                self._set_status('Error! No netlist file selected')
+                print('+-----------------------------------+')
+                print('| Error! No netlist file selected   |')
+                print('| Please select a netlist file      |')
+                print('+-----------------------------------+')
+                return False
+            return True
+
+    # Test empty string
+    merger = TestMerger()
+    merger.cnl_fname = ''
+    result = merger.validate_empty_netlist()
+
+    assert result is False
+    assert merger.error_shown is True
+    assert merger.error_title == 'No Netlist File'
+    assert 'Browse button' in merger.error_message
+
+    captured = capsys.readouterr()
+    assert 'No netlist file selected' in captured.out
+
+    # Test whitespace only
+    merger2 = TestMerger()
+    merger2.cnl_fname = '   \t\n'
+    result2 = merger2.validate_empty_netlist()
+
+    assert result2 is False
+    assert merger2.error_shown is True
+
+
+@pytest.mark.unit
+def test_merger_build_validation_nonexistent_netlist(capsys, temp_file):
+    """Test build() detects non-existent netlist file"""
+    from pathlib import Path
+
+    class TestMerger:
+        def __init__(self):
+            self.cnl_fname = ''
+            self.error_shown = False
+            self.error_title = ''
+            self.error_message = ''
+
+        def show_error(self, title, message):
+            """Mock messagebox.showerror"""
+            self.error_shown = True
+            self.error_title = title
+            self.error_message = message
+
+        def _set_status(self, msg, append=False):
+            """Mock status widget update"""
+            pass  # No-op for testing
+
+        def validate_netlist_exists(self):
+            """Extract validation logic from build() method"""
+            if not Path(self.cnl_fname).exists():
+                error_msg = f'Netlist file not found:\\n{self.cnl_fname}\\n\\nPlease check the file path.'
+                self.show_error('File Not Found', error_msg)
+                self._set_status('Error! Netlist file not found')
+                print('+-----------------------------------+')
+                print('| Error! Netlist file not found     |')
+                print(f"| File: '{self.cnl_fname}'")
+                print('| Please check the file path        |')
+                print('+-----------------------------------+')
+                return False
+            return True
+
+    # Test non-existent file
+    merger = TestMerger()
+    merger.cnl_fname = '/tmp/nonexistent_netlist_12345.dat'
+    result = merger.validate_netlist_exists()
+
+    assert result is False
+    assert merger.error_shown is True
+    assert merger.error_title == 'File Not Found'
+    assert 'nonexistent_netlist_12345.dat' in merger.error_message
+
+    captured = capsys.readouterr()
+    assert 'Netlist file not found' in captured.out
+
+
+@pytest.mark.unit
+def test_merger_build_validation_empty_pin_file(capsys):
+    """Test build() detects empty pin filename"""
+    from pathlib import Path
+
+    class TestMerger:
+        def __init__(self):
+            self.qp_fname = ''
+            self.error_shown = False
+            self.error_title = ''
+            self.error_message = ''
+
+        def show_error(self, title, message):
+            """Mock messagebox.showerror"""
+            self.error_shown = True
+            self.error_title = title
+            self.error_message = message
+
+        def _set_status(self, msg, append=False):
+            """Mock status widget update"""
+            pass  # No-op for testing
+
+        def validate_empty_pin_file(self):
+            """Extract validation logic from build() method"""
+            if not self.qp_fname or not self.qp_fname.strip():
+                error_msg = 'Please select a Quartus pin file using the Browse button.'
+                self.show_error('No Pin File', error_msg)
+                self._set_status('Error! No pin file selected')
+                print('+-----------------------------------+')
+                print('| Error! No pin file selected       |')
+                print('| Please select a Quartus pin file  |')
+                print('+-----------------------------------+')
+                return False
+            return True
+
+    # Test empty string
+    merger = TestMerger()
+    merger.qp_fname = ''
+    result = merger.validate_empty_pin_file()
+
+    assert result is False
+    assert merger.error_shown is True
+    assert merger.error_title == 'No Pin File'
+    assert 'Quartus pin file' in merger.error_message
+
+    captured = capsys.readouterr()
+    assert 'No pin file selected' in captured.out
+
+    # Test whitespace only
+    merger2 = TestMerger()
+    merger2.qp_fname = '  \t  '
+    result2 = merger2.validate_empty_pin_file()
+
+    assert result2 is False
+    assert merger2.error_shown is True
+
+
+@pytest.mark.unit
+def test_merger_build_validation_nonexistent_pin_file(capsys):
+    """Test build() detects non-existent pin file"""
+    from pathlib import Path
+
+    class TestMerger:
+        def __init__(self):
+            self.qp_fname = ''
+            self.error_shown = False
+            self.error_title = ''
+            self.error_message = ''
+
+        def show_error(self, title, message):
+            """Mock messagebox.showerror"""
+            self.error_shown = True
+            self.error_title = title
+            self.error_message = message
+
+        def _set_status(self, msg, append=False):
+            """Mock status widget update"""
+            pass  # No-op for testing
+
+        def validate_pin_file_exists(self):
+            """Extract validation logic from build() method"""
+            if not Path(self.qp_fname).exists():
+                error_msg = f'Pin file not found:\\n{self.qp_fname}\\n\\nPlease check the file path.'
+                self.show_error('File Not Found', error_msg)
+                self._set_status('Error! Pin file not found')
+                print('+-----------------------------------+')
+                print('| Error! Pin file not found         |')
+                print(f"| File: '{self.qp_fname}'")
+                print('| Please check the file path        |')
+                print('+-----------------------------------+')
+                return False
+            return True
+
+    # Test non-existent file
+    merger = TestMerger()
+    merger.qp_fname = '/tmp/nonexistent_pin_98765.pin'
+    result = merger.validate_pin_file_exists()
+
+    assert result is False
+    assert merger.error_shown is True
+    assert merger.error_title == 'File Not Found'
+    assert 'nonexistent_pin_98765.pin' in merger.error_message
+
+    captured = capsys.readouterr()
+    assert 'Pin file not found' in captured.out
+
+
+@pytest.mark.unit
+def test_merger_build_validation_empty_refdes(capsys):
+    """Test build() detects empty refdes value"""
+
+    class TestMerger:
+        def __init__(self):
+            self.refdes = ''
+            self.error_shown = False
+            self.error_title = ''
+            self.error_message = ''
+
+        def show_error(self, title, message):
+            """Mock messagebox.showerror"""
+            self.error_shown = True
+            self.error_title = title
+            self.error_message = message
+
+        def _set_status(self, msg, append=False):
+            """Mock status widget update"""
+            pass  # No-op for testing
+
+        def validate_empty_refdes(self):
+            """Extract validation logic from build() method"""
+            if not self.refdes or not self.refdes.strip():
+                error_msg = 'Please enter a component refdes (e.g., DD2, U1, IC5).'
+                self.show_error('No Refdes Specified', error_msg)
+                self._set_status('Error! No refdes specified')
+                print('+-----------------------------------+')
+                print('| Error! No refdes specified        |')
+                print('| Please enter a component refdes   |')
+                print('| (e.g., DD2, U1, IC5)              |')
+                print('+-----------------------------------+')
+                return False
+            return True
+
+    # Test empty string
+    merger = TestMerger()
+    merger.refdes = ''
+    result = merger.validate_empty_refdes()
+
+    assert result is False
+    assert merger.error_shown is True
+    assert merger.error_title == 'No Refdes Specified'
+    assert 'DD2' in merger.error_message
+    assert 'U1' in merger.error_message
+    assert 'IC5' in merger.error_message
+
+    captured = capsys.readouterr()
+    assert 'No refdes specified' in captured.out
+
+    # Test whitespace only
+    merger2 = TestMerger()
+    merger2.refdes = '\t  \n  '
+    result2 = merger2.validate_empty_refdes()
+
+    assert result2 is False
+    assert merger2.error_shown is True
+
+
+@pytest.mark.unit
+def test_merger_quartus_pin_cache_invalidation(temp_file):
+    """Test _get_quartus_pin caching and invalidation behavior"""
+    import os
+    import time
+    from pathlib import Path
+    from quartus_cadence_netlist_merger.quartuspin import QuartusPin
+
+    class TestMerger:
+        def __init__(self):
+            self.qp_fname = ''
+            self.qp_fname_mtime = None
+            self._quartus_pin_cache = None
+
+        def _get_quartus_pin(self):
+            """Get QuartusPin instance with caching
+            Keyword Arguments:
+            Returns:
+            QuartusPin instance (cached if file hasn't changed)
+            """
+            current_mtime = os.path.getmtime(self.qp_fname)
+
+            # Cache miss - first call or file changed
+            if self._quartus_pin_cache is None or self.qp_fname_mtime != current_mtime:
+                self._quartus_pin_cache = QuartusPin(self.qp_fname)
+                self.qp_fname_mtime = current_mtime
+
+            return self._quartus_pin_cache
+
+        def _invalidate_quartus_pin_cache(self):
+            """Invalidate the QuartusPin cache"""
+            self._quartus_pin_cache = None
+            self.qp_fname_mtime = None
+
+    # Create test pin file
+    pin_fname = temp_file('test_cache.pin')
+    with open(pin_fname, 'w') as f:
+        f.write('Pin Number : 1\n')
+        f.write('Pin Name : TEST_PIN\n')
+        f.write('Pin Number : 2\n')
+        f.write('Pin Name : TEST_PIN2\n')
+
+    # Test 1: Cache miss (first call)
+    merger = TestMerger()
+    merger.qp_fname = pin_fname
+
+    pin1 = merger._get_quartus_pin()
+    assert pin1 is not None
+    assert merger._quartus_pin_cache is pin1
+    assert merger.qp_fname_mtime is not None
+
+    # Test 2: Cache hit (same file, same mtime)
+    pin2 = merger._get_quartus_pin()
+    assert pin2 is pin1  # Should return same cached instance
+
+    # Test 3: Cache invalidation (file modified - change mtime)
+    time.sleep(0.01)  # Ensure mtime changes
+    # Modify file to change mtime
+    with open(pin_fname, 'a') as f:
+        f.write('Pin Number : 3\n')
+        f.write('Pin Name : TEST_PIN3\n')
+
+    pin3 = merger._get_quartus_pin()
+    assert pin3 is not pin1  # Should be new instance
+    assert merger._quartus_pin_cache is pin3
+
+    # Test 4: Cache invalidation (different file)
+    pin_fname2 = temp_file('test_cache2.pin')
+    with open(pin_fname2, 'w') as f:
+        f.write('Pin Number : 10\n')
+        f.write('Pin Name : OTHER_PIN\n')
+
+    merger.qp_fname = pin_fname2
+    merger._invalidate_quartus_pin_cache()
+
+    pin4 = merger._get_quartus_pin()
+    assert pin4 is not pin3  # Should be new instance for different file
+    assert merger._quartus_pin_cache is pin4
