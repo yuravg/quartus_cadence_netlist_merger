@@ -8,7 +8,7 @@
 # Hi-lock: (("1V2"  (0 '(:background "PowderBlue") prepend)))
 # Hi-lock: (("1.2V" (0 '(:background "aquamarine") prepend)))
 |--------------------------------------------------------------------------------|
-| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |
+| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist      |
 | NOTE: This file was auto-generated                                             |
 | Report creation date: 2025-12-03 12:33:10                                      |
 |--------------------------------------------------------------------------------|
@@ -576,7 +576,7 @@ DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS   
 
 * Signal Pins
 |--------------------------------------------------------------------------------|
-| SIGNAL Pins Only (Repeating part of pin list):                                |
+| SIGNAL Pins Only (Repeating part of pin list):                                 |
 |--------------------------------------------------------------------------------|
 
 Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -800,7 +800,7 @@ DATA1N6              data1_tx[6](n)               : Y22       : output : LVDS   
 
 * Non-Signal Pins
 |--------------------------------------------------------------------------------|
-| Non-Signal Pins (Repeating part of pin list):                                 |
+| Non-Signal Pins (Repeating part of pin list):                                  |
 |--------------------------------------------------------------------------------|
 
 Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -1081,7 +1081,7 @@ GND                  GND                          : Y20       : gnd    :        
 
 * Formatted Signal Pins
 |--------------------------------------------------------------------------------|
-| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                      |
+| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                       |
 |--------------------------------------------------------------------------------|
 
 Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -1305,7 +1305,7 @@ DATA1N6              DATA1_TX6N               : Y22       : OUTPUT : LVDS       
 
 * Power Pins
 |--------------------------------------------------------------------------------|
-| POWER Pins Only (Repeating part of pin list):                                 |
+| POWER Pins Only (Repeating part of pin list):                                  |
 |--------------------------------------------------------------------------------|
 
 ** Power: 3.3V
@@ -1493,7 +1493,7 @@ GNDA                 GNDA4                        : V18       : gnd    :        
 
 * Unconnected Pins
 |--------------------------------------------------------------------------------|
-| No Connect (Repeating part of pin list):                                      |
+| No Connect (Repeating part of pin list):                                       |
 |--------------------------------------------------------------------------------|
 
 Net Name (Capture):  Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment

@@ -175,7 +175,7 @@ def test_real_data_merge_output(real_netlist_file, real_quartus_pin_file,
 
     rpt = ''
     rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-    rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |\n'
+    rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist      |\n'
     rpt = rpt + '| NOTE: This file was auto-generated                                             |\n'
     rpt = rpt + '| Report creation date: %s                                      |\n' % date
     rpt = rpt + '|--------------------------------------------------------------------------------|\n'

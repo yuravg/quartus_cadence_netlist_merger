@@ -503,7 +503,7 @@ class QuartusCadenceMerger(Frame):
         time_qp_fname = self.get_file_mtime(self.qp_fname)
         lines = [
             '|--------------------------------------------------------------------------------|',
-            '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |',
+            '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist      |',
             '| NOTE: This file was auto-generated                                             |',
             '| Report creation date: %s                                      |' % date,
             '|--------------------------------------------------------------------------------|',
@@ -604,7 +604,7 @@ class QuartusCadenceMerger(Frame):
             '\n\n\n',
             '* Unconnected Pins\n',
             '|--------------------------------------------------------------------------------|\n',
-            '| No Connect (Repeating part of pin list):                                      |\n',
+            '| No Connect (Repeating part of pin list):                                       |\n',
             '|--------------------------------------------------------------------------------|\n',
             self.table_header2string(quartus_pin),
             self.find_in_merged_data(NC_PIN_MARKER)
@@ -618,7 +618,7 @@ class QuartusCadenceMerger(Frame):
             '\n\n\n',
             '* Power Pins\n',
             '|--------------------------------------------------------------------------------|\n',
-            '| POWER Pins Only (Repeating part of pin list):                                 |\n',
+            '| POWER Pins Only (Repeating part of pin list):                                  |\n',
             '|--------------------------------------------------------------------------------|\n'
         ]
         for voltage_rail in POWER_RAIL_NAMES:
@@ -642,7 +642,7 @@ class QuartusCadenceMerger(Frame):
             '\n\n\n',
             '* Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
-            '| SIGNAL Pins Only (Repeating part of pin list):                                |\n',
+            '| SIGNAL Pins Only (Repeating part of pin list):                                 |\n',
             '|--------------------------------------------------------------------------------|\n',
             self.table_header2string(quartus_pin)
         ]
@@ -678,7 +678,7 @@ class QuartusCadenceMerger(Frame):
             '\n\n\n',
             '* Formatted Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
-            '| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                      |\n',
+            '| FORMATTED SIGNAL Pins Only (Repeating part of pin list):                       |\n',
             '|--------------------------------------------------------------------------------|\n',
             self.table_header2string(quartus_pin)
         ]
@@ -797,7 +797,7 @@ class QuartusCadenceMerger(Frame):
             '\n\n\n',
             '* Non-Signal Pins\n',
             '|--------------------------------------------------------------------------------|\n',
-            '| Non-Signal Pins (Repeating part of pin list):                                 |\n',
+            '| Non-Signal Pins (Repeating part of pin list):                                  |\n',
             '|--------------------------------------------------------------------------------|\n',
             self.table_header2string(quartus_pin),
             self.nosignal_strings

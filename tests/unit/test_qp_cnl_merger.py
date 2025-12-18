@@ -199,7 +199,7 @@ def test_merger_header2string_format(sample_netlist_file, sample_quartus_pin_fil
             time_qp_fname = self.get_file_mtime(self.qp_fname)
             rpt = ''
             rpt = rpt + '|--------------------------------------------------------------------------------|\n'
-            rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist     |\n'
+            rpt = rpt + '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist      |\n'
             rpt = rpt + '| NOTE: This file was auto-generated                                             |\n'
             rpt = rpt + '| Report creation date: %s                                      |\n' % date
             rpt = rpt + '|--------------------------------------------------------------------------------|\n'
