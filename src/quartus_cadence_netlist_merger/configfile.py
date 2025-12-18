@@ -4,10 +4,7 @@
 Work with configuration file by ConfigParser
 """
 
-try:
-    from configparser import ConfigParser
-except ImportError:  # for version < 3.0
-    from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 config = ConfigParser()
 
@@ -38,7 +35,7 @@ class ConfigFile(object):
             print('| Error! Invalid config filename    |')
             print('| Please provide a valid filename   |')
             print('+-----------------------------------+')
-            raise ValueError('Invalid config filename: %s' % str(fname))
+            raise ValueError(f'Invalid config filename: {str(fname)}')
 
         if verbosity == 1:
             self.verbosity = 1
@@ -54,8 +51,7 @@ class ConfigFile(object):
                 if config.has_option(section, i):
                     k[section][i] = config.get(section, i)
                     if self.verbosity:
-                        print('read config: section: %s, keys: %s=%s' %
-                              (section, i, k[section][i]))
+                        print(f'read config: section: {section}, keys: {i}={k[section][i]}')
         # get all section from file: kf - keys of file
         sections = config.sections()
         kf = {}
@@ -93,7 +89,7 @@ class ConfigFile(object):
         if self.verbosity:
             for section in k:
                 for i in k[section]:
-                    print('Edit key: section: %s, keys: %s=%s' % (section, i, str(k[section][i])))
+                    print(f'Edit key: section: {section}, keys: {i}={str(k[section][i])}')
 
     def edit_key(self, section, kname, kval):
         """Edit key using field names
@@ -103,7 +99,7 @@ class ConfigFile(object):
         kval    -- value of key
         """
         if self.verbosity:
-            print('Edit key: section: %s, keys: %s=%s' % (str(section), str(kname), str(kval)))
+            print(f'Edit key: section: {str(section)}, keys: {str(kname)}={str(kval)}')
         self.k[str(section)][str(kname)] = kval
 
     def get_all_keys(self):
@@ -130,7 +126,6 @@ class ConfigFile(object):
             print('+-----------------------------------+')
             return False
 
-        f = None
         try:
             sections = config.sections()
             for section in sorted(self.k):
@@ -138,13 +133,13 @@ class ConfigFile(object):
                     config.add_section(section)
                 for i in sorted(self.k[section]):
                     config.set(section, i, self.k[section][i])
-            f = open(self.fname, 'w')
-            config.write(f)
+            with open(self.fname, 'w') as f:
+                config.write(f)
             return True
         except IOError:
             print('+-----------------------------------+')
             print('| Error! Cannot write config file   |')
-            print('| File: \'%s\'' % self.fname)
+            print(f'| File: \'{self.fname}\'')
             print('| Check file permissions and disk   |')
             print('| space                              |')
             print('+-----------------------------------+')
@@ -152,20 +147,17 @@ class ConfigFile(object):
         except (OSError, ValueError):
             print('+-----------------------------------+')
             print('| Error! Writing configuration      |')
-            print('| File: \'%s\'' % self.fname)
+            print(f'| File: \'{self.fname}\'')
             print('+-----------------------------------+')
             return False
-        finally:
-            if f:
-                f.close()
 
     def __str__(self):
-        s = 'File name: %s' % str(self.fname)
+        s = f'File name: {str(self.fname)}'
         for section in sorted(self.k):
-            s = '%s\nSection: %s:' % (s, section)
+            s = f'{s}\nSection: {section}:'
             for i in sorted(self.k[section]):
-                s = '%s \'%s\'=%s' % (s, i, self.k[section][i])
-        return '%s;' % s
+                s = f'{s} \'{i}\'={self.k[section][i]}'
+        return f'{s};'
 
 
 if __name__ == '__main__':
@@ -204,6 +196,6 @@ if __name__ == '__main__':
     c.edit_key('Default2', 'name99', 'new_name99')
     c.write2file()
     print('-------------')
-    print('get_all_keys: %s' % c.get_all_keys())
-    print('Some key[%s][%s] = %s' % ('Default0', 'name00', c.get_key('Default0', 'name00')))
+    print(f'get_all_keys: {c.get_all_keys()}')
+    print(f'Some key[{"Default0"}][{"name00"}] = {c.get_key("Default0", "name00")}')
     print('Done')

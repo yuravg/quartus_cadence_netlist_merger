@@ -3,7 +3,7 @@
 """Get data from Quartus pin file
 """
 
-import os
+from pathlib import Path
 
 
 class QuartusPin(object):
@@ -60,18 +60,16 @@ class QuartusPin(object):
             print('+-----------------------------------+')
             return
 
-        if not os.path.exists(fname):
+        if not Path(fname).exists():
             print('+-----------------------------------+')
             print('| Error! Pin file not found         |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Please check the file path        |')
             print('+-----------------------------------+')
             return
 
-        file_handle = None
         try:
-            file_handle = open(fname, 'r')
-            with file_handle:
+            with open(fname, 'r') as file_handle:
                 # Parsing state flags
                 found_table_start = False
                 found_table_separator = False
@@ -91,7 +89,7 @@ class QuartusPin(object):
                                 table_header_line = stripped_line
                                 found_table_start = True
                             else:
-                                header_lines = '%s\n%s' % (header_lines, stripped_line)
+                                header_lines = f'{header_lines}\n{stripped_line}'
                         else:
                             if not found_table_separator:
                                 # First line after header is the separator (dashes)
@@ -113,7 +111,7 @@ class QuartusPin(object):
                     except (ValueError, IndexError):
                         print('+-----------------------------------+')
                         print('| Error! Parsing pin data line      |')
-                        print('| Line: \'%s\'' % stripped_line[:40])
+                        print(f'| Line: \'{stripped_line[:40]}\'')
                         print('| Check file format                 |')
                         print('+-----------------------------------+')
 
@@ -121,7 +119,7 @@ class QuartusPin(object):
             if not found_table_start:
                 print('+-----------------------------------+')
                 print('| Warning! No pin table found       |')
-                print('| File: \'%s\'' % fname)
+                print(f'| File: \'{fname}\'')
                 print('| Expected \'Pin Name/Usage\' header  |')
                 print('| Check Quartus pin file format     |')
                 print('+-----------------------------------+')
@@ -129,26 +127,23 @@ class QuartusPin(object):
             if len(pin_data) == 0:
                 print('+-----------------------------------+')
                 print('| Warning! No pins found in file    |')
-                print('| File: \'%s\'' % fname)
+                print(f'| File: \'{fname}\'')
                 print('| Check file format and content     |')
                 print('+-----------------------------------+')
 
         except IOError:
             print('+-----------------------------------+')
             print('| Error! Cannot read pin file       |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file permissions            |')
             print('+-----------------------------------+')
         except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing pin file           |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file format (expected       |')
             print('| Quartus pin file format)          |')
             print('+-----------------------------------+')
-        finally:
-            if file_handle:
-                file_handle.close()
 
     def get_header(self):
         """Returns Quartus file header as string
@@ -179,8 +174,7 @@ class QuartusPin(object):
         """
         length = self.data_length()
         if i >= length:
-            print('Error! Index of net=%d, more then net-list length=%d (from 0 to %d)' %
-                  (i, length-1, length-1))
+            print(f'Error! Index of net={i}, more then net-list length={length-1} (from 0 to {length-1})')
             return False
         else:
             return True
@@ -231,9 +225,9 @@ class QuartusPin(object):
         s = ''
         for i in range(self.data_length()):
             if s == '':
-                s = 'net_name: %s, pin: %s' % (self.get_net_name(i), self.get_pin(i))
+                s = f'net_name: {self.get_net_name(i)}, pin: {self.get_pin(i)}'
             else:
-                s = '%s\nnet_name: %s, pin: %s' % (s, self.get_net_name(i), self.get_pin(i))
+                s = f'{s}\nnet_name: {self.get_net_name(i)}, pin: {self.get_pin(i)}'
         return s
 
 
@@ -242,7 +236,7 @@ if __name__ == '__main__':
         f = open(fname, 'w')
         f.write(s)
         f.close()
-        print('Write file: %s' % fname)
+        print(f'Write file: {fname}')
 
     import datetime
     print('____________________________________________')
@@ -251,14 +245,13 @@ if __name__ == '__main__':
     n = QuartusPin(fname)
     rpt = n.get_header() + '\n' + n.get_table_header() + '\n' + n.get_table_line()
     for i in range(n.data_length()):
-        rpt = '%s\nname-pin: %s-%s, \t\t\tstring: %s' \
-              % (rpt, n.get_net_name(i), n.get_pin(i), n.data_qpin2string(i))
+        rpt = f'{rpt}\nname-pin: {n.get_net_name(i)}-{n.get_pin(i)}, \t\t\tstring: {n.data_qpin2string(i)}'
     write_file(fname_rpt, rpt)
 
     print('')
-    print('Get net name and pin from data[1]: \'%s\':\'%s\'' % (n.get_net_name(1), n.get_pin(1)))
-    print('Get length of data: %s' % n.data_length())
-    print('Get test from data[1]: %s' % n.data[1])
+    print(f'Get net name and pin from data[1]: \'{n.get_net_name(1)}\':\'{n.get_pin(1)}\'')
+    print(f'Get length of data: {n.data_length()}')
+    print(f'Get test from data[1]: {n.data[1]}')
     print('')
     print('Quartus pin file data:')
     print(n)

@@ -69,6 +69,15 @@ help:
 	@echo "  coverage          - run pytest with coverage report (HTML + terminal)"
 	@echo "  test-coverage     - alias for 'coverage'"
 	@echo ""
+	@echo "CODE QUALITY (Python 3.10+):"
+	@echo "  lint              - run all linters (ruff + mypy)"
+	@echo "  format            - format code with black"
+	@echo "  format-check      - check code formatting without modifying"
+	@echo "  ruff              - run ruff linter"
+	@echo "  ruff-fix          - run ruff linter with auto-fix"
+	@echo "  mypy              - run mypy type checker"
+	@echo "  quality           - run format + lint + tests (complete quality check)"
+	@echo ""
 	@echo "MANUAL TESTING:"
 	@echo "  test         - run manual tests (compare outputs in examples/ dir)"
 	@echo "  check-deps   - verify build dependencies are installed"
@@ -79,6 +88,7 @@ help:
 .PHONY: venv venv-install venv-dev venv-clean
 .PHONY: test-env test-env-install test-env-dev test-env-clean test-run
 .PHONY: pytest coverage test-coverage test-unit test-integration
+.PHONY: lint format format-check ruff ruff-fix mypy quality
 
 # Check if required build tools are installed
 check-deps:
@@ -385,5 +395,57 @@ test-integration: venv
 	@echo ""
 	@echo "✓ Integration tests complete"
 
-# Alias for coverage (matches TASKS.md naming convention)
 test-coverage: coverage
+
+# Code quality targets (Python 3.10+)
+format: venv
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  Formatting Code with Black                                           ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@.venv/bin/python -m black src/ tests/
+	@echo ""
+	@echo "✓ Code formatted"
+
+format-check: venv
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  Checking Code Formatting (Black)                                     ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@.venv/bin/python -m black --check src/ tests/
+
+ruff: venv
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  Running Ruff Linter                                                  ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@.venv/bin/python -m ruff check src/ tests/
+
+ruff-fix: venv
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  Running Ruff Linter with Auto-Fix                                    ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@.venv/bin/python -m ruff check --fix src/ tests/
+	@echo ""
+	@echo "✓ Ruff auto-fixes applied"
+
+mypy: venv
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  Running Mypy Type Checker                                            ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@.venv/bin/python -m mypy src/
+
+lint: ruff mypy
+	@echo ""
+	@echo "✓ All linters passed"
+
+quality: format lint pytest
+	@echo ""
+	@echo "╔═══════════════════════════════════════════════════════════════════════╗"
+	@echo "║  ✓ Quality Check Complete                                             ║"
+	@echo "║    - Code formatted with black                                        ║"
+	@echo "║    - Linters passed (ruff + mypy)                                     ║"
+	@echo "║    - All tests passed                                                 ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════╝"

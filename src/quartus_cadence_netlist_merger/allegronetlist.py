@@ -3,9 +3,8 @@
 """Get data from Cadence Allegro net-list
 """
 
-from __future__ import print_function
 import datetime
-import os
+from pathlib import Path
 
 # Constants for netlist parsing
 SINGLE_NET_MAX_NODES = 100  # Max nodes for a net to be considered "single"
@@ -64,25 +63,23 @@ class AllegroNetList(object):
             print('+-----------------------------------+')
             return
 
-        if not os.path.exists(fname):
+        if not Path(fname).exists():
             print('+-----------------------------------+')
             print('| Error! Netlist file not found     |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Please check the file path        |')
             print('+-----------------------------------+')
             return
 
-        file_handle = None
         try:
-            file_handle = open(fname, 'r')
-            with file_handle:
+            with open(fname, 'r') as file_handle:
                 self._parse_netlist_content(file_handle)
 
             # Validate parsed data
             if len(self.net_list) == 0:
                 print('+-----------------------------------+')
                 print('| Warning! No nets found in netlist |')
-                print('| File: \'%s\'' % fname)
+                print(f'| File: \'{fname}\'')
                 print('| Check file format and content     |')
                 print('+-----------------------------------+')
 
@@ -91,19 +88,16 @@ class AllegroNetList(object):
         except IOError:
             print('+-----------------------------------+')
             print('| Error! Cannot read netlist file   |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file permissions            |')
             print('+-----------------------------------+')
         except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing netlist file       |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file format (expected       |')
             print('| Cadence Allegro format)           |')
             print('+-----------------------------------+')
-        finally:
-            if file_handle:
-                file_handle.close()
 
     def _parse_netlist_content(self, file_handle):
         """Parse netlist content from file handle
@@ -160,7 +154,7 @@ class AllegroNetList(object):
                         pin_name_countdown = 2
                     else:
                         # Malformed NODE_NAME line - skip with warning
-                        print('Warning! Malformed NODE_NAME line (expected 3 fields, got %d): %s' % (len(parts), stripped_line))
+                        print(f'Warning! Malformed NODE_NAME line (expected 3 fields, got {len(parts)}): {stripped_line}')
 
                 # Capture pin name (appears 2 lines after NODE_NAME)
                 if pin_name_countdown > 0:
@@ -228,8 +222,7 @@ class AllegroNetList(object):
         """
         length = self.net_list_length()
         if i >= length:
-            print('Error! Index of net=%d, more then net-list length=%d (from 0 to %d)' %
-                  (i, length-1, length-1))
+            print(f'Error! Index of net={i}, more then net-list length={length-1} (from 0 to {length-1})')
             return False
         else:
             return True
@@ -333,8 +326,8 @@ class AllegroNetList(object):
         else:
             print('+-----------------------------------+')
             print('| Error! Refdes not found in netlist|')
-            print('| Refdes: \'%s\'' % refdes)
-            print('| File: \'%s\'' % self.fname)
+            print(f'| Refdes: \'{refdes}\'')
+            print(f'| File: \'{self.fname}\'')
             print('| Check refdes name and netlist     |')
             print('+-----------------------------------+')
             return False
@@ -361,11 +354,11 @@ class AllegroNetList(object):
                     parts = [i[0]]
                     net_pin = i[1:]
                     for j in net_pin:
-                        parts.append('%s:%s' % (j[0], j[1]))
+                        parts.append(f'{j[0]}:{j[1]}')
                     return ' '.join(parts)
             return ''
         else:
-            print('Error! Can\'t find refdes: \'%s\'' % refdes)
+            print(f'Error! Can\'t find refdes: \'{refdes}\'')
             return ''
 
     def net2string(self, i):
@@ -375,10 +368,10 @@ class AllegroNetList(object):
         """
         net = self.net_name(i)
         node = self.node2string(i)
-        # print('net: %s' % net)
-        # print('node: %s' % node)
-        net_and_node = '%s %s' % (net, node)
-        # print('d: %s' % net_and_node)
+        # print(f'net: {net}')
+        # print(f'node: {node}')
+        net_and_node = f'{net} {node}'
+        # print(f'd: {net_and_node}')
         return net_and_node
 
     def __str__(self):
@@ -418,11 +411,11 @@ class AllegroNetList(object):
             '+-------------------------------------------------------------------------+',
             '| File contains Cadence PCB Editor netlist                                |',
             '| NOTE: this file was auto-generated                                      |',
-            '| generation date, time: %s                              |' % date,
+            f'| generation date, time: {date}                              |',
             '+-------------------------------------------------------------------------+',
             '| Cadence net-list file info:                                             |',
-            '|  %s' % self.net_list_info(),
-            '|  %s' % self.fname,
+            f'|  {self.net_list_info()}',
+            f'|  {self.fname}',
             '+-------------------------------------------------------------------------+'
         ]
         return '\n'.join(lines)
@@ -462,26 +455,22 @@ class AllegroNetList(object):
         True if successful, False if error occurred
         """
         s = self.all_data2string()
-        f = None
         try:
-            f = open(fname, 'w')
-            f.write(s)
+            with open(fname, 'w') as f:
+                f.write(s)
             if message_en:
-                print('Write Net-List report file: %s' % fname)
+                print(f'Write Net-List report file: {fname}')
             return True
         except IOError:
             print('+-----------------------------------+')
-            print('| Error! Cannot write file: \'%s\'' % fname)
+            print(f'| Error! Cannot write file: \'{fname}\'')
             print('+-----------------------------------+')
             return False
-        finally:
-            if f:
-                f.close()
 
     def net_list_info(self):
         """Returns net-list info as string
         """
-        return 'Net-list %s %s (version: %s)' % (self.date, self.time, self.version)
+        return f'Net-list {self.date} {self.time} (version: {self.version})'
 
 
 if __name__ == '__main__':
@@ -508,17 +497,16 @@ if __name__ == '__main__':
     netlist1.build_refdes_list('DA153')
     RD = 'DD2'
     PIN = 'G3'
-    print('Get net name by refdes(%s) and pin(%s): %s(net name)' %
-          (RD, PIN, netlist1.get_net_name4refdes_pin(RD, PIN)))
+    print(f'Get net name by refdes({RD}) and pin({PIN}): {netlist1.get_net_name4refdes_pin(RD, PIN)}(net name)')
     print('')
-    print('refdes_list = %s' % netlist1.refdes_list)
+    print(f'refdes_list = {netlist1.refdes_list}')
     print('')
     RD = 'DD2'
-    print('Search in refdes_list \'%s\', result: %s' % (RD, netlist1.find_in_refdes_list(RD)))
+    print(f'Search in refdes_list \'{RD}\', result: {netlist1.find_in_refdes_list(RD)}')
     print('')
-    print('Refdes to string: %s' % netlist1.refdes_list2string('DD2'))
+    print(f'Refdes to string: {netlist1.refdes_list2string("DD2")}')
     print(datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S'))
     print('*****')
     print('Check net name:')
-    print('node_n-DIFFIO_L1N ?= %s' % netlist1.get_refdes_pin_name('DD2', 'G3'))
-    print('node_n-VCCIO1_D4  ?= %s' % netlist1.get_refdes_pin_name('DD2', 'D4'))
+    print(f'node_n-DIFFIO_L1N ?= {netlist1.get_refdes_pin_name("DD2", "G3")}')
+    print(f'node_n-VCCIO1_D4  ?= {netlist1.get_refdes_pin_name("DD2", "D4")}')

@@ -1,16 +1,13 @@
 """Get arguments from command line
 """
 
-try:
-    from argparse import ArgumentParser
-except ImportError:  # for version < 3.0
-    from ArgParse import ArgumentParser
+from argparse import ArgumentParser
 
 from .__init__ import __version__
 
 __prog__ = "qp_cnl_merger"
 __description__ = "Quartus pin and Cadence Allegro Net-List merger (cnl - Cadence Net-List)"
-__version_string__ = '%s version %s' % (__prog__, __version__)
+__version_string__ = f'{__prog__} version {__version__}'
 
 
 def get_args():

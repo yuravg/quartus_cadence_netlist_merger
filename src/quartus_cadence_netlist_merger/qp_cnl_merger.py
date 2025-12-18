@@ -7,17 +7,11 @@ Quartus Pin and Cadence Allegro Netlist Merger (CNL - Cadence Net List)
 import sys
 import os
 import subprocess
-try:
-    from tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
-    from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
-    from tkinter.filedialog import askopenfilename
-    from tkinter import messagebox
-except ImportError:  # for version < 3.0
-    from Tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
-    from Tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
-    from tkFileDialog import askopenfilename
-    import tkMessageBox as messagebox
-
+from pathlib import Path
+from tkinter import Frame, Button, Label, StringVar, Entry, Text, Scrollbar
+from tkinter import LEFT, RIGHT, IntVar, Toplevel, Checkbutton, W, END, VERTICAL, DISABLED, NORMAL
+from tkinter.filedialog import askopenfilename
+from tkinter import messagebox
 import time
 import datetime
 
@@ -250,8 +244,8 @@ class QuartusCadenceMerger(Frame):
 
         # Template files section
         s = 'Create Template Files:'
-        s = s + '\n%s - header for summary file' % self.fname_header
-        s = s + '\n%s - rename mask file' % self.fname_rename
+        s = s + f'\n{self.fname_header} - header for summary file'
+        s = s + f'\n{self.fname_rename} - rename mask file'
         Label(win, text=s, justify=LEFT).pack(pady=(10, 5))
         Button(win, text='Create Templates', command=self.write_template_file, height=1, width=15).pack(pady=(0, 10))
 
@@ -269,9 +263,9 @@ class QuartusCadenceMerger(Frame):
 
     def write_template_file(self):
         """Create template files for rename mask and header if they don't exist"""
-        if not os.path.exists(self.fname_rename):
+        if not Path(self.fname_rename).exists():
             self.write2file(self.fname_rename, 'old_name new_name')
-        if not os.path.exists(self.fname_header):
+        if not Path(self.fname_header).exists():
             self.write2file(self.fname_header, '')
 
     def update_gui2self(self):
@@ -310,7 +304,7 @@ class QuartusCadenceMerger(Frame):
         """
         if not filepath or not filepath.strip():
             return '(not selected)'
-        return os.path.basename(filepath)
+        return Path(filepath).name
 
     def _get_display_path(self, filepath):
         """Get directory path for display
@@ -321,10 +315,10 @@ class QuartusCadenceMerger(Frame):
         """
         if not filepath or not filepath.strip():
             return ''
-        dirpath = os.path.dirname(filepath)
-        if not dirpath:
-            dirpath = os.getcwd()
-        return dirpath
+        dirpath = Path(filepath).parent
+        if not str(dirpath) or str(dirpath) == '.':
+            dirpath = Path.cwd()
+        return str(dirpath)
 
     def _clear_refdes(self):
         """Clear the refdes entry field"""
@@ -332,25 +326,25 @@ class QuartusCadenceMerger(Frame):
 
     def _open_output_directory(self):
         """Open the output directory in file manager"""
-        output_dir = os.getcwd()
+        output_dir = Path.cwd()
 
         # Validate output directory exists and is a directory
-        if not os.path.exists(output_dir) or not os.path.isdir(output_dir):
+        if not output_dir.exists() or not output_dir.is_dir():
             print('+-----------------------------------+')
             print('| Error! Invalid output directory   |')
-            print('| Directory: \'%s\'' % output_dir)
+            print(f'| Directory: \'{output_dir}\'')
             print('+-----------------------------------+')
-            messagebox.showinfo('Output Directory', output_dir)
+            messagebox.showinfo('Output Directory', str(output_dir))
             return
 
         try:
             # Try different methods depending on OS
             if sys.platform == 'win32':
-                os.startfile(output_dir)
+                os.startfile(str(output_dir))
             elif sys.platform == 'darwin':
                 # Use Popen to launch without blocking, suppress all output
                 with open(os.devnull, 'w') as devnull:
-                    subprocess.Popen(['open', output_dir],
+                    subprocess.Popen(['open', str(output_dir)],
                                      stdout=devnull,
                                      stderr=devnull,
                                      close_fds=True)
@@ -358,12 +352,12 @@ class QuartusCadenceMerger(Frame):
                 # Use Popen to launch without blocking, suppress all output
                 # (prevents FFmpeg warnings from file manager thumbnail generation)
                 with open(os.devnull, 'w') as devnull:
-                    subprocess.Popen(['xdg-open', output_dir],
+                    subprocess.Popen(['xdg-open', str(output_dir)],
                                      stdout=devnull,
                                      stderr=devnull,
                                      close_fds=True)
         except (OSError, ValueError):
-            messagebox.showinfo('Output Directory', output_dir)
+            messagebox.showinfo('Output Directory', str(output_dir))
 
     def _set_status(self, message, append=False):
         """Update status message in text widget
@@ -412,13 +406,13 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return
 
-        if not os.path.exists(self.cnl_fname):
-            error_msg = 'Netlist file not found:\n%s\n\nPlease check the file path.' % self.cnl_fname
+        if not Path(self.cnl_fname).exists():
+            error_msg = f'Netlist file not found:\n{self.cnl_fname}\n\nPlease check the file path.'
             self.show_error('File Not Found', error_msg)
             self._set_status('Error! Netlist file not found')
             print('+-----------------------------------+')
             print('| Error! Netlist file not found     |')
-            print('| File: \'%s\'' % self.cnl_fname)
+            print(f'| File: \'{self.cnl_fname}\'')
             print('| Please check the file path        |')
             print('+-----------------------------------+')
             return
@@ -433,13 +427,13 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return
 
-        if not os.path.exists(self.qp_fname):
-            error_msg = 'Pin file not found:\n%s\n\nPlease check the file path.' % self.qp_fname
+        if not Path(self.qp_fname).exists():
+            error_msg = f'Pin file not found:\n{self.qp_fname}\n\nPlease check the file path.'
             self.show_error('File Not Found', error_msg)
             self._set_status('Error! Pin file not found')
             print('+-----------------------------------+')
             print('| Error! Pin file not found         |')
-            print('| File: \'%s\'' % self.qp_fname)
+            print(f'| File: \'{self.qp_fname}\'')
             print('| Please check the file path        |')
             print('+-----------------------------------+')
             return
@@ -494,8 +488,8 @@ class QuartusCadenceMerger(Frame):
         self.update_idletasks()
         self.write2newfile(fname_summary, s)
 
-        work_dir = os.getcwd()
-        done_msg = 'Files created: %s, %s\nOutput directory: %s\nCompleted: %s' % (fname, fname_summary, work_dir, date)
+        work_dir = Path.cwd()
+        done_msg = f'Files created: {fname}, {fname_summary}\nOutput directory: {work_dir}\nCompleted: {date}'
         self._set_status(done_msg, append=True)
 
     def header2string(self, date):
@@ -505,12 +499,12 @@ class QuartusCadenceMerger(Frame):
             '|--------------------------------------------------------------------------------|',
             '| File contains merged Quartus Pin and Cadence PCB Editor (Allegro) Netlist      |',
             '| NOTE: This file was auto-generated                                             |',
-            '| Report creation date: %s                                      |' % date,
+            f'| Report creation date: {date}                                      |',
             '|--------------------------------------------------------------------------------|',
             '| Quartus, Cadence files and Refdes info:                                        |',
-            '|  %s - %s ' % (time_cnl_fname, self.cnl_fname),
-            '|  %s - %s ' % (time_qp_fname, self.qp_fname),
-            '|  Refdes = %s' % self.refdes,
+            f'|  {time_cnl_fname} - {self.cnl_fname} ',
+            f'|  {time_qp_fname} - {self.qp_fname} ',
+            f'|  Refdes = {self.refdes}',
             '|--------------------------------------------------------------------------------|',
             ''
         ]
@@ -547,7 +541,7 @@ class QuartusCadenceMerger(Frame):
 
             # Validate pin_number - skip invalid pins
             if pin_number is False:
-                print('Warning! Invalid pin at index %d, skipping' % pin_index)
+                print(f'Warning! Invalid pin at index {pin_index}, skipping')
                 continue
 
             # Get net name from Cadence netlist (padded to fixed width)
@@ -563,10 +557,10 @@ class QuartusCadenceMerger(Frame):
                 pin_name_column = cadence_pin_name.ljust(COLUMN_WIDTH)
 
             # Combine columns with Quartus pin data
-            prefix_columns = '%s%s' % (pin_name_column, net_name_column)
+            prefix_columns = f'{pin_name_column}{net_name_column}'
             quartus_pin_text = quartus_pin.data_qpin2string(pin_index).replace(
                 'RESERVED_INPUT_WITH_WEAK_PULLUP', 'RESERVED_INPUT_WITH_WEAK_PUL')
-            output_lines.append('%s %s' % (prefix_columns, quartus_pin_text))
+            output_lines.append(f'{prefix_columns} {quartus_pin_text}')
 
         self.merged_data = '\n'.join(output_lines) + '\n' if output_lines else ''
 
@@ -624,7 +618,7 @@ class QuartusCadenceMerger(Frame):
         for voltage_rail in POWER_RAIL_NAMES:
             matching_pins = self.find_in_merged_data(voltage_rail)
             if matching_pins != '':
-                parts.append('\n** Power: %s\n' % voltage_rail)
+                parts.append(f'\n** Power: {voltage_rail}\n')
                 parts.append(self.table_header2string(quartus_pin))
                 parts.append(matching_pins)
         return ''.join(parts)
@@ -719,7 +713,7 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return
 
-        if not os.path.exists(fname):
+        if not Path(fname).exists():
             # Silently ignore missing rename mask file (it's optional)
             return
 
@@ -735,17 +729,17 @@ class QuartusCadenceMerger(Frame):
                         self.rename_mask.append([a, b])
                     elif len(parts) == 1:
                         # Warn about malformed lines
-                        print('Warning! Rename mask line %d has only 1 field (expected 2)' % line_num)
+                        print(f'Warning! Rename mask line {line_num} has only 1 field (expected 2)')
         except IOError:
             print('+-----------------------------------+')
             print('| Error! Cannot read rename mask    |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file permissions            |')
             print('+-----------------------------------+')
         except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Parsing rename mask file   |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Expected format: old_name new_name|')
             print('+-----------------------------------+')
 
@@ -765,7 +759,7 @@ class QuartusCadenceMerger(Frame):
             print('+-----------------------------------+')
             return s
 
-        if not os.path.exists(fname):
+        if not Path(fname).exists():
             # Silently ignore missing header file (it's optional)
             return s
 
@@ -775,13 +769,13 @@ class QuartusCadenceMerger(Frame):
         except IOError:
             print('+-----------------------------------+')
             print('| Error! Cannot read header file    |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('| Check file permissions            |')
             print('+-----------------------------------+')
         except (OSError, ValueError, UnicodeDecodeError):
             print('+-----------------------------------+')
             print('| Error! Reading header file        |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('+-----------------------------------+')
         return s
 
@@ -825,37 +819,39 @@ class QuartusCadenceMerger(Frame):
             return False
 
         # Get absolute path and ensure it doesn't escape current directory
-        abs_fname = os.path.abspath(fname)
-        cwd = os.path.abspath(os.getcwd())
+        abs_fname = Path(fname).resolve()
+        cwd = Path.cwd().resolve()
         # Check if the file would be created in a subdirectory of cwd or cwd itself
-        if not abs_fname.startswith(cwd):
+        try:
+            abs_fname.relative_to(cwd)
+        except ValueError:
             print('+-----------------------------------+')
             print('| Error! Invalid file path          |')
             print('| Path must be in current directory |')
-            print('| File: \'%s\'' % fname)
+            print(f'| File: \'{fname}\'')
             print('+-----------------------------------+')
             return False
 
-        if os.path.exists(fname):
+        if Path(fname).exists():
             backup_created = False
             for backup_index in range(1, MAX_BACKUP_COUNT + 1):
-                backup_fname = '%s,%02d' % (fname, backup_index)
-                if not os.path.exists(backup_fname):
+                backup_fname = f'{fname},{backup_index:02d}'
+                if not Path(backup_fname).exists():
                     try:
-                        os.rename(fname, backup_fname)
-                        backup_msg = 'Renamed old file to: %s' % backup_fname
+                        Path(fname).rename(backup_fname)
+                        backup_msg = f'Renamed old file to: {backup_fname}'
                         self._set_status(backup_msg, append=True)
                         self.update_idletasks()
                         backup_created = True
                         break
                     except OSError:
                         print('+-----------------------------------+')
-                        print('| Error! Cannot rename file: \'%s\'' % fname)
+                        print(f'| Error! Cannot rename file: \'{fname}\'')
                         print('+-----------------------------------+')
                         return False
             if not backup_created:
                 print('+-----------------------------------+')
-                print('| Warning! All %d backup slots full for: \'%s\'' % (MAX_BACKUP_COUNT, fname))
+                print(f'| Warning! All {MAX_BACKUP_COUNT} backup slots full for: \'{fname}\'')
                 print('| Overwriting existing file without backup')
                 print('+-----------------------------------+')
         return self.write2file(fname, data_string)
@@ -868,19 +864,15 @@ class QuartusCadenceMerger(Frame):
         Returns:
         True if successful, False if error occurred
         """
-        f = None
         try:
-            f = open(fname, 'w')
-            f.write(s)
+            with open(fname, 'w') as f:
+                f.write(s)
             return True
         except IOError:
             print('+-----------------------------------+')
-            print('| Error! Cannot write file: \'%s\'' % fname)
+            print(f'| Error! Cannot write file: \'{fname}\'')
             print('+-----------------------------------+')
             return False
-        finally:
-            if f:
-                f.close()
 
     def get_file_mtime(self, fname):
         """Get file modification time as formatted string
@@ -890,7 +882,7 @@ class QuartusCadenceMerger(Frame):
         Formatted time string or 'N/A' if file doesn't exist
         """
         try:
-            return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime(fname)))
+            return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(Path(fname).stat().st_mtime))
         except OSError:
             return 'N/A'
 
@@ -899,12 +891,13 @@ class QuartusCadenceMerger(Frame):
         self.update_and_save_config()
         # Set initial directory based on current file if it exists
         initial_dir = ''
-        if self.cnl_fname and os.path.exists(self.cnl_fname):
-            initial_dir = os.path.dirname(self.cnl_fname)
+        if self.cnl_fname and Path(self.cnl_fname).exists():
+            initial_dir = str(Path(self.cnl_fname).parent)
         elif self.cnl_fname:
-            initial_dir = os.path.dirname(self.cnl_fname) if os.path.dirname(self.cnl_fname) else os.getcwd()
+            parent_dir = Path(self.cnl_fname).parent
+            initial_dir = str(parent_dir) if str(parent_dir) and str(parent_dir) != '.' else str(Path.cwd())
         else:
-            initial_dir = os.getcwd()
+            initial_dir = str(Path.cwd())
 
         fname = askopenfilename(
             title='Select Cadence Allegro Netlist File',
@@ -922,12 +915,13 @@ class QuartusCadenceMerger(Frame):
         self.update_and_save_config()
         # Set initial directory based on current file if it exists
         initial_dir = ''
-        if self.qp_fname and os.path.exists(self.qp_fname):
-            initial_dir = os.path.dirname(self.qp_fname)
+        if self.qp_fname and Path(self.qp_fname).exists():
+            initial_dir = str(Path(self.qp_fname).parent)
         elif self.qp_fname:
-            initial_dir = os.path.dirname(self.qp_fname) if os.path.dirname(self.qp_fname) else os.getcwd()
+            parent_dir = Path(self.qp_fname).parent
+            initial_dir = str(parent_dir) if str(parent_dir) and str(parent_dir) != '.' else str(Path.cwd())
         else:
-            initial_dir = os.getcwd()
+            initial_dir = str(Path.cwd())
 
         fname = askopenfilename(
             title='Select Quartus Pin File',
